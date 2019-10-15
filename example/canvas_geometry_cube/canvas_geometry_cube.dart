@@ -54,7 +54,8 @@ void init() {
 
   scene = new Scene();
 
-  camera = new PerspectiveCamera(70.0, window.innerWidth / window.innerHeight, 1.0, 1000.0);
+  camera = new PerspectiveCamera(
+      70.0, window.innerWidth / window.innerHeight, 1.0, 1000.0);
   camera.position.y = 150.0;
   camera.position.z = 500.0;
   scene.add(camera);
@@ -68,52 +69,54 @@ void init() {
     materials.add(new MeshBasicMaterial(color: rnd.nextDouble() * 0xffffff));
   }
 
-  cube = new Mesh(
-      new CubeGeometry(200.0, 200.0, 200.0, 1, 1, 1, materials),
-      new MeshFaceMaterial(materials));// { 'overdraw' : true }) );
+  cube = new Mesh(new CubeGeometry(200.0, 200.0, 200.0, 1, 1, 1, materials),
+      new MeshFaceMaterial(materials)); // { 'overdraw' : true }) );
   cube.position.y = 150.0;
   //cube.overdraw = true; //TODO where is this prop?
   scene.add(cube);
 
   // Plane
 
-  plane = new Mesh(new PlaneGeometry(200.0, 200.0), new MeshBasicMaterial(color: 0xe0e0e0, overdraw: true));
-  plane.rotation.x = -90.0 * (Math.PI / 180.0);
+  plane = new Mesh(new PlaneGeometry(200.0, 200.0),
+      new MeshBasicMaterial(color: 0xe0e0e0, overdraw: true));
+  plane.rotation.x = -90.0 * (Math.pi / 180.0);
   //plane.overdraw = true; //TODO where is this prop?
   scene.add(plane);
 
   renderer = new CanvasRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-
   //container.appendChild( renderer.domElement );
   container.nodes.add(renderer.domElement);
 
   evtSubscriptions = [
-      document.onMouseDown.listen(onDocumentMouseDown),
-      document.onTouchStart.listen(onDocumentTouchStart),
-      document.onTouchMove.listen(onDocumentTouchMove)];
-
+    document.onMouseDown.listen(onDocumentMouseDown),
+    document.onTouchStart.listen(onDocumentTouchStart),
+    document.onTouchMove.listen(onDocumentTouchMove)
+  ];
 }
 
 void onDocumentMouseDown(event) {
   event.preventDefault();
 
   evtSubscriptions = [
-      document.onMouseMove.listen(onDocumentMouseMove),
-      document.onMouseUp.listen(onDocumentMouseUp),
-      document.onMouseOut.listen(onDocumentMouseOut)];
+    document.onMouseMove.listen(onDocumentMouseMove),
+    document.onMouseUp.listen(onDocumentMouseUp),
+    document.onMouseOut.listen(onDocumentMouseOut)
+  ];
 
   mouseXOnMouseDown = event.client.x - windowHalfX;
   targetRotationOnMouseDown = targetRotation;
 
-  print('onMouseDown mouseX = $mouseXOnMouseDown targRot = $targetRotationOnMouseDown');
+  print(
+      'onMouseDown mouseX = $mouseXOnMouseDown targRot = $targetRotationOnMouseDown');
 }
 
 void onDocumentMouseMove(event) {
   mouseX = event.client.x - windowHalfX;
 
-  targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.02;
+  targetRotation =
+      targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.02;
 
   print('onMouseMove mouseX = $mouseX targRot = $targetRotation');
 }
@@ -145,7 +148,8 @@ void onDocumentTouchMove(event) {
     event.preventDefault();
 
     mouseX = event.touches[0].page.x - windowHalfX;
-    targetRotation = targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.05;
+    targetRotation =
+        targetRotationOnMouseDown + (mouseX - mouseXOnMouseDown) * 0.05;
   }
 }
 
@@ -156,6 +160,7 @@ animate(num time) {
 }
 
 void render() {
-  plane.rotation.z = cube.rotation.y += (targetRotation - cube.rotation.y) * 0.05;
+  plane.rotation.z =
+      cube.rotation.y += (targetRotation - cube.rotation.y) * 0.05;
   renderer.render(scene, camera);
 }

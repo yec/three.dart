@@ -37,25 +37,22 @@ Map<String, Map<String, Map<String, dynamic>>> _faces = {};
 Map<String, Map> getFace() => _faces[_face][_weight][_style];
 
 Map<String, String> loadFace(Map<String, String> data) {
-
   var family = data["familyName"].toLowerCase();
 
   if (_faces[family] == null) _faces[family] = {};
 
-  if (_faces[family][data["cssFontWeight"]] == null) _faces[family][data["cssFontWeight"]] = {};
+  if (_faces[family][data["cssFontWeight"]] == null)
+    _faces[family][data["cssFontWeight"]] = {};
   _faces[family][data["cssFontWeight"]][data["cssFontStyle"]] = data;
 
   // TODO - Parse data
   var face = _faces[family][data["cssFontWeight"]][data["cssFontStyle"]] = data;
 
   return data;
-
 }
 
 Map drawText(String text) {
-
-  var characterPts = [],
-      allPts = [];
+  var characterPts = [], allPts = [];
 
   // RenderText
 
@@ -70,14 +67,12 @@ Map drawText(String text) {
   var fontPaths = [];
 
   for (i = 0; i < length; i++) {
-
     var path = new Path();
 
     var ret = extractGlyphPoints(chars[i], face, scale, offset, path);
     offset += ret["offset"];
 
     fontPaths.add(ret["path"]);
-
   }
 
   // get the width
@@ -96,18 +91,30 @@ Map drawText(String text) {
   //extract.paths = fontPaths;
   //extract.offset = width;
 
-  return {
-    "paths": fontPaths,
-    "offset": width
-  };
-
+  return {"paths": fontPaths, "offset": width};
 }
 
 Map extractGlyphPoints(String c, Map face, num scale, num offset, path) {
-
   List<Vector2> pts = [];
 
-  var i, i2, divisions, outline, action, length, scaleX, scaleY, x, y, cpx, cpy, cpx0, cpy0, cpx1, cpy1, cpx2, cpy2,
+  var i,
+      i2,
+      divisions,
+      outline,
+      action,
+      length,
+      scaleX,
+      scaleY,
+      x,
+      y,
+      cpx,
+      cpy,
+      cpx0,
+      cpy0,
+      cpx1,
+      cpy1,
+      cpx2,
+      cpy2,
       laste;
 
   var glyph = face["glyphs"][c];
@@ -116,7 +123,6 @@ Map extractGlyphPoints(String c, Map face, num scale, num offset, path) {
   if (glyph == null) return null;
 
   if (glyph["o"] != null) {
-
     outline = glyph["_cachedOutline"];
     if (outline == null) {
       glyph["_cachedOutline"] = glyph["o"].split(' ');
@@ -127,14 +133,12 @@ Map extractGlyphPoints(String c, Map face, num scale, num offset, path) {
     scaleX = scale;
     scaleY = scale;
 
-    for (i = 0; i < length; ) {
-
+    for (i = 0; i < length;) {
       action = outline[i++];
 
       //console.log( action );
 
       switch (action) {
-
         case 'm':
 
           // Move To
@@ -168,17 +172,14 @@ Map extractGlyphPoints(String c, Map face, num scale, num offset, path) {
           if (pts.length > 0) laste = pts[pts.length - 1];
 
           if (laste != null) {
-
             cpx0 = laste.x;
             cpy0 = laste.y;
 
             for (i2 = 1; i2 <= divisions; i2++) {
-
               var t = i2 / divisions;
               var tx = ShapeUtils.b2(t, cpx0, cpx1, cpx);
               var ty = ShapeUtils.b2(t, cpy0, cpy1, cpy);
             }
-
           }
 
           break;
@@ -199,36 +200,30 @@ Map extractGlyphPoints(String c, Map face, num scale, num offset, path) {
           if (pts.length > 0) laste = pts[pts.length - 1];
 
           if (laste != null) {
-
             cpx0 = laste.x;
             cpy0 = laste.y;
 
             for (i2 = 1; i2 <= divisions; i2++) {
-
               var t = i2 / divisions;
               var tx = ShapeUtils.b3(t, cpx0, cpx1, cpx2, cpx);
               var ty = ShapeUtils.b3(t, cpy0, cpy1, cpy2, cpy);
-
             }
-
           }
 
           break;
-
       }
-
     }
   }
 
-  return {
-    "offset": glyph["ha"] * scale,
-    "path": path
-  };
+  return {"offset": glyph["ha"] * scale, "path": path};
 }
 
-List<Shape> generateShapes(String text, [int size = 100, int curveSegments = 4, String font = "helvetiker",
-    String weight = "normal", String style = "normal"]) {
-
+List<Shape> generateShapes(String text,
+    [int size = 100,
+    int curveSegments = 4,
+    String font = "helvetiker",
+    String weight = "normal",
+    String style = "normal"]) {
   var face = _faces[font][weight][style];
 
   if (_faces == null) {
@@ -250,12 +245,15 @@ List<Shape> generateShapes(String text, [int size = 100, int curveSegments = 4, 
   var paths = data["paths"];
 
   var shapes = [];
-  paths.forEach((p) { shapes.addAll(p.toShapes()); });
+  paths.forEach((p) {
+    shapes.addAll(p.toShapes());
+  });
   return shapes;
 }
 
 class Glyph {
   String o;
+
   /// outline
   List _cachedOutline;
 
@@ -290,32 +288,24 @@ class FontFace {
  *
  */
 
-
 var EPSILON = 0.0000000001;
 
 // takes in an contour array and returns
 List<List<Vector2>> process(List<Vector2> contour, bool indices) {
-
   var n = contour.length;
 
   if (n < 3) return null;
 
-  var result = [],
-      verts = new List(n),
-      vertIndices = [];
+  var result = [], verts = new List(n), vertIndices = [];
 
   /* we want a counter-clockwise polygon in verts */
 
   num u, v, w;
 
   if (area(contour) > 0.0) {
-
     for (v = 0; v < n; v++) verts[v] = v;
-
   } else {
-
     for (v = 0; v < n; v++) verts[v] = (n - 1) - v;
-
   }
 
   num nv = n;
@@ -325,12 +315,10 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
   var count = 2 * nv;
   /* error detection */
 
-  for (v = nv - 1; nv > 2; ) {
-
+  for (v = nv - 1; nv > 2;) {
     /* if we loop, it is probably a non-simple polygon */
 
     if ((count--) <= 0) {
-
       //** Triangulate: ERROR - probable bad polygon!
 
       //throw ( "Warning, unable to triangulate polygon!" );
@@ -340,7 +328,6 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
 
       if (indices) return vertIndices;
       return result;
-
     }
 
     /* three consecutive vertices in current polygon, <u,v,w> */
@@ -356,7 +343,6 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
     /* next     */
 
     if (snip(contour, u, v, w, nv, verts)) {
-
       var a, b, c, s, t;
 
       /* true names of the vertices */
@@ -369,13 +355,11 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
 
       result.add([contour[a], contour[b], contour[c]]);
 
-
       vertIndices.addAll([verts[u], verts[v], verts[w]]);
 
       /* remove v from the remaining polygon */
       s = v;
       for (t = v + 1; t < nv; t++) {
-
         verts[s] = verts[t];
         s++;
       }
@@ -385,36 +369,27 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
       /* reset error detection counter */
 
       count = 2 * nv;
-
     }
-
   }
 
   if (indices) return vertIndices;
   return result;
-
 }
 
 // calculate area of the contour polygon
 double area(List contour) {
-
   var n = contour.length;
   var a = 0.0;
 
-  for (var p = n - 1,
-      q = 0; q < n; p = q++) {
-
+  for (var p = n - 1, q = 0; q < n; p = q++) {
     a += contour[p].x * contour[q].y - contour[q].x * contour[p].y;
-
   }
 
   return a * 0.5;
-
 }
 
 // see if p is inside triangle abc
 insideTriangle(num ax, num ay, num bx, num by, num cx, num cy, num px, num py) {
-
   var aX, aY, bX, bY;
   var cX, cY, apx, apy;
   var bpx, bpy, cpx, cpy;
@@ -438,12 +413,9 @@ insideTriangle(num ax, num ay, num bx, num by, num cx, num cy, num px, num py) {
   bCROSScp = bX * cpy - bY * cpx;
 
   return ((aCROSSbp >= 0.0) && (bCROSScp >= 0.0) && (cCROSSap >= 0.0));
-
 }
 
-
 bool snip(List<Vector2> contour, num u, num v, num w, num n, List<num> verts) {
-
   var p;
   var ax, ay, bx, by;
   var cx, cy, px, py;
@@ -457,23 +429,20 @@ bool snip(List<Vector2> contour, num u, num v, num w, num n, List<num> verts) {
   cx = contour[verts[w]].x;
   cy = contour[verts[w]].y;
 
-  if (EPSILON > (((bx - ax) * (cy - ay)) - ((by - ay) * (cx - ax)))) return false;
+  if (EPSILON > (((bx - ax) * (cy - ay)) - ((by - ay) * (cx - ax))))
+    return false;
 
   for (p = 0; p < n; p++) {
-
     if ((p == u) || (p == v) || (p == w)) continue;
 
     px = contour[verts[p]].x;
     py = contour[verts[p]].y;
 
     if (insideTriangle(ax, ay, bx, by, cx, cy, px, py)) return false;
-
   }
 
   return true;
-
 }
-
 
 //namespace.Triangulate = process;
 //namespace.Triangulate.area = area;

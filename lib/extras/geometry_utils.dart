@@ -5,7 +5,6 @@ import 'package:vector_math/vector_math.dart';
 
 // TODO(nelsonsilva) - Add remaining functions
 Geometry clone(Geometry geometry) {
-
   var cloneGeo = new Geometry();
 
   var i, il;
@@ -17,9 +16,7 @@ Geometry clone(Geometry geometry) {
   // materials
 
   if (geometry.materials != null) {
-
     cloneGeo.materials = new List.from(geometry.materials);
-
   }
 
   // vertices
@@ -31,27 +28,20 @@ Geometry clone(Geometry geometry) {
   // uvs
   il = uvs.length;
   for (i = 0; i < il; i++) {
-
-    var uv = uvs[i],
-        uvCopy = [];
+    var uv = uvs[i], uvCopy = [];
 
     var jl = uv.length;
     for (var j = 0; j < jl; j++) {
-
       uvCopy.add(new UV(uv[j].u, uv[j].v));
-
     }
 
     cloneGeo.faceVertexUvs[0].add(uvCopy);
-
   }
 
   return cloneGeo;
-
 }
 
 num triangleArea(Vector3 vectorA, Vector3 vectorB, Vector3 vectorC) {
-
   var tmp = (vectorB - vectorA).cross(vectorC - vectorA);
 
   return 0.5 * tmp.length;
@@ -71,4 +61,3 @@ Vector3 center(Geometry geometry) {
 
   return offset;
 }
-

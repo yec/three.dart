@@ -5,7 +5,6 @@ part of three;
  */
 
 class Uniform {
-
   var value;
 
   Uniform(this.value);

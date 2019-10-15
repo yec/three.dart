@@ -21,7 +21,8 @@ class Geometry extends Object {
 
   List<Vector3> vertices;
 
-  List colors; // one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
+  List
+      colors; // one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
   List<Vector3> normals = []; // one-to-one vertex normals, used in Ribbon
 
   List materials;
@@ -45,7 +46,6 @@ class Geometry extends Object {
   // Used in JSONLoader
   var bones, animation;
 
-
   // WebGL
   bool verticesNeedUpdate = false,
       colorsNeedUpdate = false,
@@ -59,32 +59,25 @@ class Geometry extends Object {
 
   Geometry()
       : name = '',
-
         vertices = <Vector3>[],
-        colors = [],  // one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
+        colors =
+            [], // one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
 
-      materials = [],
-
+        materials = [],
         faces = [],
-
         faceUvs = [[]],
         faceVertexUvs = [[]],
-
         morphTargets = [],
         morphColors = [],
         morphNormals = [],
-
         skinWeights = [],
         skinIndices = [],
-
         lineDistances = [],
-
         boundingBox = null,
         boundingSphere = null,
-
         hasTangents = false,
-
-        _dynamic = false // unless set to true the *Arrays will be deleted once sent to a buffer.
+        _dynamic =
+            false // unless set to true the *Arrays will be deleted once sent to a buffer.
   {
     id = GeometryCount++;
   }
@@ -92,6 +85,7 @@ class Geometry extends Object {
   /// Defaults to true.
   // named isDynamic because dynamic is a reserved word in Dart
   bool get isDynamic => _dynamic;
+
   /// Set to true if attribute buffers will need to change in runtime (using "dirty" flags).
   /// Unless set to true internal typed arrays corresponding to buffers will be
   /// deleted once sent to GPU.
@@ -108,19 +102,17 @@ class Geometry extends Object {
     vertices.forEach((vertex) => vertex.applyProjection(matrix));
 
     faces.forEach((face) {
-
       face.normal.applyProjection(matrixRotation);
 
-      face.vertexNormals.forEach((normal) => normal.applyProjection(matrixRotation));
+      face.vertexNormals
+          .forEach((normal) => normal.applyProjection(matrixRotation));
 
       face.centroid.applyProjection(matrix);
     });
   }
 
   void computeCentroids() {
-
     faces.forEach((Face face) {
-
       face.centroid.setValues(0.0, 0.0, 0.0);
 
       face.indices.forEach((idx) {
@@ -128,17 +120,13 @@ class Geometry extends Object {
       });
 
       face.centroid /= face.size.toDouble();
-
     });
   }
 
   /// Computes face normals.
   void computeFaceNormals() {
     faces.forEach((face) {
-
-      var vA = vertices[face.a],
-          vB = vertices[face.b],
-          vC = vertices[face.c];
+      var vA = vertices[face.a], vB = vertices[face.b], vC = vertices[face.c];
 
       Vector3 cb = vC - vB;
       Vector3 ab = vA - vB;
@@ -147,7 +135,6 @@ class Geometry extends Object {
       cb.normalize();
 
       face.normal = cb;
-
     });
   }
 
@@ -155,22 +142,20 @@ class Geometry extends Object {
   ///
   /// Face normals must be existing / computed beforehand.
   void computeVertexNormals() {
-
     List<Vector3> vertices;
-
 
     // create internal buffers for reuse when calling this method repeatedly
     // (otherwise memory allocation / deallocation every frame is big resource hog)
     if (__tmpVertices == null) {
-
       __tmpVertices = [];
       this.vertices.forEach((_) => __tmpVertices.add(new Vector3.zero()));
       vertices = __tmpVertices;
 
       faces.forEach((face) {
-        face.vertexNormals = new List.generate(face.size, (_) => new Vector3.zero(), growable: false);
+        face.vertexNormals = new List.generate(
+            face.size, (_) => new Vector3.zero(),
+            growable: false);
       });
-
     } else {
       vertices = __tmpVertices;
 
@@ -178,26 +163,21 @@ class Geometry extends Object {
       for (var v = 0; v < vl; v++) {
         vertices[v].setValues(0.0, 0.0, 0.0);
       }
-
     }
 
     faces.forEach((Face face) {
-
       face.indices.forEach((idx) {
         vertices[idx].add(face.normal);
       });
-
     });
 
     vertices.forEach((v) => v.normalize());
 
     faces.forEach((Face face) {
-
       var i = 0;
       face.indices.forEach((idx) {
         face.vertexNormals[i++].setFrom(vertices[idx]);
       });
-
     });
   }
 
@@ -231,7 +211,6 @@ class Geometry extends Object {
         tan2 = vertices.map((_) => new Vector3.zero()).toList();
 
     var handleTriangle = (context, a, b, c, ua, ub, uc) {
-
       vA = context.vertices[a];
       vB = context.vertices[b];
       vC = context.vertices[c];
@@ -253,8 +232,10 @@ class Geometry extends Object {
       t2 = uvC.v - uvA.v;
 
       r = 1.0 / (s1 * t2 - s2 * t1);
-      sdir.setValues((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
-      tdir.setValues((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
+      sdir.setValues((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r,
+          (t2 * z1 - t1 * z2) * r);
+      tdir.setValues((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r,
+          (s1 * z2 - s2 * z1) * r);
 
       tan1[a].add(sdir);
       tan1[b].add(sdir);
@@ -263,13 +244,11 @@ class Geometry extends Object {
       tan2[a].add(tdir);
       tan2[b].add(tdir);
       tan2[c].add(tdir);
-
     };
 
     fl = this.faces.length;
 
     for (f = 0; f < fl; f++) {
-
       face = this.faces[f];
       UV uv = faceVertexUvs[0][f]; // use UV layer 0 for tangents
 
@@ -283,16 +262,15 @@ class Geometry extends Object {
       }
 
       triangles.forEach((t) {
-        handleTriangle(this, face.indices[t[0]], face.indices[t[1]], face.indices[t[2]], t[0], t[1], t[2]);
+        handleTriangle(this, face.indices[t[0]], face.indices[t[1]],
+            face.indices[t[2]], t[0], t[1], t[2]);
       });
     }
 
     faces.forEach((face) {
-
       il = face.vertexNormals.length;
 
       for (i = 0; i < il; i++) {
-
         n.setFrom(face.vertexNormals[i]);
 
         vertexIndex = face.indices[i];
@@ -302,7 +280,9 @@ class Geometry extends Object {
         // Gram-Schmidt orthogonalize
 
         tmp.setFrom(t);
-        tmp..sub(n..scale(n.dot(t)))..normalize();
+        tmp
+          ..sub(n..scale(n.dot(t)))
+          ..normalize();
 
         // Calculate handedness
 
@@ -311,13 +291,10 @@ class Geometry extends Object {
         w = (test < 0.0) ? -1.0 : 1.0;
 
         face.vertexTangents[i] = new Vector4(tmp.x, tmp.y, tmp.z, w);
-
       }
-
     });
 
     hasTangents = true;
-
   }
 
   /// Computes bounding box of the geometry, updating Geometry.boundingBox.
@@ -346,20 +323,17 @@ class Geometry extends Object {
   /// Duplicated vertices are removed
   /// and faces' vertices are updated.
   int mergeVertices() {
-    Map verticesMap = {}; // Hashmap for looking up vertice by position coordinates (and making sure they are unique)
+    Map verticesMap =
+        {}; // Hashmap for looking up vertice by position coordinates (and making sure they are unique)
     List<Vector3> unique = [];
     List<int> changes = [];
 
     String key;
-    int precisionPoints = 4; // number of decimal points, eg. 4 for epsilon of 0.0001
+    int precisionPoints =
+        4; // number of decimal points, eg. 4 for epsilon of 0.0001
     num precision = Math.pow(10, precisionPoints);
     int i, il;
-    var abcd = 'abcd',
-        o,
-        k,
-        j,
-        jl,
-        u;
+    var abcd = 'abcd', o, k, j, jl, u;
 
     Vector3 v;
     il = this.vertices.length;
@@ -368,9 +342,10 @@ class Geometry extends Object {
       v = this.vertices[i];
 
       key = [
-          (v.x * precision).round().toStringAsFixed(0),
-          (v.y * precision).round().toStringAsFixed(0),
-          (v.z * precision).round().toStringAsFixed(0)].join('_');
+        (v.x * precision).round().toStringAsFixed(0),
+        (v.y * precision).round().toStringAsFixed(0),
+        (v.z * precision).round().toStringAsFixed(0)
+      ].join('_');
 
       if (verticesMap[key] == null) {
         verticesMap[key] = i;
@@ -384,9 +359,7 @@ class Geometry extends Object {
         //changes[ i ] = changes[ verticesMap[ key ] ];
         changes.add(changes[verticesMap[key]]);
       }
-
     }
-
 
     // Start to patch face indices
 
@@ -434,9 +407,7 @@ class Geometry extends Object {
   }
 
   clone() {
-
     // TODO
-
   }
 
   // Quick hack to allow setting new properties (used by the renderer)
@@ -454,7 +425,6 @@ class Geometry extends Object {
 }
 
 class BoundingBox {
-
   Aabb3 _aabb3;
 
   get min => _aabb3.min;
@@ -482,7 +452,9 @@ class BoundingBox {
           var a = geometry.aPosition.array;
           var il = a.length;
           for (var i = 0; i < il; i += 3) {
-            position..setValues(a[i], a[i + 1], a[i + 2])..applyProjection(node.matrixWorld);
+            position
+              ..setValues(a[i], a[i + 1], a[i + 2])
+              ..applyProjection(node.matrixWorld);
             if (_aabb3 == null) {
               _aabb3 = new Aabb3.minMax(position, position);
             } else {
@@ -492,7 +464,8 @@ class BoundingBox {
         }
       } else if (geometry is Geometry) {
         geometry.vertices.forEach((vertice) {
-          var transfVertice = new Vector3.copy(vertice)..applyProjection(node.matrixWorld);
+          var transfVertice = new Vector3.copy(vertice)
+            ..applyProjection(node.matrixWorld);
           if (_aabb3 == null) {
             _aabb3 = new Aabb3.minMax(transfVertice, transfVertice);
           } else {
@@ -508,7 +481,10 @@ class BoundingBox {
 
   // set copy(BoundingBox box) => _aabb3.copyMinMax(box.min, box.max);
 
-  bool get isEmpty => (this.max.x < this.min.x) || (this.max.y < this.min.y) || (this.max.z < this.min.z);
+  bool get isEmpty =>
+      (this.max.x < this.min.x) ||
+      (this.max.y < this.min.y) ||
+      (this.max.z < this.min.z);
 
   Vector3 get center => _aabb3.center;
 
@@ -523,19 +499,24 @@ class BoundingBox {
 
   bool containsPoint(Vector3 point) => _aabb3.containsVector3(point);
 
-  bool containsBox(BoundingBox box) => _aabb3.containsAabb3(new Aabb3.minMax(box.min, box.max));
+  bool containsBox(BoundingBox box) =>
+      _aabb3.containsAabb3(new Aabb3.minMax(box.min, box.max));
 
-  Vector3 getParameter(Vector3 point) =>
-      new Vector3.array(
-          [(point.x - min.x) / (max.x - min.x), (point.y - min.y) / (max.y - min.y), (point.z - min.z) / (max.z - min.z)]);
+  Vector3 getParameter(Vector3 point) => new Vector3.array([
+        (point.x - min.x) / (max.x - min.x),
+        (point.y - min.y) / (max.y - min.y),
+        (point.z - min.z) / (max.z - min.z)
+      ]);
 
-  bool isIntersectionBox(BoundingBox box) => _aabb3.intersectsWithAabb3(new Aabb3.minMax(box.min, box.max));
+  bool isIntersectionBox(BoundingBox box) =>
+      _aabb3.intersectsWithAabb3(new Aabb3.minMax(box.min, box.max));
 
   //todo: clampPoint
 
   //todo: distanceToPoint
 
-  BoundingSphere get boundingSphere => new BoundingSphere(radius: size.length * 0.5, center: center);
+  BoundingSphere get boundingSphere =>
+      new BoundingSphere(radius: size.length * 0.5, center: center);
 
   intersect(BoundingBox box) {
     Vector3.max(_aabb3.min, box.min, _aabb3.min);
@@ -559,7 +540,6 @@ class BoundingBox {
   bool operator ==(BoundingBox box) => min == box.min && max == box.max;
 
   BoundingBox clone() => new BoundingBox(min: min, max: max);
-
 }
 
 class BoundingSphere {

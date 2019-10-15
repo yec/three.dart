@@ -20,6 +20,4 @@ var lib = {
   //             vec3 wPos = cameraPosition - vViewPosition;
   //             gl_FragColor = textureCube( tCube, vec3( tFlip * wPos.x, wPos.yz ) );
   //           }''')
-
 };
-

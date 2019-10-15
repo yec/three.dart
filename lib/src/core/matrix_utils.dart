@@ -28,7 +28,8 @@ Matrix4 makeLookAt(Matrix4 m, Vector3 eye, Vector3 center, Vector3 up) {
 
   Vector3 y = z.cross(x)..normalize();
 
-  m.setValues(x.x, x.y, x.z, 0.0, y.x, y.y, y.z, 0.0, z.x, z.y, z.z, 0.0, 0.0, 0.0, 0.0, 1.0);
+  m.setValues(x.x, x.y, x.z, 0.0, y.x, y.y, y.z, 0.0, z.x, z.y, z.z, 0.0, 0.0,
+      0.0, 0.0, 1.0);
   return m;
 }
 
@@ -45,11 +46,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
 
   switch (order) {
     case 'YXZ':
-
-      num ce = c * e,
-          cf = c * f,
-          de = d * e,
-          df = d * f;
+      num ce = c * e, cf = c * f, de = d * e, df = d * f;
 
       m[0] = ce + df * b;
       m[4] = de * b - cf;
@@ -65,11 +62,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
       break;
 
     case 'ZXY':
-
-      num ce = c * e,
-          cf = c * f,
-          de = d * e,
-          df = d * f;
+      num ce = c * e, cf = c * f, de = d * e, df = d * f;
 
       m[0] = ce - df * b;
       m[4] = -a * f;
@@ -85,11 +78,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
       break;
 
     case 'ZYX':
-
-      num ae = a * e,
-          af = a * f,
-          be = b * e,
-          bf = b * f;
+      num ae = a * e, af = a * f, be = b * e, bf = b * f;
 
       m[0] = c * e;
       m[4] = be * d - af;
@@ -105,11 +94,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
       break;
 
     case 'YZX':
-
-      num ac = a * c,
-          ad = a * d,
-          bc = b * c,
-          bd = b * d;
+      num ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
       m[0] = c * e;
       m[4] = bd - ac * f;
@@ -125,11 +110,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
       break;
 
     case 'XZY':
-
-      num ac = a * c,
-          ad = a * d,
-          bc = b * c,
-          bd = b * d;
+      num ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
       m[0] = c * e;
       m[4] = -f;
@@ -146,10 +127,7 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
 
     default: // 'XYZ'
 
-      num ae = a * e,
-          af = a * f,
-          be = b * e,
-          bf = b * f;
+      num ae = a * e, af = a * f, be = b * e, bf = b * f;
 
       m[0] = c * e;
       m[4] = -c * f;
@@ -163,12 +141,10 @@ Matrix4 setRotationFromEuler(Matrix4 m, Vector3 v, [String order = 'XYZ']) {
       m[6] = be + af * d;
       m[10] = a * c;
       break;
-
   }
 
   return m;
 }
-
 
 Matrix4 setRotationFromQuaternion(Matrix4 m, Quaternion q) {
   num x = q.x,
@@ -204,18 +180,15 @@ Matrix4 setRotationFromQuaternion(Matrix4 m, Quaternion q) {
 }
 
 double calcMaxScaleOnAxis(Matrix4 te) {
-
   var scaleXSq = te[0] * te[0] + te[1] * te[1] + te[2] * te[2];
   var scaleYSq = te[4] * te[4] + te[5] * te[5] + te[6] * te[6];
   var scaleZSq = te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
 
   return Math.sqrt(Math.max(scaleXSq, Math.max(scaleYSq, scaleZSq)));
-
 }
 
 // TODO check if this is available in vector_math library
 Matrix3 calcInverse(Matrix4 m) {
-
   // input: THREE.Matrix4
   // ( based on http://code.google.com/p/webgl-mjs/ )
 
@@ -234,27 +207,16 @@ Matrix3 calcInverse(Matrix4 m) {
   // no inverse
 
   if (det == 0) {
-
     print("Matrix3.getInverse(): determinant == 0");
-
   }
 
   var idet = 1.0 / det;
 
-  return new Matrix3(
-      idet * a11,
-      idet * a21,
-      idet * a31,
-      idet * a12,
-      idet * a22,
-      idet * a32,
-      idet * a13,
-      idet * a23,
-      idet * a33);
+  return new Matrix3(idet * a11, idet * a21, idet * a31, idet * a12, idet * a22,
+      idet * a32, idet * a13, idet * a23, idet * a33);
 }
 
 Matrix4 extractRotation(Matrix4 te, Matrix4 m) {
-
   Vector3 vector = new Vector3.zero();
 
   var scaleX = 1.0 / (vector..setValues(m[0], m[1], m[2])).length;
@@ -283,8 +245,8 @@ Vector3 getScaleFromMatrix(Matrix4 m) {
   return new Vector3(sx, sy, sz);
 }
 
-List decompose(Matrix4 m, Vector3 translation, Quaternion rotation, Vector3 scale) {
-
+List decompose(
+    Matrix4 m, Vector3 translation, Quaternion rotation, Vector3 scale) {
   var te = m.storage;
 
   // grab the axis vectors
@@ -322,12 +284,10 @@ List decompose(Matrix4 m, Vector3 translation, Quaternion rotation, Vector3 scal
 
   setFromRotationMatrix(rotation, matrix);
 
-
   return [translation, rotation, scale];
 }
 
 Quaternion setFromRotationMatrix(Quaternion quaternion, Matrix4 m) {
-
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
 
   // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
@@ -347,48 +307,40 @@ Quaternion setFromRotationMatrix(Quaternion quaternion, Matrix4 m) {
       s;
 
   if (trace > 0) {
-
     s = 0.5 / Math.sqrt(trace + 1.0);
 
     quaternion.w = 0.25 / s;
     quaternion.x = (m32 - m23) * s;
     quaternion.y = (m13 - m31) * s;
     quaternion.z = (m21 - m12) * s;
-
   } else if (m11 > m22 && m11 > m33) {
-
     s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
 
     quaternion.w = (m32 - m23) / s;
     quaternion.x = 0.25 * s;
     quaternion.y = (m12 + m21) / s;
     quaternion.z = (m13 + m31) / s;
-
   } else if (m22 > m33) {
-
     s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
 
     quaternion.w = (m13 - m31) / s;
     quaternion.x = (m12 + m21) / s;
     quaternion.y = 0.25 * s;
     quaternion.z = (m23 + m32) / s;
-
   } else {
-
     s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
 
     quaternion.w = (m21 - m12) / s;
     quaternion.x = (m13 + m31) / s;
     quaternion.y = (m23 + m32) / s;
     quaternion.z = 0.25 * s;
-
   }
 
   return quaternion;
 }
 
-Matrix4 compose(Matrix4 matrix, Vector3 translation, Quaternion rotation, Vector3 s) {
-
+Matrix4 compose(
+    Matrix4 matrix, Vector3 translation, Quaternion rotation, Vector3 s) {
   var te = matrix.storage;
 
   Matrix4 mRotation = new Matrix4.identity();
@@ -439,12 +391,10 @@ Matrix4 makeRotationAxis(Matrix4 m, Vector3 axis, num angle) {
 }
 
 multiplyVector3Array(Matrix4 m, List<double> a) {
-
   var v1 = new Vector3.zero();
   var il = a.length;
 
   for (var i = 0; i < il; i += 3) {
-
     v1.x = a[i];
     v1.y = a[i + 1];
     v1.z = a[i + 2];
@@ -454,7 +404,6 @@ multiplyVector3Array(Matrix4 m, List<double> a) {
     a[i] = v1.x;
     a[i + 1] = v1.y;
     a[i + 2] = v1.z;
-
   }
 
   return a;

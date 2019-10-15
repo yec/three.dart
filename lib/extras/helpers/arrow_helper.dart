@@ -1,12 +1,12 @@
 part of three;
 
 class ArrowHelper extends Object3D {
-
   Line line;
   Mesh cone;
 
-  ArrowHelper(Vector3 dir, [Vector3 origin = null, double length = 20.0, int hex = 0xffff00]) : super() {
-
+  ArrowHelper(Vector3 dir,
+      [Vector3 origin = null, double length = 20.0, int hex = 0xffff00])
+      : super() {
     var lineGeometry = new Geometry();
     lineGeometry.vertices.add(new Vector3.zero());
     lineGeometry.vertices.add(new Vector3(0.0, 1.0, 0.0));
@@ -27,10 +27,10 @@ class ArrowHelper extends Object3D {
   }
 
   setDirection(Vector3 dir) {
-
     var axis = new Vector3(0.0, 1.0, 0.0).cross(dir);
 
-    var radians = Math.acos(new Vector3(0.0, 1.0, 0.0).dot(dir.clone()..normalize()));
+    var radians =
+        Math.acos(new Vector3(0.0, 1.0, 0.0).dot(dir.clone()..normalize()));
 
     this.matrix = new Matrix4.identity()..rotate(axis..normalize(), radians);
 
@@ -38,5 +38,4 @@ class ArrowHelper extends Object3D {
   }
 
   Vector3 setLength(double length) => scale..setValues(length, length, length);
-
 }

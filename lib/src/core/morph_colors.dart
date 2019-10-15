@@ -5,4 +5,3 @@ class MorphColors {
   List<Color> colors;
   MorphColors({this.name, this.colors});
 }
-

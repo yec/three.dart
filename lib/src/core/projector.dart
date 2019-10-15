@@ -20,7 +20,12 @@ class Projector {
   List<RenderableLine> _linePool;
   List<RenderableParticle> _particlePool;
 
-  int _objectCount, _vertexCount, _face3Count, _face4Count, _lineCount, _particleCount;
+  int _objectCount,
+      _vertexCount,
+      _face3Count,
+      _face4Count,
+      _lineCount,
+      _particleCount;
 
   RenderableObject _object;
   RenderableVertex _vertex;
@@ -48,16 +53,12 @@ class Projector {
         _particlePool = [],
 
         //_renderData = { "objects": [], "sprites": [], "lights": [], "elements": [] };
-      _renderData = new ProjectorRenderData(),
-
+        _renderData = new ProjectorRenderData(),
         _vector3 = new Vector3.zero(),
         _vector4 = new Vector4(0.0, 0.0, 0.0, 1.0),
-
         _viewProjectionMatrix = new Matrix4.identity(),
         _modelViewProjectionMatrix = new Matrix4.identity(),
-
         _frustum = new Frustum(),
-
         _clippedVertex1PositionScreen = new Vector4(0.0, 0.0, 0.0, 1.0),
         _clippedVertex2PositionScreen = new Vector4(0.0, 0.0, 0.0, 1.0);
 
@@ -103,78 +104,55 @@ class Projector {
   _projectObject(Object3D parent) {
     var cl = parent.children.length;
     for (var c = 0; c < cl; c++) {
-
       var object = parent.children[c];
 
       if (!object.visible) continue;
 
       if (object is Light) {
-
         _renderData.lights.add(object);
-
       } else if (object is Mesh || object is Line) {
-
         if (!object.frustumCulled || _frustum.contains(object)) {
-
           _object = getNextObjectInPool();
           _object.object = object;
 
           if (object.renderDepth != null) {
-
             _object.z = object.renderDepth;
-
           } else {
-
             _vector3 = object.matrixWorld.getTranslation();
             _vector3.applyProjection(_viewProjectionMatrix);
             _object.z = _vector3.z;
-
           }
 
           _renderData.objects.add(_object);
-
         }
-
       } else if (object is Sprite || object is Particle) {
-
         _object = getNextObjectInPool();
         _object.object = object;
 
         // TODO: Find an elegant and performant solution and remove this dupe code.
 
         if (object.renderDepth != null) {
-
           _object.z = object.renderDepth;
-
         } else {
-
           _vector3 = object.matrixWorld.getTranslation();
           _vector3.applyProjection(_viewProjectionMatrix);
           _object.z = _vector3.z;
-
         }
 
         _renderData.sprites.add(_object);
-
       } else {
-
         _object = getNextObjectInPool();
         _object.object = object;
 
         if (object.renderDepth != null) {
-
           _object.z = object.renderDepth;
-
         } else {
-
           _vector3 = object.matrixWorld.getTranslation();
           _vector3.applyProjection(_viewProjectionMatrix);
           _object.z = _vector3.z;
-
         }
 
         _renderData.objects.add(_object);
-
       }
 
       _projectObject(object);
@@ -200,10 +178,8 @@ class Projector {
     return _renderData;
   }
 
-
   ProjectorRenderData projectScene(Scene scene, Camera camera, bool sort) {
-    num near = camera.near,
-        far = camera.far;
+    num near = camera.near, far = camera.far;
     bool visible = false;
     int o, ol, v, vl, f, fl, n, nl, c, cl, u, ul;
     Object3D object;
@@ -247,7 +223,6 @@ class Projector {
     _renderData = projectGraph(scene, false);
 
     _renderData.objects.forEach((o) {
-
       object = o.object;
 
       modelMatrix = object.matrixWorld;
@@ -255,7 +230,6 @@ class Projector {
       _vertexCount = 0;
 
       if (object is Mesh) {
-
         geometry = object.geometry;
         geometryMaterials = object.geometry.materials;
         vertices = geometry.vertices;
@@ -282,15 +256,17 @@ class Projector {
           _vertex.positionScreen.x /= _vertex.positionScreen.w;
           _vertex.positionScreen.y /= _vertex.positionScreen.w;
 
-          _vertex.visible = _vertex.positionScreen.z > near && _vertex.positionScreen.z < far;
+          _vertex.visible =
+              _vertex.positionScreen.z > near && _vertex.positionScreen.z < far;
         });
 
         fl = faces.length;
         for (f = 0; f < fl; f++) {
-
           face = faces[f];
 
-          material = isFaceMaterial == true ? geometryMaterials[face.materialIndex] : object.material;
+          material = isFaceMaterial == true
+              ? geometryMaterials[face.materialIndex]
+              : object.material;
 
           if (material == null) continue;
 
@@ -302,26 +278,35 @@ class Projector {
 
           if (allVtxVisible) {
             if (face.size == 3) {
-              visible =
-                  (((vtx[2].positionScreen.x - vtx[0].positionScreen.x) * (vtx[1].positionScreen.y - vtx[0].positionScreen.y) -
-                      (vtx[2].positionScreen.y - vtx[0].positionScreen.y) * (vtx[1].positionScreen.x - vtx[0].positionScreen.x)) <
-                      0);
+              visible = (((vtx[2].positionScreen.x - vtx[0].positionScreen.x) *
+                          (vtx[1].positionScreen.y - vtx[0].positionScreen.y) -
+                      (vtx[2].positionScreen.y - vtx[0].positionScreen.y) *
+                          (vtx[1].positionScreen.x - vtx[0].positionScreen.x)) <
+                  0);
             } else if (face.size == 4) {
-              visible =
-                  (vtx[3].positionScreen.x - vtx[0].positionScreen.x) * (vtx[1].positionScreen.y - vtx[0].positionScreen.y) -
-                      (vtx[3].positionScreen.y - vtx[0].positionScreen.y) * (vtx[1].positionScreen.x - vtx[0].positionScreen.x) <
+              visible = (vtx[3].positionScreen.x - vtx[0].positionScreen.x) *
+                              (vtx[1].positionScreen.y -
+                                  vtx[0].positionScreen.y) -
+                          (vtx[3].positionScreen.y - vtx[0].positionScreen.y) *
+                              (vtx[1].positionScreen.x -
+                                  vtx[0].positionScreen.x) <
                       0 ||
-                      (vtx[1].positionScreen.x - vtx[2].positionScreen.x) * (vtx[3].positionScreen.y - vtx[2].positionScreen.y) -
-                          (vtx[1].positionScreen.y - vtx[2].positionScreen.y) * (vtx[3].positionScreen.x - vtx[2].positionScreen.x) <
-                          0;
+                  (vtx[1].positionScreen.x - vtx[2].positionScreen.x) *
+                              (vtx[3].positionScreen.y -
+                                  vtx[2].positionScreen.y) -
+                          (vtx[1].positionScreen.y - vtx[2].positionScreen.y) *
+                              (vtx[3].positionScreen.x -
+                                  vtx[2].positionScreen.x) <
+                      0;
             }
 
             if (side == DoubleSide || visible == (side == FrontSide)) {
-
-              _face = (face.size == 3) ? getNextFace3InPool() : getNextFace4InPool();
-              List<RenderableVertex> verts = vtx.map((v) => v.clone()).toList(growable: false);
+              _face = (face.size == 3)
+                  ? getNextFace3InPool()
+                  : getNextFace4InPool();
+              List<RenderableVertex> verts =
+                  vtx.map((v) => v.clone()).toList(growable: false);
               _face.vertices = verts;
-
             } else {
               continue;
             }
@@ -331,7 +316,8 @@ class Projector {
 
           _face.normalWorld.setFrom(face.normal);
 
-          if (visible == false && (side == BackSide || side == DoubleSide)) _face.normalWorld.negate();
+          if (visible == false && (side == BackSide || side == DoubleSide))
+            _face.normalWorld.negate();
           _face.normalWorld.applyProjection(rotationMatrix);
 
           _face.centroidWorld.setFrom(face.centroid);
@@ -347,7 +333,8 @@ class Projector {
             normal = _face.vertexNormalsWorld[n];
             normal.setFrom(faceVertexNormals[n]);
 
-            if (!visible && (side == BackSide || side == DoubleSide)) normal.negate();
+            if (!visible && (side == BackSide || side == DoubleSide))
+              normal.negate();
 
             normal.applyProjection(rotationMatrix);
           }
@@ -370,13 +357,14 @@ class Projector {
           }
 
           _face.material = material;
-          _face.faceMaterial = face.materialIndex != null ? geometryMaterials[face.materialIndex] : null;
+          _face.faceMaterial = face.materialIndex != null
+              ? geometryMaterials[face.materialIndex]
+              : null;
 
           _face.z = _face.centroidScreen.z;
 
           _renderData.elements.add(_face);
         }
-
       } else if (object is Line) {
         _modelViewProjectionMatrix = _viewProjectionMatrix * modelMatrix;
 
@@ -388,11 +376,11 @@ class Projector {
         _modelViewProjectionMatrix.transform(v1.positionScreen);
 
         // Handle LineStrip and LinePieces
-        var step = ((object is Line) && (object as Line).type == LinePieces) ? 2 : 1;
+        var step =
+            ((object is Line) && (object as Line).type == LinePieces) ? 2 : 1;
 
         vl = vertices.length;
         for (v = 1; v < vl; v++) {
-
           v1 = getNextVertexInPool();
           Vector3 vec = vertices[v];
           v1.positionScreen = new Vector4(vec.x, vec.y, vec.z, 1.0);
@@ -405,7 +393,8 @@ class Projector {
           _clippedVertex1PositionScreen.setFrom(v1.positionScreen);
           _clippedVertex2PositionScreen.setFrom(v2.positionScreen);
 
-          if (clipLine(_clippedVertex1PositionScreen, _clippedVertex2PositionScreen)) {
+          if (clipLine(
+              _clippedVertex1PositionScreen, _clippedVertex2PositionScreen)) {
             // Perform the perspective divide
             _clippedVertex1PositionScreen /= _clippedVertex1PositionScreen.w;
             _clippedVertex2PositionScreen /= _clippedVertex2PositionScreen.w;
@@ -414,7 +403,8 @@ class Projector {
             _line.v1.positionScreen.setFrom(_clippedVertex1PositionScreen);
             _line.v2.positionScreen.setFrom(_clippedVertex2PositionScreen);
 
-            _line.z = Math.max(_clippedVertex1PositionScreen.z, _clippedVertex2PositionScreen.z);
+            _line.z = Math.max(_clippedVertex1PositionScreen.z,
+                _clippedVertex2PositionScreen.z);
 
             _line.material = object.material;
 
@@ -425,13 +415,13 @@ class Projector {
     });
 
     _renderData.sprites.forEach((o) {
-
       object = o.object;
 
       modelMatrix = object.matrixWorld;
 
       if (object is Particle) {
-        _vector4.setValues(modelMatrix[12], modelMatrix[13], modelMatrix[14], 1.0);
+        _vector4.setValues(
+            modelMatrix[12], modelMatrix[13], modelMatrix[14], 1.0);
         _viewProjectionMatrix.transform(_vector4);
 
         _vector4.z /= _vector4.w;
@@ -445,9 +435,15 @@ class Projector {
           _particle.rotation = object.rotation.z;
 
           _particle.scale.x = object.scale.x *
-              (_particle.x - (_vector4.x + camera.projectionMatrix[0]) / (_vector4.w + camera.projectionMatrix[12])).abs();
+              (_particle.x -
+                      (_vector4.x + camera.projectionMatrix[0]) /
+                          (_vector4.w + camera.projectionMatrix[12]))
+                  .abs();
           _particle.scale.y = object.scale.y *
-              (_particle.y - (_vector4.y + camera.projectionMatrix[5]) / (_vector4.w + camera.projectionMatrix[13])).abs();
+              (_particle.y -
+                      (_vector4.y + camera.projectionMatrix[5]) /
+                          (_vector4.w + camera.projectionMatrix[13]))
+                  .abs();
 
           _particle.material = object.material;
 
@@ -470,7 +466,9 @@ class Projector {
 
     RenderableObject object;
     if (_objectCount < _objectPool.length) {
-      object = (_objectPool[_objectCount] != null) ? _objectPool[_objectCount] : new RenderableObject();
+      object = (_objectPool[_objectCount] != null)
+          ? _objectPool[_objectCount]
+          : new RenderableObject();
     } else {
       object = new RenderableObject();
       _objectPool.add(object);
@@ -488,7 +486,9 @@ class Projector {
 
     // Vertex is already within List
     if (_vertexCount < _vertexPool.length) {
-      vertex = (_vertexPool[_vertexCount] != null) ? _vertexPool[_vertexCount] : new RenderableVertex();
+      vertex = (_vertexPool[_vertexCount] != null)
+          ? _vertexPool[_vertexCount]
+          : new RenderableVertex();
     } else {
       vertex = new RenderableVertex();
       _vertexPool.add(vertex);
@@ -504,7 +504,9 @@ class Projector {
     // RenderableFace3 face = _face3Pool[ _face3Count ] = _face3Pool[ _face3Count ] || new RenderableFace3();
     RenderableFace3 face;
     if (_face3Count < _face3Pool.length) {
-      face = (_face3Pool[_face3Count] != null) ? _face3Pool[_face3Count] : new RenderableFace3();
+      face = (_face3Pool[_face3Count] != null)
+          ? _face3Pool[_face3Count]
+          : new RenderableFace3();
     } else {
       face = new RenderableFace3();
       _face3Pool.add(face);
@@ -516,10 +518,11 @@ class Projector {
   }
 
   RenderableFace getNextFace4InPool() {
-
     RenderableFace4 face;
     if (_face4Count < _face4Pool.length) {
-      face = (_face4Pool[_face4Count] != null) ? _face4Pool[_face4Count] : new RenderableFace4();
+      face = (_face4Pool[_face4Count] != null)
+          ? _face4Pool[_face4Count]
+          : new RenderableFace4();
     } else {
       face = new RenderableFace4();
       _face4Pool.add(face);
@@ -535,7 +538,9 @@ class Projector {
     //RenderableLine line = _linePool[ _lineCount ] = _linePool[ _lineCount ] || new RenderableLine();
     RenderableLine line;
     if (_lineCount < _linePool.length) {
-      line = (_linePool[_lineCount] != null) ? _linePool[_lineCount] : new RenderableLine();
+      line = (_linePool[_lineCount] != null)
+          ? _linePool[_lineCount]
+          : new RenderableLine();
     } else {
       line = new RenderableLine();
       _linePool.add(line);
@@ -550,7 +555,9 @@ class Projector {
     //TODO: make sure I've interpreted this logic correctly
     RenderableParticle particle;
     if (_particleCount < _particlePool.length) {
-      particle = (_particlePool[_particleCount] != null) ? _particlePool[_particleCount] : new RenderableParticle();
+      particle = (_particlePool[_particleCount] != null)
+          ? _particlePool[_particleCount]
+          : new RenderableParticle();
     } else {
       particle = new RenderableParticle();
       _particlePool.add(particle);
@@ -623,9 +630,3 @@ class ProjectorRenderData {
         lights = [],
         elements = [];
 }
-
-
-
-
-
-

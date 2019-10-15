@@ -10,14 +10,11 @@ class LensFlare extends Object3D {
       : lensFlares = [],
         customUpdateCallback = null,
         super() {
-
     positionScreen = new Vector3.zero();
 
     // TODO
     //if( texture != undefined ) {
     //  add( texture, size, distance, blending, color );
     //}
-
   }
-
 }

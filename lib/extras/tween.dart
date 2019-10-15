@@ -34,13 +34,11 @@ add(Tween tween) => _tweens.add(tween);
 remove(Tween tween) => _tweens.removeAt(_tweens.indexOf(tween));
 
 bool update({num time}) {
-
   if (_tweens.isEmpty) {
     return false;
   }
 
-  var i = 0,
-      l = _tweens.length;
+  var i = 0, l = _tweens.length;
 
   if (time == null) {
     time = new DateTime.now().millisecondsSinceEpoch;
@@ -95,7 +93,8 @@ class Tween {
         object.z = value;
         break;
       default:
-        throw new Exception("The supplied property name ('$name') is not supported at this time.");
+        throw new Exception(
+            "The supplied property name ('$name') is not supported at this time.");
     }
   }
 
@@ -109,43 +108,37 @@ class Tween {
       case "z":
         return object.z;
       default:
-        throw new Exception("The supplied property name ('$name') is not supported at this time.");
+        throw new Exception(
+            "The supplied property name ('$name') is not supported at this time.");
     }
   }
 
   start({num time}) {
-
     add(this);
 
     _onStartCallbackFired = false;
 
-    _startTime = (time != null) ? time : new DateTime.now().millisecondsSinceEpoch;
+    _startTime =
+        (time != null) ? time : new DateTime.now().millisecondsSinceEpoch;
     _startTime += _delayTime;
 
     _valuesEnd.forEach((property, _) {
-
       var value = _getPropertyValue(property);
 
       // This prevents the engine from interpolating null values
       if (value != null) {
-
         // check if an Array was provided as property value
         if (_valuesEnd[property] is List && !_valuesEnd[property].isEmpty) {
-
           // create a local copy of the Array with the start value at the front
           _valuesEnd[property] = [value]..add(_valuesEnd[property]);
-
         }
 
         _valuesStart[property] = value;
       }
-
     });
-
   }
 
   stop() => remove(this);
-
 
   set delay(num amount) {
     _delayTime = amount;
@@ -176,7 +169,6 @@ class Tween {
   }
 
   bool update(num time) {
-
     if (time < _startTime) {
       return true;
     }
@@ -194,7 +186,6 @@ class Tween {
     var value = _easingFunction(elapsed);
 
     _valuesStart.forEach((property, start) {
-
       var end = _valuesEnd[property];
 
       if (end is List) {
@@ -209,7 +200,6 @@ class Tween {
     }
 
     if (elapsed == 1) {
-
       if (_onCompleteCallback != null) {
         _onCompleteCallback(object);
       }
@@ -217,11 +207,9 @@ class Tween {
       _chainedTweens.forEach((t) => t.start(time: time));
 
       return false;
-
     }
 
     return true;
-
   }
 }
 
@@ -242,7 +230,6 @@ class Interpolation {
     if (k > 1) return fn(v[m], v[m - 1], m - f);
 
     return fn(v[i], v[i + 1 > m ? m : i + 1], f - i);
-
   }
 }
 
@@ -276,4 +263,3 @@ class _EasingExponential {
 class _InterpolationUtils {
   static Linear(p0, p1, t) => (p1 - p0) * t + p0;
 }
-

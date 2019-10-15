@@ -10,8 +10,9 @@ part of three;
  */
 
 class ParametricGeometry extends Geometry {
-
-  ParametricGeometry(Vector3 func(num u, num v), int slices, int stacks, [bool useTris = false]) : super() {
+  ParametricGeometry(Vector3 func(num u, num v), int slices, int stacks,
+      [bool useTris = false])
+      : super() {
     var verts = this.vertices;
     var faces = this.faces;
     var uvs = this.faceVertexUvs[0];
@@ -23,16 +24,13 @@ class ParametricGeometry extends Geometry {
     var sliceCount = slices + 1;
 
     for (i = 0; i <= stacks; i++) {
-
       v = i / stacks;
 
       for (j = 0; j <= slices; j++) {
-
         u = j / slices;
 
         p = func(u, v);
         verts.add(p);
-
       }
     }
 
@@ -40,9 +38,7 @@ class ParametricGeometry extends Geometry {
     var uva, uvb, uvc, uvd;
 
     for (i = 0; i < stacks; i++) {
-
       for (j = 0; j < slices; j++) {
-
         a = i * sliceCount + j;
         b = i * sliceCount + j + 1;
         c = (i + 1) * sliceCount + j;
@@ -54,22 +50,16 @@ class ParametricGeometry extends Geometry {
         uvd = new UV((j + 1) / slices, (i + 1) / stacks);
 
         if (useTris) {
-
           faces.add(new Face3(a, b, c));
           faces.add(new Face3(b, d, c));
 
           uvs.add([uva, uvb, uvc]);
           uvs.add([uvb, uvd, uvc]);
-
         } else {
-
           faces.add(new Face4(a, b, d, c));
           uvs.add([uva, uvb, uvd, uvc]);
-
         }
-
       }
-
     }
 
     // console.log(this);
@@ -81,6 +71,5 @@ class ParametricGeometry extends Geometry {
     computeCentroids();
     computeFaceNormals();
     computeVertexNormals();
-
   }
 }

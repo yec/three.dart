@@ -17,10 +17,13 @@ class CubeGeometry extends Geometry {
 
   /**
    * [materialOrList] is a [Material] or a [List] of [Material]. */
-  CubeGeometry(double width, double height, double depth, [this.segmentsWidth = 1, this.segmentsHeight = 1,
-      this.segmentsDepth = 1, materialOrList, List sides])
+  CubeGeometry(double width, double height, double depth,
+      [this.segmentsWidth = 1,
+      this.segmentsHeight = 1,
+      this.segmentsDepth = 1,
+      materialOrList,
+      List sides])
       : super() {
-
     double width_half = width / 2,
         height_half = height / 2,
         depth_half = depth / 2;
@@ -44,7 +47,6 @@ class CubeGeometry extends Geometry {
       mny = 3;
       mpz = 4;
       mnz = 5;
-
     } else {
       materials = [];
     }
@@ -61,19 +63,25 @@ class CubeGeometry extends Geometry {
       }
     }
 
-    if (_sides.px) buildPlane('z', 'y', -1.0, -1.0, depth, height, width_half, mpx); // px
-    if (_sides.nx) buildPlane('z', 'y', 1.0, -1.0, depth, height, -width_half, mnx); // nx
-    if (_sides.py) buildPlane('x', 'z', 1.0, 1.0, width, depth, height_half, mpy); // py
-    if (_sides.ny) buildPlane('x', 'z', 1.0, -1.0, width, depth, -height_half, mny); // ny
-    if (_sides.pz) buildPlane('x', 'y', 1.0, -1.0, width, height, depth_half, mpz); // pz
-    if (_sides.nz) buildPlane('x', 'y', -1.0, -1.0, width, height, -depth_half, mnz); // nz
+    if (_sides.px)
+      buildPlane('z', 'y', -1.0, -1.0, depth, height, width_half, mpx); // px
+    if (_sides.nx)
+      buildPlane('z', 'y', 1.0, -1.0, depth, height, -width_half, mnx); // nx
+    if (_sides.py)
+      buildPlane('x', 'z', 1.0, 1.0, width, depth, height_half, mpy); // py
+    if (_sides.ny)
+      buildPlane('x', 'z', 1.0, -1.0, width, depth, -height_half, mny); // ny
+    if (_sides.pz)
+      buildPlane('x', 'y', 1.0, -1.0, width, height, depth_half, mpz); // pz
+    if (_sides.nz)
+      buildPlane('x', 'y', -1.0, -1.0, width, height, -depth_half, mnz); // nz
 
     computeCentroids();
     mergeVertices();
   }
 
-  void buildPlane(String u, String v, double udir, double vdir, double width, double height, double depth,
-      int material) {
+  void buildPlane(String u, String v, double udir, double vdir, double width,
+      double height, double depth, int material) {
     String w;
     int gridX = (segmentsWidth != null) ? segmentsWidth : 1;
     int gridY = (segmentsHeight != null) ? segmentsHeight : 1;
@@ -118,13 +126,15 @@ class CubeGeometry extends Geometry {
           vector.x = (ix * segment_width - width_half) * udir;
         } else if (u == 'y') {
           vector.y = (ix * segment_width - width_half) * udir;
-        } else if (u == 'z') vector.z = (ix * segment_width - width_half) * udir;
+        } else if (u == 'z')
+          vector.z = (ix * segment_width - width_half) * udir;
 
         if (v == 'x') {
           vector.x = (iy * segment_height - height_half) * vdir;
         } else if (v == 'y') {
           vector.y = (iy * segment_height - height_half) * vdir;
-        } else if (v == 'z') vector.z = (iy * segment_height - height_half) * vdir;
+        } else if (v == 'z')
+          vector.z = (iy * segment_height - height_half) * vdir;
 
         if (w == 'x') {
           vector.x = depth;
@@ -145,19 +155,20 @@ class CubeGeometry extends Geometry {
 
         Face4 face = new Face4(a + offset, b + offset, c + offset, d + offset);
         face.normal.setFrom(normal);
-        face.vertexNormals.addAll([normal.clone(), normal.clone(), normal.clone(), normal.clone()]);
+        face.vertexNormals.addAll(
+            [normal.clone(), normal.clone(), normal.clone(), normal.clone()]);
         face.materialIndex = material;
 
         faces.add(face);
 
         List faceVertexUV = faceVertexUvs[0];
         List newUVs = new List();
-        newUVs.addAll(
-            [
-                new UV(ix / gridX, 1 - iy / gridY),
-                new UV(ix / gridX, 1 - (iy + 1) / gridY),
-                new UV((ix + 1) / gridX, 1 - (iy + 1) / gridY),
-                new UV((ix + 1) / gridX, 1 - iy / gridY)]);
+        newUVs.addAll([
+          new UV(ix / gridX, 1 - iy / gridY),
+          new UV(ix / gridX, 1 - (iy + 1) / gridY),
+          new UV((ix + 1) / gridX, 1 - (iy + 1) / gridY),
+          new UV((ix + 1) / gridX, 1 - iy / gridY)
+        ]);
         faceVertexUV.add(newUVs);
       }
     }
@@ -168,8 +179,11 @@ class CubeGeometry extends Geometry {
 class CubeGeomSides {
   bool px, nx, py, ny, pz, nz;
 
-  CubeGeomSides({this.px: true, this.nx: true, this.py: true, this.ny: true, this.pz: true, this.nz: true});
+  CubeGeomSides(
+      {this.px: true,
+      this.nx: true,
+      this.py: true,
+      this.ny: true,
+      this.pz: true,
+      this.nz: true});
 }
-
-
-

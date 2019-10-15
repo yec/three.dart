@@ -11,6 +11,7 @@ part of three;
 class Line extends Object3D {
   /// Material for the line.
   Material material;
+
   /// Possible values: LineStrip or LinePieces.
   ///
   /// LineStrip will draw a series of segments connecting each point (first
@@ -22,9 +23,9 @@ class Line extends Object3D {
   int type;
 
   Line(Geometry geometry, [this.material, this.type = LineStrip]) : super() {
-
     if (material == null) {
-      material = new LineBasicMaterial(color: new Math.Random().nextInt(0xffffff));
+      material =
+          new LineBasicMaterial(color: new Math.Random().nextInt(0xffffff));
     }
 
     if (geometry != null) {

@@ -5,21 +5,23 @@ class CylinderGeometry extends Geometry {
   int segmentsRadius, segmentsHeight;
   bool openEnded;
 
-  CylinderGeometry([this.radiusTop = 20.0, this.radiusBottom = 20.0, this.height = 100.0, this.segmentsRadius = 8,
-      this.segmentsHeight = 1, this.openEnded = false])
+  CylinderGeometry(
+      [this.radiusTop = 20.0,
+      this.radiusBottom = 20.0,
+      this.height = 100.0,
+      this.segmentsRadius = 8,
+      this.segmentsHeight = 1,
+      this.openEnded = false])
       : super() {
-
     double heightHalf = height / 2;
     int segmentsX = segmentsRadius;
     int segmentsY = segmentsHeight;
 
     int x, y;
 
-    List vertices = [],
-        uvs = [];
+    List vertices = [], uvs = [];
 
     for (y = 0; y <= segmentsY; y++) {
-
       var verticesRow = [];
       var uvsRow = [];
 
@@ -27,7 +29,6 @@ class CylinderGeometry extends Geometry {
       var radius = v * (radiusBottom - radiusTop) + radiusTop;
 
       for (x = 0; x <= segmentsX; x++) {
-
         double u = x / segmentsX;
 
         var vertex = new Vector3.zero();
@@ -39,29 +40,22 @@ class CylinderGeometry extends Geometry {
 
         verticesRow.add(this.vertices.length - 1);
         uvsRow.add(new UV(u, 1 - v));
-
       }
 
       vertices.add(verticesRow);
       uvs.add(uvsRow);
-
     }
 
     var tanTheta = (radiusBottom - radiusTop) / height;
     var na, nb;
 
     for (x = 0; x < segmentsX; x++) {
-
       if (radiusTop != 0) {
-
         na = this.vertices[vertices[0][x]].clone();
         nb = this.vertices[vertices[0][x + 1]].clone();
-
       } else {
-
         na = this.vertices[vertices[1][x]].clone();
         nb = this.vertices[vertices[1][x + 1]].clone();
-
       }
 
       na[1] = Math.sqrt(na.x * na.x + na.z * na.z) * tanTheta;
@@ -70,7 +64,6 @@ class CylinderGeometry extends Geometry {
       na.normalize();
 
       for (y = 0; y < segmentsY; y++) {
-
         var v1 = vertices[y][x];
         var v2 = vertices[y + 1][x];
         var v3 = vertices[y + 1][x + 1];
@@ -88,19 +81,15 @@ class CylinderGeometry extends Geometry {
 
         this.faces.add(new Face4(v1, v2, v3, v4, [n1, n2, n3, n4]));
         this.faceVertexUvs[0].add([uv1, uv2, uv3, uv4]);
-
       }
-
     }
 
     // top cap
 
     if (!openEnded && radiusTop > 0) {
-
       this.vertices.add(new Vector3(0.0, heightHalf, 0.0));
 
       for (x = 0; x < segmentsX; x++) {
-
         var v1 = vertices[0][x];
         var v2 = vertices[0][x + 1];
         var v3 = this.vertices.length - 1;
@@ -115,19 +104,15 @@ class CylinderGeometry extends Geometry {
 
         this.faces.add(new Face3(v1, v2, v3, [n1, n2, n3]));
         this.faceVertexUvs[0].add([uv1, uv2, uv3]);
-
       }
-
     }
 
     // bottom cap
 
     if (!openEnded && radiusBottom > 0) {
-
       this.vertices.add(new Vector3(0.0, -heightHalf, 0.0));
 
       for (x = 0; x < segmentsX; x++) {
-
         var v1 = vertices[y][x + 1];
         var v2 = vertices[y][x];
         var v3 = this.vertices.length - 1;
@@ -142,9 +127,7 @@ class CylinderGeometry extends Geometry {
 
         this.faces.add(new Face3(v1, v2, v3, [n1, n2, n3]));
         this.faceVertexUvs[0].add([uv1, uv2, uv3]);
-
       }
-
     }
 
     this.computeCentroids();

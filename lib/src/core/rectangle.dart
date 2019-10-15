@@ -74,18 +74,26 @@ class Rectangle {
 
       resize();
     } else {
-      _left = x1 < x2 ?
-          (x1 < x3 ? (x1 < _left ? x1 : _left) : (x3 < _left ? x3 : _left)) :
-          (x2 < x3 ? (x2 < _left ? x2 : _left) : (x3 < _left ? x3 : _left));
-      _top = y1 < y2 ?
-          (y1 < y3 ? (y1 < _top ? y1 : _top) : (y3 < _top ? y3 : _top)) :
-          (y2 < y3 ? (y2 < _top ? y2 : _top) : (y3 < _top ? y3 : _top));
-      _right = x1 > x2 ?
-          (x1 > x3 ? (x1 > _right ? x1 : _right) : (x3 > _right ? x3 : _right)) :
-          (x2 > x3 ? (x2 > _right ? x2 : _right) : (x3 > _right ? x3 : _right));
-      _bottom = y1 > y2 ?
-          (y1 > y3 ? (y1 > _bottom ? y1 : _bottom) : (y3 > _bottom ? y3 : _bottom)) :
-          (y2 > y3 ? (y2 > _bottom ? y2 : _bottom) : (y3 > _bottom ? y3 : _bottom));
+      _left = x1 < x2
+          ? (x1 < x3 ? (x1 < _left ? x1 : _left) : (x3 < _left ? x3 : _left))
+          : (x2 < x3 ? (x2 < _left ? x2 : _left) : (x3 < _left ? x3 : _left));
+      _top = y1 < y2
+          ? (y1 < y3 ? (y1 < _top ? y1 : _top) : (y3 < _top ? y3 : _top))
+          : (y2 < y3 ? (y2 < _top ? y2 : _top) : (y3 < _top ? y3 : _top));
+      _right = x1 > x2
+          ? (x1 > x3
+              ? (x1 > _right ? x1 : _right)
+              : (x3 > _right ? x3 : _right))
+          : (x2 > x3
+              ? (x2 > _right ? x2 : _right)
+              : (x3 > _right ? x3 : _right));
+      _bottom = y1 > y2
+          ? (y1 > y3
+              ? (y1 > _bottom ? y1 : _bottom)
+              : (y3 > _bottom ? y3 : _bottom))
+          : (y2 > y3
+              ? (y2 > _bottom ? y2 : _bottom)
+              : (y3 > _bottom ? y3 : _bottom));
 
       resize();
     }
@@ -101,10 +109,17 @@ class Rectangle {
 
       resize();
     } else {
-      _left = _left < r.getLeft() ? _left : r.getLeft(); // Math.min(_left, r.getLeft() );
-      _top = _top < r.getTop() ? _top : r.getTop(); // Math.min(_top, r.getTop() );
-      _right = _right > r.getRight() ? _right : r.getRight(); // Math.max(_right, r.getRight() );
-      _bottom = _bottom > r.getBottom() ? _bottom : r.getBottom(); // Math.max(_bottom, r.getBottom() );
+      _left = _left < r.getLeft()
+          ? _left
+          : r.getLeft(); // Math.min(_left, r.getLeft() );
+      _top =
+          _top < r.getTop() ? _top : r.getTop(); // Math.min(_top, r.getTop() );
+      _right = _right > r.getRight()
+          ? _right
+          : r.getRight(); // Math.max(_right, r.getRight() );
+      _bottom = _bottom > r.getBottom()
+          ? _bottom
+          : r.getBottom(); // Math.max(_bottom, r.getBottom() );
 
       resize();
     }
@@ -120,10 +135,17 @@ class Rectangle {
   }
 
   minSelf(Rectangle r) {
-    _left = _left > r.getLeft() ? _left : r.getLeft(); // Math.max( _left, r.getLeft() );
-    _top = _top > r.getTop() ? _top : r.getTop(); // Math.max( _top, r.getTop() );
-    _right = _right < r.getRight() ? _right : r.getRight(); // Math.min( _right, r.getRight() );
-    _bottom = _bottom < r.getBottom() ? _bottom : r.getBottom(); // Math.min( _bottom, r.getBottom() );
+    _left = _left > r.getLeft()
+        ? _left
+        : r.getLeft(); // Math.max( _left, r.getLeft() );
+    _top =
+        _top > r.getTop() ? _top : r.getTop(); // Math.max( _top, r.getTop() );
+    _right = _right < r.getRight()
+        ? _right
+        : r.getRight(); // Math.min( _right, r.getRight() );
+    _bottom = _bottom < r.getBottom()
+        ? _bottom
+        : r.getBottom(); // Math.min( _bottom, r.getBottom() );
 
     resize();
   }
@@ -151,5 +173,4 @@ class Rectangle {
   }
 
   bool get isEmpty => _isEmpty;
-
 }

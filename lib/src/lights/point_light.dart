@@ -10,8 +10,10 @@ part of three;
 /// Affects objects using MeshLambertMaterial or MeshPhongMaterial.
 class PointLight extends Light {
   Vector3 _position;
+
   /// Light's intensity.
   double intensity;
+
   /// If non-zero, light will attenuate linearly from maximum intensity at light position down to zero at distance.
   double distance;
 

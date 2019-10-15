@@ -6,11 +6,11 @@ class EllipseCurve extends Curve2D {
   num aStartAngle, aEndAngle;
   bool aClockwise;
 
-  EllipseCurve(this.aX, this.aY, this.xRadius, this.yRadius, this.aStartAngle, this.aEndAngle, this.aClockwise)
+  EllipseCurve(this.aX, this.aY, this.xRadius, this.yRadius, this.aStartAngle,
+      this.aEndAngle, this.aClockwise)
       : super();
 
   Vector2 getPoint(t) {
-
     var deltaAngle = aEndAngle - aStartAngle;
 
     if (!aClockwise) {
@@ -23,6 +23,5 @@ class EllipseCurve extends Curve2D {
     var ty = aY + yRadius * Math.sin(angle);
 
     return new Vector2(tx, ty);
-
   }
 }

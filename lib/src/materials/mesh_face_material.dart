@@ -18,5 +18,4 @@ class MeshFaceMaterial extends Material {
 
   /// Creates a MeshFaceMaterial with the correct materials.
   MeshFaceMaterial([this.materials]);
-
 }

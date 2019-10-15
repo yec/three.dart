@@ -15,7 +15,6 @@ typedef void LoadProgressCallback(data);
 typedef void LoadedCallback(Geometry geometry);
 
 class Loader {
-
   Element statusDomElement;
 
   LoadStartCallback onLoadStart;
@@ -24,7 +23,8 @@ class Loader {
 
   String crossOrigin = 'anonymous';
 
-  Loader([bool showStatus = false]) : statusDomElement = showStatus ? Loader.addStatusElement() : null {
+  Loader([bool showStatus = false])
+      : statusDomElement = showStatus ? Loader.addStatusElement() : null {
     onLoadStart = () {};
     onLoadProgress = (data) {};
     onLoadComplete = () {};
@@ -33,16 +33,16 @@ class Loader {
   static addStatusElement() {
     var e = new Element.tag('div');
     e.style
-        ..position = "absolute"
-        ..right = "0px"
-        ..top = "0px"
-        ..fontSize = "0.8em"
-        ..textAlign = "left"
-        ..background = "rgba(0,0,0,0.25)"
-        ..color = "#fff"
-        ..width = "120px"
-        ..padding = "0.5em 0.5em 0.5em 0.5em"
-        ..zIndex = "1000";
+      ..position = "absolute"
+      ..right = "0px"
+      ..top = "0px"
+      ..fontSize = "0.8em"
+      ..textAlign = "left"
+      ..background = "rgba(0,0,0,0.25)"
+      ..color = "#fff"
+      ..width = "120px"
+      ..padding = "0.5em 0.5em 0.5em 0.5em"
+      ..zIndex = "1000";
 
     e.innerHtml = "Loading ...";
 
@@ -50,56 +50,42 @@ class Loader {
   }
 
   _updateProgress(progress) {
-
     var message = "Loaded ";
 
     if (progress.total) {
-
-      message = "$message${ ( 100 * progress.loaded / progress.total ).toStringAsFixed(0)}%";
-
-
+      message =
+          "$message${(100 * progress.loaded / progress.total).toStringAsFixed(0)}%";
     } else {
-
-      message = "$message${ ( progress.loaded / 1000 ).toFixed(2)} KB";
-
+      message = "$message${(progress.loaded / 1000).toFixed(2)} KB";
     }
 
     statusDomElement.innerHtml = message;
-
   }
 
   static _extractUrlBase(url) {
     var parts = url.split('/');
     parts.removeLast();
-    return "${( parts.length < 1 ? '.' : parts.join('/' ) )}/";
+    return "${(parts.length < 1 ? '.' : parts.join('/'))}/";
   }
 
   _initMaterials(Geometry geometry, List materials, String texturePath) {
-
     geometry.materials = [];
 
     for (var i = 0; i < materials.length; ++i) {
       geometry.materials.add(_createMaterial(materials[i], texturePath));
     }
-
   }
 
   _hasNormals(Geometry geometry) {
-
-    var m,
-        i,
-        il = geometry.materials.length;
+    var m, i, il = geometry.materials.length;
 
     for (i = 0; i < il; i++) {
-
       m = geometry.materials[i];
 
       if (m is ShaderMaterial) return true;
-
     }
 
     return false;
-
   }
 
   _is_pow2(n) {
@@ -113,75 +99,57 @@ class Loader {
   }
 
   _load_image(where, url) {
-
     var image = new ImageElement();
 
     image.onLoad.listen((Event evt) {
-
       if (!_is_pow2(image.width) || !_is_pow2(image.height)) {
-
         var width = _nearest_pow2(image.width);
         var height = _nearest_pow2(image.height);
 
         where.image.width = width;
         where.image.height = height;
         where.image.getContext('2d').drawImage(this, 0, 0, width, height);
-
       } else {
-
         where.image = this;
-
       }
 
       where.needsUpdate = true;
-
     });
 
     image.crossOrigin = crossOrigin;
     image.src = url;
-
   }
 
   _create_texture(texturePath, sourceFile, repeat, offset, wrap, anisotropy) {
-
     var isCompressed = sourceFile.toLowerCase().endsWith(".dds");
     var fullPath = texturePath + "/" + sourceFile;
     var result;
     var texture;
 
     if (isCompressed) {
-
       texture = ImageUtils.loadCompressedTexture(fullPath);
       result = texture;
-
     } else {
-
       var texture = new Element.tag('canvas');
 
       result = new Texture(texture);
-
     }
 
     // TODO(nelsonsilva) - do whe need this?
     // result.sourceFile = sourceFile;
 
     if (repeat != null) {
-
       result.repeat.setValues(repeat[0], repeat[1]);
 
       if (repeat[0] != 1) result.wrapS = RepeatWrapping;
       if (repeat[1] != 1) result.wrapT = RepeatWrapping;
-
     }
 
     if (offset != null) {
-
       result.offset.setValues(offset[0], offset[1]);
-
     }
 
     if (wrap != null) {
-
       var wrapMap = {
         "repeat": RepeatWrapping,
         "mirror": MirroredRepeatWrapping
@@ -193,27 +161,23 @@ class Loader {
       if (wrapMap.containsKey(wrap[1])) {
         result.wrapT = wrapMap[wrap[1]];
       }
-
     }
 
     if (anisotropy != null) {
-
       result.anisotropy = anisotropy;
-
     }
 
     if (!isCompressed) {
-
       _load_image(result, fullPath);
-
     }
 
     return result;
-
   }
 
-  _rgb2hex(rgb) => ((rgb[0] * 255).toInt() << 16) + ((rgb[1] * 255).toInt() << 8) + rgb[2].toInt() * 255;
-
+  _rgb2hex(rgb) =>
+      ((rgb[0] * 255).toInt() << 16) +
+      ((rgb[1] * 255).toInt() << 8) +
+      rgb[2].toInt() * 255;
 
   _createMaterial(Map m, String texturePath) {
     Material material;
@@ -246,7 +210,6 @@ class Loader {
     // parameters from model file
 
     if (m.containsKey("shading")) {
-
       var shading = m["shading"].toLowerCase();
 
       if (shading == "phong") {
@@ -254,10 +217,10 @@ class Loader {
       } else if (shading == "basic") {
         mtype = "MeshBasicMaterial";
       }
-
     }
 
-    if (m.containsKey("blending")) { // TODO - && THREE[ m.blending ] != undefined ) {
+    if (m.containsKey("blending")) {
+      // TODO - && THREE[ m.blending ] != undefined ) {
       // TODO - Check if we're missing some blend modes or come up with a better way to make this work
       var blendmodes = {
         "NoBlending": NoBlending,
@@ -270,7 +233,8 @@ class Loader {
       blending = blendmodes[m["blending"]];
     }
 
-    if (m.containsKey("transparent") || (m.containsKey("opacity") && m["opacity"] < 1.0)) {
+    if (m.containsKey("transparent") ||
+        (m.containsKey("opacity") && m["opacity"] < 1.0)) {
       transparent = m["transparent"];
     }
 
@@ -355,13 +319,8 @@ class Loader {
     }
 
     if (m.containsKey("mapBump") && (texturePath != null)) {
-      bumpMap = _create_texture(
-          texturePath,
-          m["mapBump"],
-          m["mapBumpRepeat"],
-          m["mapBumpOffset"],
-          m["mapBumpWrap"],
-          m["mapBumpAnisotropy"]);
+      bumpMap = _create_texture(texturePath, m["mapBump"], m["mapBumpRepeat"],
+          m["mapBumpOffset"], m["mapBumpWrap"], m["mapBumpAnisotropy"]);
     }
 
     if (m.containsKey("mapNormal") && (texturePath != null)) {
@@ -393,7 +352,6 @@ class Loader {
     // special case for normal mapped material
 
     if (m.containsKey("mapNormal")) {
-
       // var shader = ShaderUtils.lib["normal"];
       // var uniforms = UniformsUtils.clone(shader.uniforms);
 
@@ -437,23 +395,21 @@ class Loader {
       //fog: true
       // );
 
-          material = new MeshBasicMaterial(
-              map: map,
-              color: color,
-              lightMap: lightMap,
-              specularMap: specularMap,
-              vertexColors: vertexColors,
-              wireframe: wireframe,
-              side: FrontSide,
-              opacity: opacity,
-              transparent: transparent,
-              blending: blending,
-              depthTest: depthTest,
-              depthWrite: depthWrite,
-              visible: visible);
-
+      material = new MeshBasicMaterial(
+          map: map,
+          color: color,
+          lightMap: lightMap,
+          specularMap: specularMap,
+          vertexColors: vertexColors,
+          wireframe: wireframe,
+          side: FrontSide,
+          opacity: opacity,
+          transparent: transparent,
+          blending: blending,
+          depthTest: depthTest,
+          depthWrite: depthWrite,
+          visible: visible);
     } else {
-
       switch (mtype) {
         case "MeshLambertMaterial":
           material = new MeshLambertMaterial(
@@ -514,8 +470,6 @@ class Loader {
         default:
           print("Unknow material type!");
       }
-
-
     }
 
     if (m.containsKey("DbgName")) {
@@ -525,4 +479,3 @@ class Loader {
     return material;
   }
 }
-

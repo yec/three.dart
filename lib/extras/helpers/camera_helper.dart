@@ -10,7 +10,6 @@ part of three;
  */
 
 class CameraHelper extends Line {
-
   static Projector __projector = new Projector();
   static Vector3 __v = new Vector3.zero();
   static Camera __c = new Camera(0.0, 0.0);
@@ -24,8 +23,10 @@ class CameraHelper extends Line {
   CameraHelper(this.camera)
       : matrixAutoUpdate = false,
         pointMap = {},
-        super(new Geometry(), new LineBasicMaterial(color: 0xffffff, vertexColors: FaceColors), LinePieces) {
-
+        super(
+            new Geometry(),
+            new LineBasicMaterial(color: 0xffffff, vertexColors: FaceColors),
+            LinePieces) {
     matrixWorld = camera.matrixWorld;
     // colors
 
@@ -86,14 +87,11 @@ class CameraHelper extends Line {
   }
 
   void addLine(String a, String b, int hex) {
-
     addPoint(a, hex);
     addPoint(b, hex);
-
   }
 
   void addPoint(String id, int hex) {
-
     geometry.vertices.add(new Vector3.zero());
     geometry.colors.add(new Color(hex));
 
@@ -102,33 +100,24 @@ class CameraHelper extends Line {
     }
 
     pointMap[id].add(geometry.vertices.length - 1);
-
   }
 
   void setPoint(String point, double x, double y, double z) {
-
     __v.setValues(x, y, z);
     __projector.unprojectVector(__v, __c);
 
     var points = pointMap[point];
 
     if (points != null) {
-
       var il = points.length;
       for (var i = 0; i < il; i++) {
-
         geometry.vertices[points[i]].setFrom(__v);
-
       }
-
     }
-
   }
 
   void update() {
-
-    var w = 1.0,
-        h = 1.0;
+    var w = 1.0, h = 1.0;
 
     // we need just camera projection matrix
     // world matrix must be identity
@@ -172,12 +161,6 @@ class CameraHelper extends Line {
     setPoint("cn3", 0.0, -h, -1.0);
     setPoint("cn4", 0.0, h, -1.0);
 
-
-
     geometry["verticesNeedUpdate"] = true;
-
   }
-
 }
-
-

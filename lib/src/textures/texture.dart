@@ -29,6 +29,7 @@ class ImageList extends Object with ListMixin<ImageElement> {
   void operator []=(int index, ImageElement img) {
     _images[index] = img;
   }
+
   int get length => _images.length;
   void set length(int size) {
     _images.length = size;
@@ -58,9 +59,16 @@ class Texture {
   var __webglTexture;
 
   //TODO: resolve dynamic vars, find out what UVMapping is!
-  Texture([this.image, this.mapping = null, this.wrapS = ClampToEdgeWrapping, this.wrapT = ClampToEdgeWrapping,
-      this.magFilter = LinearFilter, this.minFilter = LinearMipMapLinearFilter, this.format = RGBAFormat, this.type =
-      UnsignedByteType, this.anisotropy = 1]) {
+  Texture(
+      [this.image,
+      this.mapping = null,
+      this.wrapS = ClampToEdgeWrapping,
+      this.wrapT = ClampToEdgeWrapping,
+      this.magFilter = LinearFilter,
+      this.minFilter = LinearMipMapLinearFilter,
+      this.format = RGBAFormat,
+      this.type = UnsignedByteType,
+      this.anisotropy = 1]) {
     id = TextureCount++;
 
     this.mapping = mapping != null ? mapping : new UVMapping();
@@ -77,7 +85,8 @@ class Texture {
   }
 
   Texture clone() {
-    Texture clonedTexture = new Texture(image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
+    Texture clonedTexture = new Texture(image, mapping, wrapS, wrapT, magFilter,
+        minFilter, format, type, anisotropy);
 
     clonedTexture.mipmaps = new List.from(mipmaps);
     clonedTexture.offset.setFrom(offset);

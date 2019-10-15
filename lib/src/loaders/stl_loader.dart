@@ -29,11 +29,11 @@ part of three;
  */
 
 class STLLoader extends Loader {
-
   STLLoader() : super();
 
   Future<Geometry> load(url) =>
-      HttpRequest.request(url, responseType: "arraybuffer").then((req) => _parse(req.response));
+      HttpRequest.request(url, responseType: "arraybuffer")
+          .then((req) => _parse(req.response));
 
   Geometry _parse(Object resp) {
     Uint8List data;
@@ -42,7 +42,9 @@ class STLLoader extends Loader {
     } else {
       data = (resp as Uint8List);
     }
-    var geom = isBinary(data) ? parseBinary(data.buffer) : parseASCII(new String.fromCharCodes(data));
+    var geom = isBinary(data)
+        ? parseBinary(data.buffer)
+        : parseASCII(new String.fromCharCodes(data));
     return geom;
   }
 
@@ -51,7 +53,6 @@ class STLLoader extends Loader {
    * UINT32 – Number of triangles
    */
   bool isBinary(Uint8List bytes) {
-
     var data = new ByteData.view(bytes.buffer);
 
     var face_size = (32 / 8 * 3) + ((32 / 8 * 3) * 3) + (16 / 8);
@@ -59,7 +60,6 @@ class STLLoader extends Loader {
     var expect = 80 + (32 / 8) + (n_faces * face_size);
     var flag = (expect == data.lengthInBytes);
     return flag;
-
   }
 
   /**
@@ -72,7 +72,6 @@ class STLLoader extends Loader {
    * end
    */
   Geometry parseBinary(ByteBuffer bytes) {
-
     var data = new ByteData.view(bytes),
         n_faces = data.getUint32(80, Endian.little),
         geometry = new Geometry(),
@@ -89,27 +88,23 @@ class STLLoader extends Loader {
 
       for (var i = 1; i <= 3; i++) {
         var vertexstart = start + i * 12;
-        geometry.vertices.add(
-            new Vector3(
-                data.getFloat32(vertexstart, Endian.little),
-                data.getFloat32(vertexstart + 4, Endian.little),
-                data.getFloat32(vertexstart + 8, Endian.little)));
+        geometry.vertices.add(new Vector3(
+            data.getFloat32(vertexstart, Endian.little),
+            data.getFloat32(vertexstart + 4, Endian.little),
+            data.getFloat32(vertexstart + 8, Endian.little)));
       }
 
       var length = geometry.vertices.length;
       geometry.faces.add(new Face3(length - 3, length - 2, length - 1, normal));
-
     }
 
     geometry.computeCentroids();
     geometry.computeBoundingSphere();
 
     return geometry;
-
   }
 
   Geometry parseASCII(data) {
-
     var geometry = new Geometry();
 
     var patternFace = new RegExp(r"facet([\s\S]*?)endfacet");
@@ -121,7 +116,6 @@ class STLLoader extends Loader {
     var faceMatches = patternFace.allMatches(data);
 
     faceMatches.forEach((faceMatch) {
-
       var text = faceMatch.group(0);
 
       var normalMatch = patternNormal.allMatches(text).first;
@@ -134,16 +128,14 @@ class STLLoader extends Loader {
       var vertexMatches = patternVertex.allMatches(text);
 
       vertexMatches.forEach((vertexMatch) {
-        geometry.vertices.add(
-            new Vector3(
-                double.parse(vertexMatch.group(1)),
-                double.parse(vertexMatch.group(3)),
-                double.parse(vertexMatch.group(5))));
+        geometry.vertices.add(new Vector3(
+            double.parse(vertexMatch.group(1)),
+            double.parse(vertexMatch.group(3)),
+            double.parse(vertexMatch.group(5))));
       });
 
       var length = geometry.vertices.length;
       geometry.faces.add(new Face3(length - 3, length - 2, length - 1, normal));
-
     });
 
     geometry.computeCentroids();
@@ -151,6 +143,5 @@ class STLLoader extends Loader {
     geometry.computeBoundingSphere();
 
     return geometry;
-
   }
 }

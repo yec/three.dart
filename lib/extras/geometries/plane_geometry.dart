@@ -9,8 +9,9 @@ part of three;
  */
 
 class PlaneGeometry extends Geometry {
-
-  PlaneGeometry(double width, double height, [int segmentsWidth, int segmentsHeight]) : super() {
+  PlaneGeometry(double width, double height,
+      [int segmentsWidth, int segmentsHeight])
+      : super() {
     //THREE.Geometry.call( this );
 
     double width_half = width / 2;
@@ -41,18 +42,19 @@ class PlaneGeometry extends Geometry {
 
         Face4 face = new Face4(a, b, c, d);
         face.normal = normal.clone();
-        face.vertexNormals.addAll([normal.clone(), normal.clone(), normal.clone(), normal.clone()]);
+        face.vertexNormals.addAll(
+            [normal.clone(), normal.clone(), normal.clone(), normal.clone()]);
 
         faces.add(face);
 
         List faceVertexUV = faceVertexUvs[0];
         List newUVs = new List();
-        newUVs.addAll(
-            [
-                new UV(ix / gridX, iy / gridY),
-                new UV(ix / gridX, (iy + 1) / gridY),
-                new UV((ix + 1) / gridX, (iy + 1) / gridY),
-                new UV((ix + 1) / gridX, iy / gridY)]);
+        newUVs.addAll([
+          new UV(ix / gridX, iy / gridY),
+          new UV(ix / gridX, (iy + 1) / gridY),
+          new UV((ix + 1) / gridX, (iy + 1) / gridY),
+          new UV((ix + 1) / gridX, iy / gridY)
+        ]);
         faceVertexUV.add(newUVs);
       }
     }

@@ -11,7 +11,6 @@ part of three;
  **************************************************************/
 
 class CurvePath extends Curve {
-
   List curves;
   List _bends;
 
@@ -43,7 +42,6 @@ class CurvePath extends Curve {
     if (!startPoint.equals(endPoint)) {
       this.curves.add(new LineCurve(endPoint, startPoint));
     }
-
   }
 
   // To get accurate point with reference to
@@ -55,38 +53,30 @@ class CurvePath extends Curve {
   // 3. Get t for the curve
   // 4. Return curve.getPointAt(t')
   getPoint(double t) {
-
     var d = t * this.length;
     var curveLengths = this.getCurveLengths();
-    var i = 0,
-        diff;
+    var i = 0, diff;
     Curve curve;
 
     // To think about boundaries points.
 
     while (i < curveLengths.length) {
-
       if (curveLengths[i] >= d) {
-
         diff = curveLengths[i] - d;
         curve = this.curves[i];
 
         var u = 1 - diff / curve.length;
 
         return curve.getPointAt(u);
-
       }
 
       i++;
-
     }
 
     return null;
 
     // loop where sum != 0, sum > d , sum+1 <d
-
   }
-
 
   // We cannot use the default THREE.Curve getPoint() with getLength() because in
   // THREE.Curve, getLength() depends on getPoint() but in THREE.CurvePath
@@ -97,40 +87,31 @@ class CurvePath extends Curve {
   // We cannot overwrite getLengths() because UtoT mapping uses it.
 
   List<num> getCurveLengths() {
-
     // We use cache values if curves and cache array are same length
 
-    if (this.cacheLengths != null && this.cacheLengths.length == this.curves.length) {
-
+    if (this.cacheLengths != null &&
+        this.cacheLengths.length == this.curves.length) {
       return this.cacheLengths;
-
     }
 
     // Get length of subsurve
     // Push sums into cached array
 
-    var lengths = [],
-        sums = 0;
-    var i,
-        il = this.curves.length;
+    var lengths = [], sums = 0;
+    var i, il = this.curves.length;
 
     for (i = 0; i < il; i++) {
-
       sums += this.curves[i].length;
       lengths.add(sums);
-
     }
 
     this.cacheLengths = lengths;
 
     return lengths;
-
   }
-
 
   // Returns min and max coordinates, as well as centroid
   getBoundingBox() {
-
     var points = getPoints();
 
     var maxX, maxY, maxZ;
@@ -147,7 +128,6 @@ class CurvePath extends Curve {
 
     int il = points.length;
     for (i = 0; i < il; i++) {
-
       p = points[i];
 
       if (p.x > maxX) {
@@ -168,26 +148,19 @@ class CurvePath extends Curve {
       } else {
         (sum as Vector2).add(p);
       }
-
-
-
     }
 
     var ret = {
-
       "minX": minX,
       "minY": minY,
       "maxX": maxX,
       "maxY": maxY,
       "centroid": (sum as dynamic).scale(1.0 / il)
-
     };
 
     if (v3) {
-
       ret["maxZ"] = maxZ;
       ret["minZ"] = minZ;
-
     }
 
     return ret;
@@ -210,7 +183,6 @@ class CurvePath extends Curve {
   }
 
   createGeometry(points) {
-
     var geometry = new Geometry();
 
     for (var i = 0; i < points.length; i++) {
@@ -221,7 +193,6 @@ class CurvePath extends Curve {
     return geometry;
   }
 
-
   /**************************************************************
    *  Bend / Wrap Helper Methods
    **************************************************************/
@@ -231,7 +202,6 @@ class CurvePath extends Curve {
   addWrapPath(bendpath) => _bends.add(bendpath);
 
   getTransformedPoints(segments, {List bends: null}) {
-
     var oldPts = this.getPoints(segments); // getPoints getSpacedPoints
     var i, il;
 
@@ -244,11 +214,9 @@ class CurvePath extends Curve {
     }
 
     return oldPts;
-
   }
 
   getTransformedSpacedPoints([num segments, List bends = null]) {
-
     var oldPts = getSpacedPoints(segments);
 
     var i, il;
@@ -268,13 +236,11 @@ class CurvePath extends Curve {
   // Read http://www.planetclegg.com/projects/WarpingTextToSplines.html
 
   getWrapPoints(oldPts, path) {
-
     var bounds = getBoundingBox();
 
     var i, il, p, oldX, oldY, xNorm;
 
     for (i = 0; i < oldPts.length; i++) {
-
       p = oldPts[i];
 
       oldX = p.x;
@@ -293,10 +259,8 @@ class CurvePath extends Curve {
 
       p.x = pathPt.x + normal.x;
       p.y = pathPt.y + normal.y;
-
     }
 
     return oldPts;
-
   }
 }

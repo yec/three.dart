@@ -3,7 +3,8 @@ library SceneUtils;
 import 'package:vector_math/vector_math.dart';
 import "package:three/three.dart";
 
-showHierarchy(root, visible) => traverseHierarchy(root, (node) => node.visible = visible);
+showHierarchy(root, visible) =>
+    traverseHierarchy(root, (node) => node.visible = visible);
 
 void traverseHierarchy(Object3D root, Function callback(Object3D node)) {
   root.children.forEach((n) {
@@ -12,7 +13,8 @@ void traverseHierarchy(Object3D root, Function callback(Object3D node)) {
   });
 }
 
-Object3D createMultiMaterialObject(Geometry geometry, List<Material> materials) {
+Object3D createMultiMaterialObject(
+    Geometry geometry, List<Material> materials) {
   var group = new Object3D();
 
   materials.forEach((material) {
@@ -20,18 +22,15 @@ Object3D createMultiMaterialObject(Geometry geometry, List<Material> materials) 
   });
 
   return group;
-
 }
 
 Object3D cloneObject(Object3D source) {
-
   Object3D object;
 
   // subclass specific properties
   // (must process in order from more specific subclasses to more abstract classes)
 
   if (source is MorphAnimMesh) {
-
     object = new MorphAnimMesh(source.geometry, source.material);
 
     (object as MorphAnimMesh).duration = source.duration;
@@ -43,34 +42,20 @@ Object3D cloneObject(Object3D source) {
 
     (object as MorphAnimMesh).direction = source.direction;
     (object as MorphAnimMesh).directionBackwards = source.directionBackwards;
-
   } else if (source is SkinnedMesh) {
-
     object = new SkinnedMesh(source.geometry, source.material);
-
   } else if (source is Mesh) {
-
     object = new Mesh(source.geometry, source.material);
-
   } else if (source is Line) {
-
     object = new Line(source.geometry, source.material, source.type);
-
   } else if (source is Ribbon) {
-
     object = new Ribbon(source.geometry, source.material);
-
   } else if (source is ParticleSystem) {
-
     object = new ParticleSystem(source.geometry, source.material);
     (object as ParticleSystem).sortParticles = source.sortParticles;
-
   } else if (source is Particle) {
-
     object = new Particle(source.material);
-
   } else if (source is Sprite) {
-
     object = new Sprite();
 
     (object as Sprite).color.copy(source.color);
@@ -89,9 +74,7 @@ Object3D cloneObject(Object3D source) {
 
     (object as Sprite).uvOffset.setFrom(source.uvOffset);
     (object as Sprite).uvScale.setFrom(source.uvScale);
-
   } else if (source is LOD) {
-
     object = new LOD();
 
     /*
@@ -103,9 +86,7 @@ Object3D cloneObject(Object3D source) {
   */
 
   } else if (source is Object3D) {
-
     object = new Object3D();
-
   }
 
   // base class properties
@@ -157,33 +138,26 @@ Object3D cloneObject(Object3D source) {
   // children
 
   for (var i = 0; i < source.children.length; i++) {
-
     var child = cloneObject(source.children[i]);
     object.children[i] = child;
 
     child.parent = object;
-
   }
 
   // LODs need to be patched separately to use cloned children
 
   if (source is LOD) {
-
     for (var i = 0; i < source.LODs.length; i++) {
-
       var slod = source.LODs[i];
       var tlod = object as LOD;
       tlod.LODs[i] = {
         "visibleAtDistance": slod.visibleAtDistance,
         "object3D": tlod.children[i]
       };
-
     }
-
   }
 
   return object;
-
 }
 
 void detach(Object3D child, Object3D parent, Scene scene) {
@@ -193,7 +167,6 @@ void detach(Object3D child, Object3D parent, Scene scene) {
 }
 
 void attach(Object3D child, Scene scene, Object3D parent) {
-
   Matrix4 matrixWorldInverse = parent.matrixWorld.clone();
   matrixWorldInverse.invert();
   child.applyMatrix(matrixWorldInverse);

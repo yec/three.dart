@@ -10,9 +10,11 @@ abstract class Face {
   Vector3 centroid;
 
   /// normalOrVertexNormals and colorOrVertexColors can be either a [Vector3] or a [List<Vector3>]
-  Face(this.indices, normalOrVertexNormals, colorOrVertexColors, this.materialIndex) {
-
-    normal = normalOrVertexNormals is Vector3 ? normalOrVertexNormals : new Vector3.zero();
+  Face(this.indices, normalOrVertexNormals, colorOrVertexColors,
+      this.materialIndex) {
+    normal = normalOrVertexNormals is Vector3
+        ? normalOrVertexNormals
+        : new Vector3.zero();
     vertexNormals = normalOrVertexNormals is List ? normalOrVertexNormals : [];
 
     color = colorOrVertexColors is Color ? colorOrVertexColors : new Color();

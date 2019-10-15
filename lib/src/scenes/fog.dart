@@ -11,5 +11,4 @@ part of three;
 abstract class Fog {
   Color color;
   String name = '';
-
 }

@@ -16,24 +16,50 @@ part of three;
 
 /// A 4x4 Matrix.
 class Matrix4 {
-
   final Float32List elements;
-
 
   /// Initialises the matrix with the supplied row-major values n11..n44,
   /// or just creates an identity matrix if no values are passed.
-  Matrix4([num n11 = 1.0, num n12 = 0.0, num n13 = 0.0, num n14 = 0.0, num n21 = 0.0, num n22 = 1.0, num n23 = 0.0,
-      num n24 = 0.0, num n31 = 0.0, num n32 = 0.0, num n33 = 1.0, num n34 = 0.0, num n41 = 0.0, num n42 = 0.0, num n43 = 0.0,
+  Matrix4(
+      [num n11 = 1.0,
+      num n12 = 0.0,
+      num n13 = 0.0,
+      num n14 = 0.0,
+      num n21 = 0.0,
+      num n22 = 1.0,
+      num n23 = 0.0,
+      num n24 = 0.0,
+      num n31 = 0.0,
+      num n32 = 0.0,
+      num n33 = 1.0,
+      num n34 = 0.0,
+      num n41 = 0.0,
+      num n42 = 0.0,
+      num n43 = 0.0,
       num n44 = 1.0])
       : elements = new Float32List(16) {
-
-    setValues(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44);
+    setValues(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41,
+        n42, n43, n44);
   }
 
-
   // "set" changed to "setM" as "set" is reserved
-  Matrix4 setValues(num n11, num n12, num n13, num n14, num n21, num n22, num n23, num n24, num n31, num n32, num n33,
-      num n34, num n41, num n42, num n43, num n44) {
+  Matrix4 setValues(
+      num n11,
+      num n12,
+      num n13,
+      num n14,
+      num n21,
+      num n22,
+      num n23,
+      num n24,
+      num n31,
+      num n32,
+      num n33,
+      num n34,
+      num n41,
+      num n42,
+      num n43,
+      num n44) {
     var te = this.elements;
 
     te[0] = n11.toDouble();
@@ -58,7 +84,8 @@ class Matrix4 {
 
   /// Resets this matrix to identity.
   Matrix4 identity() {
-    setValues(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    setValues(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0);
 
     return this;
   }
@@ -67,23 +94,8 @@ class Matrix4 {
   Matrix4 copy(Matrix4 m) {
     var me = m.elements;
 
-    setValues(
-        me[0],
-        me[4],
-        me[8],
-        me[12],
-        me[1],
-        me[5],
-        me[9],
-        me[13],
-        me[2],
-        me[6],
-        me[10],
-        me[14],
-        me[3],
-        me[7],
-        me[11],
-        me[15]);
+    setValues(me[0], me[4], me[8], me[12], me[1], me[5], me[9], me[13], me[2],
+        me[6], me[10], me[14], me[3], me[7], me[11], me[15]);
 
     return this;
   }
@@ -92,9 +104,7 @@ class Matrix4 {
   Matrix4 lookAt(Vector3 eye, Vector3 center, Vector3 up) {
     var te = elements;
 
-    Vector3 x = __v1,
-        y = __v2,
-        z = __v3;
+    Vector3 x = __v1, y = __v2, z = __v3;
 
     z.sub(eye, center).normalize();
 
@@ -130,39 +140,15 @@ class Matrix4 {
     var be = b.elements;
     var te = elements;
 
-    var a11 = ae[0],
-        a12 = ae[4],
-        a13 = ae[8],
-        a14 = ae[12];
-    var a21 = ae[1],
-        a22 = ae[5],
-        a23 = ae[9],
-        a24 = ae[13];
-    var a31 = ae[2],
-        a32 = ae[6],
-        a33 = ae[10],
-        a34 = ae[14];
-    var a41 = ae[3],
-        a42 = ae[7],
-        a43 = ae[11],
-        a44 = ae[15];
+    var a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
+    var a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
+    var a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
+    var a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
 
-    var b11 = be[0],
-        b12 = be[4],
-        b13 = be[8],
-        b14 = be[12];
-    var b21 = be[1],
-        b22 = be[5],
-        b23 = be[9],
-        b24 = be[13];
-    var b31 = be[2],
-        b32 = be[6],
-        b33 = be[10],
-        b34 = be[14];
-    var b41 = be[3],
-        b42 = be[7],
-        b43 = be[11],
-        b44 = be[15];
+    var b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12];
+    var b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13];
+    var b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14];
+    var b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
 
     te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
     te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
@@ -193,7 +179,6 @@ class Matrix4 {
   /// Sets this matrix to a x b and stores the result into the flat array r.
   /// r can be either a regular Array or a TypedArray.
   Matrix4 multiplyToArray(Matrix4 a, Matrix4 b, List r) {
-
     var te = elements;
 
     multiply(a, b);
@@ -245,9 +230,7 @@ class Matrix4 {
   multiplyVector3(IVector3 v) {
     var te = elements;
 
-    var vx = v.x,
-        vy = v.y,
-        vz = v.z;
+    var vx = v.x, vy = v.y, vz = v.z;
     var d = 1.0 / (te[3] * vx + te[7] * vy + te[11] * vz + te[15]);
 
     v.x = (te[0] * vx + te[4] * vy + te[8] * vz + te[12]) * d;
@@ -259,10 +242,7 @@ class Matrix4 {
 
   Vector4 multiplyVector4(Vector4 v) {
     var te = elements;
-    var vx = v.x,
-        vy = v.y,
-        vz = v.z,
-        vw = v.w;
+    var vx = v.x, vy = v.y, vz = v.z, vw = v.w;
 
     v.x = te[0] * vx + te[4] * vy + te[8] * vz + te[12] * vw;
     v.y = te[1] * vx + te[5] * vy + te[9] * vz + te[13] * vw;
@@ -273,13 +253,11 @@ class Matrix4 {
   }
 
   multiplyVector3Array(a) {
-
     var tmp = Matrix4.__v1;
 
     int il = a.length;
 
     for (var i = 0; i < il; i += 3) {
-
       tmp.x = a[i];
       tmp.y = a[i + 1];
       tmp.z = a[i + 2];
@@ -289,18 +267,14 @@ class Matrix4 {
       a[i] = tmp.x;
       a[i + 1] = tmp.y;
       a[i + 2] = tmp.z;
-
     }
 
     return a;
-
   }
 
   Vector3 rotateAxis(Vector3 v) {
     var te = elements;
-    var vx = v.x,
-        vy = v.y,
-        vz = v.z;
+    var vx = v.x, vy = v.y, vz = v.z;
 
     v.x = vx * te[0] + vy * te[4] + vz * te[8];
     v.y = vx * te[1] + vy * te[5] + vz * te[9];
@@ -312,7 +286,6 @@ class Matrix4 {
   }
 
   Vector4 crossVector(Vector4 a) {
-
     var te = this.elements;
     Vector4 v = new Vector4();
 
@@ -320,7 +293,9 @@ class Matrix4 {
     v.y = te[1] * a.x + te[5] * a.y + te[9] * a.z + te[13] * a.w;
     v.z = te[2] * a.x + te[6] * a.y + te[10] * a.z + te[14] * a.w;
 
-    v.w = (a.w != null) ? te[3] * a.x + te[7] * a.y + te[11] * a.z + te[15] * a.w : 1;
+    v.w = (a.w != null)
+        ? te[3] * a.x + te[7] * a.y + te[11] * a.z + te[15] * a.w
+        : 1;
 
     return v;
   }
@@ -331,27 +306,17 @@ class Matrix4 {
   num determinant() {
     var te = elements;
 
-    var n11 = te[0],
-        n12 = te[4],
-        n13 = te[8],
-        n14 = te[12];
-    var n21 = te[1],
-        n22 = te[5],
-        n23 = te[9],
-        n24 = te[13];
-    var n31 = te[2],
-        n32 = te[6],
-        n33 = te[10],
-        n34 = te[14];
-    var n41 = te[3],
-        n42 = te[7],
-        n43 = te[11],
-        n44 = te[15];
+    var n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
+    var n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
+    var n31 = te[2], n32 = te[6], n33 = te[10], n34 = te[14];
+    var n41 = te[3], n42 = te[7], n43 = te[11], n44 = te[15];
 
     //TODO: make this more efficient
     //( based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm )
 
-    return (n14 * n23 * n32 * n41 - n13 * n24 * n32 * n41 - n14 * n22 * n33 * n41 +
+    return (n14 * n23 * n32 * n41 -
+        n13 * n24 * n32 * n41 -
+        n14 * n22 * n33 * n41 +
         n12 * n24 * n33 * n41 +
         n13 * n22 * n34 * n41 -
         n12 * n23 * n34 * n41 -
@@ -452,7 +417,8 @@ class Matrix4 {
     return flat;
   }
 
-  Vector3 getPosition() => __v1.setValues(elements[12], elements[13], elements[14]);
+  Vector3 getPosition() =>
+      __v1.setValues(elements[12], elements[13], elements[14]);
 
   /// Sets the position component for this matrix from vector v.
   Matrix4 setPosition(Vector3 v) {
@@ -469,7 +435,8 @@ class Matrix4 {
 
   Vector3 getColumnY() => __v1.setValues(elements[4], elements[5], elements[6]);
 
-  Vector3 getColumnZ() => __v1.setValues(elements[8], elements[9], elements[10]);
+  Vector3 getColumnZ() =>
+      __v1.setValues(elements[8], elements[9], elements[10]);
 
   /// Sets this matrix to the inverse of matrix m.
   ///
@@ -495,22 +462,102 @@ class Matrix4 {
         n43 = me[11],
         n44 = me[15];
 
-    te[0] = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
-    te[4] = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
-    te[8] = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
-    te[12] = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
-    te[1] = n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44;
-    te[5] = n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44;
-    te[9] = n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44;
-    te[13] = n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34;
-    te[2] = n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44;
-    te[6] = n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44;
-    te[10] = n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 - n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44;
-    te[14] = n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34;
-    te[3] = n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43;
-    te[7] = n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43;
-    te[11] = n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43;
-    te[15] = n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33;
+    te[0] = n23 * n34 * n42 -
+        n24 * n33 * n42 +
+        n24 * n32 * n43 -
+        n22 * n34 * n43 -
+        n23 * n32 * n44 +
+        n22 * n33 * n44;
+    te[4] = n14 * n33 * n42 -
+        n13 * n34 * n42 -
+        n14 * n32 * n43 +
+        n12 * n34 * n43 +
+        n13 * n32 * n44 -
+        n12 * n33 * n44;
+    te[8] = n13 * n24 * n42 -
+        n14 * n23 * n42 +
+        n14 * n22 * n43 -
+        n12 * n24 * n43 -
+        n13 * n22 * n44 +
+        n12 * n23 * n44;
+    te[12] = n14 * n23 * n32 -
+        n13 * n24 * n32 -
+        n14 * n22 * n33 +
+        n12 * n24 * n33 +
+        n13 * n22 * n34 -
+        n12 * n23 * n34;
+    te[1] = n24 * n33 * n41 -
+        n23 * n34 * n41 -
+        n24 * n31 * n43 +
+        n21 * n34 * n43 +
+        n23 * n31 * n44 -
+        n21 * n33 * n44;
+    te[5] = n13 * n34 * n41 -
+        n14 * n33 * n41 +
+        n14 * n31 * n43 -
+        n11 * n34 * n43 -
+        n13 * n31 * n44 +
+        n11 * n33 * n44;
+    te[9] = n14 * n23 * n41 -
+        n13 * n24 * n41 -
+        n14 * n21 * n43 +
+        n11 * n24 * n43 +
+        n13 * n21 * n44 -
+        n11 * n23 * n44;
+    te[13] = n13 * n24 * n31 -
+        n14 * n23 * n31 +
+        n14 * n21 * n33 -
+        n11 * n24 * n33 -
+        n13 * n21 * n34 +
+        n11 * n23 * n34;
+    te[2] = n22 * n34 * n41 -
+        n24 * n32 * n41 +
+        n24 * n31 * n42 -
+        n21 * n34 * n42 -
+        n22 * n31 * n44 +
+        n21 * n32 * n44;
+    te[6] = n14 * n32 * n41 -
+        n12 * n34 * n41 -
+        n14 * n31 * n42 +
+        n11 * n34 * n42 +
+        n12 * n31 * n44 -
+        n11 * n32 * n44;
+    te[10] = n12 * n24 * n41 -
+        n14 * n22 * n41 +
+        n14 * n21 * n42 -
+        n11 * n24 * n42 -
+        n12 * n21 * n44 +
+        n11 * n22 * n44;
+    te[14] = n14 * n22 * n31 -
+        n12 * n24 * n31 -
+        n14 * n21 * n32 +
+        n11 * n24 * n32 +
+        n12 * n21 * n34 -
+        n11 * n22 * n34;
+    te[3] = n23 * n32 * n41 -
+        n22 * n33 * n41 -
+        n23 * n31 * n42 +
+        n21 * n33 * n42 +
+        n22 * n31 * n43 -
+        n21 * n32 * n43;
+    te[7] = n12 * n33 * n41 -
+        n13 * n32 * n41 +
+        n13 * n31 * n42 -
+        n11 * n33 * n42 -
+        n12 * n31 * n43 +
+        n11 * n32 * n43;
+    te[11] = n13 * n22 * n41 -
+        n12 * n23 * n41 -
+        n13 * n21 * n42 +
+        n11 * n23 * n42 +
+        n12 * n21 * n43 -
+        n11 * n22 * n43;
+    te[15] = n12 * n23 * n31 -
+        n13 * n22 * n31 +
+        n13 * n21 * n32 -
+        n11 * n23 * n32 -
+        n12 * n21 * n33 +
+        n11 * n22 * n33;
     this.multiplyScalar(1 / m.determinant());
     return this;
   }
@@ -533,11 +580,7 @@ class Matrix4 {
 
     switch (order) {
       case 'YXZ':
-
-        num ce = c * e,
-            cf = c * f,
-            de = d * e,
-            df = d * f;
+        num ce = c * e, cf = c * f, de = d * e, df = d * f;
 
         te[0] = ce + df * b;
         te[4] = de * b - cf;
@@ -553,11 +596,7 @@ class Matrix4 {
         break;
 
       case 'ZXY':
-
-        num ce = c * e,
-            cf = c * f,
-            de = d * e,
-            df = d * f;
+        num ce = c * e, cf = c * f, de = d * e, df = d * f;
 
         te[0] = ce - df * b;
         te[4] = -a * f;
@@ -573,11 +612,7 @@ class Matrix4 {
         break;
 
       case 'ZYX':
-
-        num ae = a * e,
-            af = a * f,
-            be = b * e,
-            bf = b * f;
+        num ae = a * e, af = a * f, be = b * e, bf = b * f;
 
         te[0] = c * e;
         te[4] = be * d - af;
@@ -593,11 +628,7 @@ class Matrix4 {
         break;
 
       case 'YZX':
-
-        num ac = a * c,
-            ad = a * d,
-            bc = b * c,
-            bd = b * d;
+        num ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
         te[0] = c * e;
         te[4] = bd - ac * f;
@@ -613,11 +644,7 @@ class Matrix4 {
         break;
 
       case 'XZY':
-
-        num ac = a * c,
-            ad = a * d,
-            bc = b * c,
-            bd = b * d;
+        num ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
         te[0] = c * e;
         te[4] = -f;
@@ -634,10 +661,7 @@ class Matrix4 {
 
       default: // 'XYZ'
 
-        num ae = a * e,
-            af = a * f,
-            be = b * e,
-            bf = b * f;
+        num ae = a * e, af = a * f, be = b * e, bf = b * f;
 
         te[0] = c * e;
         te[4] = -c * f;
@@ -651,7 +675,6 @@ class Matrix4 {
         te[6] = be + af * d;
         te[10] = a * c;
         break;
-
     }
 
     return this;
@@ -695,7 +718,6 @@ class Matrix4 {
 
   /// Sets this matrix to the transformation composed of translation, quaternion and scale.
   Matrix4 compose(Vector3 translation, Quaternion rotation, Vector3 s) {
-
     var te = elements;
 
     Matrix4 mRotation = __m1;
@@ -718,7 +740,6 @@ class Matrix4 {
   /// Decomposes this matrix into the translation, quaternion and scale components.
   /// If parameters are not passed, new instances will be created.
   List decompose(Vector3 translation, Quaternion rotation, Vector3 scale) {
-
     var te = elements;
 
     // grab the axis vectors
@@ -730,7 +751,8 @@ class Matrix4 {
     y.setValues(te[4], te[5], te[6]);
     z.setValues(te[8], te[9], te[10]);
 
-    translation = (translation is Vector3) ? translation : new Vector3(0.0, 0.0, 0.0);
+    translation =
+        (translation is Vector3) ? translation : new Vector3(0.0, 0.0, 0.0);
     rotation = (rotation is Quaternion) ? rotation : new Quaternion.identity();
     scale = (scale is Vector3) ? scale : new Vector3(0.0, 0.0, 0.0);
 
@@ -777,7 +799,6 @@ class Matrix4 {
 
   /// Extracts the rotation of the supplied matrix m into this matrix rotation component.
   Matrix4 extractRotation(Matrix4 m) {
-
     var te = elements;
     var me = m.elements;
 
@@ -805,9 +826,7 @@ class Matrix4 {
   /// Sets this matrix as translation transform.
   Matrix4 translate(Vector3 v) {
     var te = elements;
-    var x = v.x,
-        y = v.y,
-        z = v.z;
+    var x = v.x, y = v.y, z = v.z;
 
     te[12] = te[0] * x + te[4] * y + te[8] * z + te[12];
     te[13] = te[1] * x + te[5] * y + te[9] * z + te[13];
@@ -934,7 +953,6 @@ class Matrix4 {
         xs = x * s,
         ys = y * s,
         zs = z * s,
-
         r11 = xx + (1 - xx) * c,
         r21 = xy + zs,
         r31 = xz - ys,
@@ -945,22 +963,10 @@ class Matrix4 {
         r23 = yz - xs,
         r33 = zz + (1 - zz) * c;
 
-    var m11 = te[0],
-        m21 = te[1],
-        m31 = te[2],
-        m41 = te[3];
-    var m12 = te[4],
-        m22 = te[5],
-        m32 = te[6],
-        m42 = te[7];
-    var m13 = te[8],
-        m23 = te[9],
-        m33 = te[10],
-        m43 = te[11];
-    var m14 = te[12],
-        m24 = te[13],
-        m34 = te[14],
-        m44 = te[15];
+    var m11 = te[0], m21 = te[1], m31 = te[2], m41 = te[3];
+    var m12 = te[4], m22 = te[5], m32 = te[6], m42 = te[7];
+    var m13 = te[8], m23 = te[9], m33 = te[10], m43 = te[11];
+    var m14 = te[12], m24 = te[13], m34 = te[14], m44 = te[15];
 
     te[0] = r11 * m11 + r21 * m12 + r31 * m13;
     te[1] = r11 * m21 + r21 * m22 + r31 * m23;
@@ -977,17 +983,13 @@ class Matrix4 {
     te[10] = r13 * m31 + r23 * m32 + r33 * m33;
     te[11] = r13 * m41 + r23 * m42 + r33 * m43;
 
-
     return this;
   }
 
   /// Sets this matrix as scale transform.
   Matrix4 scale(Vector3 v) {
-
     var te = elements;
-    num x = v.x,
-        y = v.y,
-        z = v.z;
+    num x = v.x, y = v.y, z = v.z;
 
     te[0] *= x;
     te[4] *= y;
@@ -1007,7 +1009,6 @@ class Matrix4 {
 
   /// Gets the max scale value of the 3 axes.
   double getMaxScaleOnAxis() {
-
     var te = elements;
 
     var scaleXSq = te[0] * te[0] + te[1] * te[1] + te[2] * te[2];
@@ -1015,42 +1016,42 @@ class Matrix4 {
     var scaleZSq = te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
 
     return Math.sqrt(Math.max(scaleXSq, Math.max(scaleYSq, scaleZSq)));
-
   }
 
   /// Sets this matrix as translation transform.
   Matrix4 makeTranslation(num x, num y, num z) {
-    setValues(1.0, 0.0, 0.0, x, 0.0, 1.0, 0.0, y, 0.0, 0.0, 1.0, z, 0.0, 0.0, 0.0, 1.0);
+    setValues(1.0, 0.0, 0.0, x, 0.0, 1.0, 0.0, y, 0.0, 0.0, 1.0, z, 0.0, 0.0,
+        0.0, 1.0);
 
     return this;
   }
 
   /// Sets this matrix as rotation transform around x axis by theta radians.
   Matrix4 makeRotationX(num theta) {
-    num c = Math.cos(theta),
-        s = Math.sin(theta);
+    num c = Math.cos(theta), s = Math.sin(theta);
 
-    setValues(1.0, 0.0, 0.0, 0.0, 0.0, c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0, 0.0, 1.0);
+    setValues(1.0, 0.0, 0.0, 0.0, 0.0, c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0,
+        0.0, 1.0);
 
     return this;
   }
 
   /// Sets this matrix as rotation transform around y axis by theta radians.
   Matrix4 makeRotationY(num theta) {
-    num c = Math.cos(theta),
-        s = Math.sin(theta);
+    num c = Math.cos(theta), s = Math.sin(theta);
 
-    setValues(c, 0.0, s, 0.0, 0.0, 1.0, 0.0, 0.0, -s, 0.0, c, 0.0, 0.0, 0.0, 0.0, 1.0);
+    setValues(c, 0.0, s, 0.0, 0.0, 1.0, 0.0, 0.0, -s, 0.0, c, 0.0, 0.0, 0.0,
+        0.0, 1.0);
 
     return this;
   }
 
   ///  Sets this matrix as rotation transform around z axis by theta radians.
   Matrix4 makeRotationZ(num theta) {
-    num c = Math.cos(theta),
-        s = Math.sin(theta);
+    num c = Math.cos(theta), s = Math.sin(theta);
 
-    setValues(c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    setValues(c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0);
 
     return this;
   }
@@ -1091,13 +1092,15 @@ class Matrix4 {
 
   /// Sets this matrix as scale transform.
   Matrix4 makeScale(num x, num y, num z) {
-    setValues(x, 0.0, 0.0, 0.0, 0.0, y, 0.0, 0.0, 0.0, 0.0, z, 0.0, 0.0, 0.0, 0.0, 1.0);
+    setValues(x, 0.0, 0.0, 0.0, 0.0, y, 0.0, 0.0, 0.0, 0.0, z, 0.0, 0.0, 0.0,
+        0.0, 1.0);
 
     return this;
   }
 
   /// Creates a frustum matrix.
-  Matrix4 makeFrustum(num left, num right, num bottom, num top, num near, num far) {
+  Matrix4 makeFrustum(
+      num left, num right, num bottom, num top, num near, num far) {
     var te = elements;
 
     num x, y, a, b, c, d;
@@ -1142,7 +1145,8 @@ class Matrix4 {
   }
 
   /// Creates an orthographic projection matrix.
-  Matrix4 makeOrthographic(num left, num right, num top, num bottom, num near, num far) {
+  Matrix4 makeOrthographic(
+      num left, num right, num top, num bottom, num near, num far) {
     var te = elements;
 
     num x, y, z, w, h, p;
@@ -1179,23 +1183,8 @@ class Matrix4 {
   Matrix4 clone() {
     var te = elements;
 
-    return new Matrix4(
-        te[0],
-        te[4],
-        te[8],
-        te[12],
-        te[1],
-        te[5],
-        te[9],
-        te[13],
-        te[2],
-        te[6],
-        te[10],
-        te[14],
-        te[3],
-        te[7],
-        te[11],
-        te[15]);
+    return new Matrix4(te[0], te[4], te[8], te[12], te[1], te[5], te[9], te[13],
+        te[2], te[6], te[10], te[14], te[3], te[7], te[11], te[15]);
   }
 
   //TODO: Fix "Expected Constant Expression" problem

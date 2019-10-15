@@ -8,13 +8,11 @@ class EventEmitterEvent {
 }
 
 class EventEmitter {
-
   var listeners;
 
   EventEmitter() : listeners = {};
 
   addEventListener(type, listener) {
-
     if (listeners[type] == null) {
       listeners[type] = [];
     }
@@ -22,7 +20,6 @@ class EventEmitter {
     if (listeners[type].indexOf(listener) == -1) {
       listeners[type].add(listener);
     }
-
   }
 
   dispatchEvent(event) {
@@ -32,13 +29,10 @@ class EventEmitter {
   }
 
   removeEventListener(type, listener) {
-
     var index = listeners[type].indexOf(listener);
 
     if (index != -1) {
       listeners[type].removeAt(index);
     }
-
   }
-
 }

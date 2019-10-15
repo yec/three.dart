@@ -12,30 +12,19 @@ part of three_shaders;
  */
 
 var VignetteShader = {
-
   'uniforms': {
-
-    "tDiffuse": { 'type': "t", 'value': null },
-    "offset":   { 'type': "f", 'value': 1.0 },
-    "darkness": { 'type': "f", 'value': 1.0 }
-
+    "tDiffuse": {'type': "t", 'value': null},
+    "offset": {'type': "f", 'value': 1.0},
+    "darkness": {'type': "f", 'value': 1.0}
   },
-
   'vertexShader': [
-
     "varying vec2 vUv;",
-
     "void main() {",
-
-      "vUv = uv;",
-      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
+    "vUv = uv;",
+    "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
     "}"
-
   ].join("\n"),
-
   'fragmentShader': [
-
     "uniform float offset;",
     "uniform float darkness;",
 
@@ -45,13 +34,13 @@ var VignetteShader = {
 
     "void main() {",
 
-      // Eskil's vignette
+    // Eskil's vignette
 
-      "vec4 texel = texture2D( tDiffuse, vUv );",
-      "vec2 uv = ( vUv - vec2( 0.5 ) ) * vec2( offset );",
-      "gl_FragColor = vec4( mix( texel.rgb, vec3( 1.0 - darkness ), dot( uv, uv ) ), texel.a );",
+    "vec4 texel = texture2D( tDiffuse, vUv );",
+    "vec2 uv = ( vUv - vec2( 0.5 ) ) * vec2( offset );",
+    "gl_FragColor = vec4( mix( texel.rgb, vec3( 1.0 - darkness ), dot( uv, uv ) ), texel.a );",
 
-      /*
+    /*
       // alternative version from glfx.js
       // this one makes more "dusty" look (as opposed to "burned")
 
@@ -62,7 +51,5 @@ var VignetteShader = {
       */
 
     "}"
-
   ].join("\n")
-
 };

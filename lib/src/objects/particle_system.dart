@@ -1,14 +1,14 @@
 part of three;
 
 class ParticleSystem extends Object3D {
-
   bool sortParticles;
 
   ParticleSystem(Geometry geometry, [Material material = null])
       : sortParticles = false,
         super() {
     if (material == null) {
-      material = new ParticleBasicMaterial(color: new Math.Random().nextDouble() * 0xffffff);
+      material = new ParticleBasicMaterial(
+          color: new Math.Random().nextDouble() * 0xffffff);
     }
     this.material = material;
 
@@ -23,5 +23,4 @@ class ParticleSystem extends Object3D {
 
     frustumCulled = false;
   }
-
 }

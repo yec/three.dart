@@ -23,9 +23,9 @@ class Mesh extends Object3D {
   Map _morphTargetDictionary;
 
   Mesh(Geometry geometry, [this.material]) : super() {
-
     if (material == null) {
-      material = new MeshBasicMaterial(color: new Math.Random().nextInt(0xffffff), wireframe: true);
+      material = new MeshBasicMaterial(
+          color: new Math.Random().nextInt(0xffffff), wireframe: true);
     }
     if (geometry != null) {
       // calc bound radius
@@ -34,7 +34,6 @@ class Mesh extends Object3D {
       }
 
       boundRadius = geometry.boundingSphere.radius;
-
 
       // setup morph targets
       if (geometry.morphTargets.length != 0) {
@@ -53,14 +52,14 @@ class Mesh extends Object3D {
     }
   }
 
-
   /// Returns the index of a morph target defined by name.
   num getMorphTargetIndexByName(name) {
     if (_morphTargetDictionary[name] != null) {
       return _morphTargetDictionary[name];
     }
 
-    print("THREE.Mesh.getMorphTargetIndexByName: morph target $name does not exist. Returning 0.");
+    print(
+        "THREE.Mesh.getMorphTargetIndexByName: morph target $name does not exist. Returning 0.");
     return 0;
   }
 }

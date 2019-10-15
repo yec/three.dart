@@ -5,4 +5,3 @@ class MorphTarget {
   List<Vector3> vertices;
   MorphTarget({this.name, this.vertices});
 }
-

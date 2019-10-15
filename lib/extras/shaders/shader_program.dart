@@ -30,14 +30,14 @@ class ShaderProgram {
   String vertexShader;
   String fragmentShader;
 
-  ShaderProgram(Map<String, Uniform> uniforms, this.vertexShader, this.fragmentShader) {
+  ShaderProgram(
+      Map<String, Uniform> uniforms, this.vertexShader, this.fragmentShader) {
     this.uniforms = new Map<String, Uniform>.from(uniforms);
   }
 
   // Constructs a typed program from a dynamically-typed Map
   // in the typical three.js program format.
   ShaderProgram.fromThreeish(Map<String, dynamic> program) {
-
     if (program['uniforms'] != null) {
       uniforms = typedUniformMap(program['uniforms']);
     } else {
@@ -53,7 +53,8 @@ class ShaderProgram {
 
     dynamicUniformMap.forEach((name, dynamicUniform) {
       //print(name.toString() + ", " + dynamicUniform.toString());
-      typedUniformMap[name] = new Uniform(dynamicUniform['type'], dynamicUniform['value']);
+      typedUniformMap[name] =
+          new Uniform(dynamicUniform['type'], dynamicUniform['value']);
     });
 
     return typedUniformMap;

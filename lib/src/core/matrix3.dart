@@ -13,7 +13,6 @@ class Matrix3 {
 
   /// Set this matrix to the inverse of the passed matrix.
   Matrix3 getInverse(Matrix4 matrix) {
-
     // input: THREE.Matrix4
     // ( based on http://code.google.com/p/webgl-mjs/ )
 
@@ -34,9 +33,7 @@ class Matrix3 {
     // no inverse
 
     if (det == 0) {
-
       print("Matrix3.getInverse(): determinant == 0");
-
     }
 
     var idet = 1.0 / det;
@@ -54,13 +51,11 @@ class Matrix3 {
     m[8] = idet * a33;
 
     return this;
-
   }
 
   /// Transposes this matrix in place.
   Matrix3 transpose() {
-    var tmp,
-        m = elements;
+    var tmp, m = elements;
 
     tmp = m[1];
     m[1] = m[3];
@@ -91,5 +86,4 @@ class Matrix3 {
 
     return this;
   }
-
 }

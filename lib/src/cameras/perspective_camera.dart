@@ -13,6 +13,7 @@ part of three;
 class PerspectiveCamera extends Camera {
   /// Camera frustum vertical field of view, from bottom to top of view, in degrees.
   double fov;
+
   /// Camera frustum aspect ratio, window width divided by window height.
   double aspect;
 
@@ -23,10 +24,9 @@ class PerspectiveCamera extends Camera {
   double _width;
   double _height;
 
-
-  PerspectiveCamera([this.fov = 50.0, this.aspect = 1.0, near = 0.1, far = 2000.0])
+  PerspectiveCamera(
+      [this.fov = 50.0, this.aspect = 1.0, near = 0.1, far = 2000.0])
       : super(near, far) {
-
     updateProjectionMatrix();
   }
 
@@ -78,7 +78,8 @@ class PerspectiveCamera extends Camera {
    *
    *   Note there is no reason monitors have to be the same size or in a grid.
    */
-  void setViewOffset(double fullWidth, double fullHeight, double x, double y, double width, double height) {
+  void setViewOffset(double fullWidth, double fullHeight, double x, double y,
+      double width, double height) {
     _fullWidth = fullWidth;
     _fullHeight = fullHeight;
     _x = x;
@@ -111,7 +112,8 @@ class PerspectiveCamera extends Camera {
           near,
           far);
     } else {
-      projectionMatrix = makePerspectiveMatrix(fov * (Math.pi / 180), aspect, near, far);
+      projectionMatrix =
+          makePerspectiveMatrix(fov * (Math.pi / 180), aspect, near, far);
     }
   }
 }

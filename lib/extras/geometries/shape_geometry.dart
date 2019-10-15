@@ -17,14 +17,15 @@ part of three;
  **/
 
 class ShapeGeometry extends Geometry {
-
   List<Shape> shapes;
 
   var shapebb;
 
-  ShapeGeometry(this.shapes, {int curveSegments: 12, int material, ExtrudeGeometryWorldUVGenerator UVGenerator})
+  ShapeGeometry(this.shapes,
+      {int curveSegments: 12,
+      int material,
+      ExtrudeGeometryWorldUVGenerator UVGenerator})
       : super() {
-
     if (shapes == null) {
       shapes = [];
       return;
@@ -36,13 +37,10 @@ class ShapeGeometry extends Geometry {
 
     computeCentroids();
     computeFaceNormals();
-
   }
 
-
-
-  addShapeList(List<Shape> shapes, num curveSegments, int material, [ExtrudeGeometryWorldUVGenerator UVGenerator =
-      null]) {
+  addShapeList(List<Shape> shapes, num curveSegments, int material,
+      [ExtrudeGeometryWorldUVGenerator UVGenerator = null]) {
     var sl = shapes.length;
 
     for (var s = 0; s < sl; s++) {
@@ -51,10 +49,12 @@ class ShapeGeometry extends Geometry {
     }
   }
 
-  addShape(Shape shape, num curveSegments, int material, [ExtrudeGeometryWorldUVGenerator UVGenerator = null]) {
-
+  addShape(Shape shape, num curveSegments, int material,
+      [ExtrudeGeometryWorldUVGenerator UVGenerator = null]) {
     // set UV generator
-    var uvgen = (UVGenerator != null) ? UVGenerator : new ExtrudeGeometryWorldUVGenerator();
+    var uvgen = (UVGenerator != null)
+        ? UVGenerator
+        : new ExtrudeGeometryWorldUVGenerator();
 
     var i, hole, s;
 
@@ -67,25 +67,19 @@ class ShapeGeometry extends Geometry {
     var reverse = !ShapeUtils.isClockWise(vertices);
 
     if (reverse) {
-
       vertices = vertices.reversed.toList();
 
       // Maybe we should also check if holes are in the opposite direction, just to be safe...
 
       for (i = 0; i < holes.length; i++) {
-
         hole = holes[i];
 
         if (ShapeUtils.isClockWise(hole)) {
-
           holes[i] = hole.reversed.toList();
-
         }
-
       }
 
       reverse = false;
-
     }
 
     var faces = ShapeUtils.triangulateShape(vertices, holes);
@@ -95,33 +89,27 @@ class ShapeGeometry extends Geometry {
     var contour = vertices;
 
     for (i = 0; i < holes.length; i++) {
-
       hole = holes[i];
 
       vertices = new List.from(vertices);
       vertices.addAll(hole);
-
     }
 
     //
 
-    var vert,
-        vlen = vertices.length;
-    var face,
-        flen = faces.length;
-    var cont,
-        clen = contour.length;
+    var vert, vlen = vertices.length;
+    var face, flen = faces.length;
+    var cont, clen = contour.length;
 
     for (i = 0; i < vlen; i++) {
-
       vert = vertices[i];
 
-      this.vertices.add(new Vector3((vert.x).toDouble(), (vert.y).toDouble(), 0.0));
-
+      this
+          .vertices
+          .add(new Vector3((vert.x).toDouble(), (vert.y).toDouble(), 0.0));
     }
 
     for (i = 0; i < flen; i++) {
-
       face = faces[i];
 
       var a = face[0] + shapesOffset;
@@ -130,9 +118,6 @@ class ShapeGeometry extends Geometry {
 
       this.faces.add(new Face3(a, b, c, null, null, material));
       faceVertexUvs[0].add(uvgen.generateBottomUV(this, shape, null, a, b, c));
-
     }
   }
 }
-
-

@@ -14,6 +14,7 @@ part of three;
 class Camera extends Object3D {
   /// This is the inverse of matrixWorld. MatrixWorld contains the Matrix which has the world transform of the Camera.
   Matrix4 matrixWorldInverse;
+
   /// This is the matrix which contains the projection.
   Matrix4 projectionMatrix;
   Matrix4 projectionMatrixInverse;

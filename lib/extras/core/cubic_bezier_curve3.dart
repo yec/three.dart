@@ -5,7 +5,6 @@ class CubicBezierCurve3 extends Curve3D {
   CubicBezierCurve3(this.v0, this.v1, this.v2, this.v3) : super();
 
   Vector3 getPoint(t) {
-
     var tx, ty, tz;
 
     tx = ShapeUtils.b3(t, v0.x, v1.x, v2.x, v3.x);
@@ -13,6 +12,5 @@ class CubicBezierCurve3 extends Curve3D {
     tz = ShapeUtils.b3(t, v0.z, v1.z, v2.z, v3.z);
 
     return new Vector3(tx, ty, tz);
-
   }
 }

@@ -92,7 +92,6 @@ class FirstPersonControls {
   }
 
   void onMouseDown(event) {
-
     if (this.domElement != document.body) {
       this.domElement.focus();
     }
@@ -142,7 +141,6 @@ class FirstPersonControls {
   }
 
   void onKeyDown(event) {
-
     //event.preventDefault();
 
     switch (event.keyCode) {
@@ -184,9 +182,7 @@ class FirstPersonControls {
   }
 
   void onKeyUp(event) {
-
     switch (event.keyCode) {
-
       case 38:
       /*up*/
       case 87:
@@ -224,13 +220,11 @@ class FirstPersonControls {
     var actualMoveSpeed = 0.0;
     var actualLookSpeed = 0.0;
     if (this.freeze) {
-
       return;
-
     } else {
-
       if (this.heightSpeed) {
-        var y = THREEMath.clamp(this.object.position.y, this.heightMin, this.heightMax);
+        var y = THREEMath.clamp(
+            this.object.position.y, this.heightMin, this.heightMax);
         var heightDelta = y - this.heightMin;
 
         this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
@@ -240,8 +234,8 @@ class FirstPersonControls {
 
       actualMoveSpeed = delta * this.movementSpeed;
 
-      if (this.moveForward ||
-          (this.autoForward && !this.moveBackward)) this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+      if (this.moveForward || (this.autoForward && !this.moveBackward))
+        this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
       if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
 
       if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
@@ -253,24 +247,25 @@ class FirstPersonControls {
       var actualLookSpeed = delta * this.lookSpeed;
 
       if (!this.activeLook) {
-
         actualLookSpeed = 0;
-
       }
 
       this.lon += this.mouseX * actualLookSpeed;
-      if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed; // * this.invertVertical?-1:1;
+      if (this.lookVertical)
+        this.lat -=
+            this.mouseY * actualLookSpeed; // * this.invertVertical?-1:1;
 
       this.lat = Math.max(-85, Math.min(85, this.lat));
       this.phi = (90 - this.lat) * Math.pi / 180;
       this.theta = this.lon * Math.pi / 180;
 
-      var targetPosition = this.target,
-          position = this.object.position;
+      var targetPosition = this.target, position = this.object.position;
 
-      targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
+      targetPosition.x =
+          position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
       targetPosition.y = position.y + 100 * Math.cos(this.phi);
-      targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
+      targetPosition.z =
+          position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
     }
 
     var verticalLookRatio = 1.0;
@@ -280,7 +275,8 @@ class FirstPersonControls {
     }
 
     this.lon += this.mouseX * actualLookSpeed;
-    if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
+    if (this.lookVertical)
+      this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
 
     this.lat = Math.max(-85, Math.min(85, this.lat));
     this.phi = (90 - this.lat) * Math.pi / 180;
@@ -288,15 +284,17 @@ class FirstPersonControls {
     this.theta = this.lon * Math.pi / 180;
 
     if (this.constrainVertical) {
-      this.phi = THREEMath.mapLinear(this.phi, 0, Math.pi, this.verticalMin, this.verticalMax);
+      this.phi = THREEMath.mapLinear(
+          this.phi, 0, Math.pi, this.verticalMin, this.verticalMax);
     }
 
-    var targetPosition = this.target,
-        position = this.object.position;
+    var targetPosition = this.target, position = this.object.position;
 
-    targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
+    targetPosition.x =
+        position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
     targetPosition.y = position.y + 100 * Math.cos(this.phi);
-    targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
+    targetPosition.z =
+        position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
 
     this.object.lookAt(targetPosition);
   }

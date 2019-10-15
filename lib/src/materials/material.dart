@@ -14,8 +14,10 @@ part of three;
 class Material {
   /// Material name. Default is an empty string.
   String name;
+
   /// Unique number for this material instance.
   int id;
+
   /// Defines which of the face sides will be rendered - front, back or both.
   ///
   /// Default is THREE.FrontSide. Other options are THREE.BackSide and THREE.DoubleSide.
@@ -30,42 +32,53 @@ class Material {
   /// If transparent is not set to true for the material, the material will
   /// remain fully opaque and this value will only affect its color.
   num opacity;
+
   /// Which blending to use when displaying objects with this material. Default is NormalBlending.
   int blending;
+
   /// Blending source.
   ///
   /// It's one of the blending mode constants defined in three.dart.
   /// Default is SrcAlphaFactor.
   int blendSrc;
+
   /// Blending destination.
   ///
   /// It's one of the blending mode constants defined in three.dart.
   /// Default is OneMinusSrcAlphaFactor.
   int blendDst;
+
   /// Blending equation to use when applying blending.
   ///
   /// It's one of the constants defined in three.dart. Default is AddEquation.
   int blendEquation;
+
   /// Sets the alpha value to be used when running an alpha test. Default is 0.
   num alphaTest;
+
   /// Whether to use polygon offset. Default is false.
   ///
   /// This corresponds to the POLYGON_OFFSET_FILL WebGL feature.
   bool polygonOffset;
+
   /// Sets the polygon offset factor. Default is 0.
   int polygonOffsetFactor;
+
   /// Sets the polygon offset units. Default is 0.
   int polygonOffsetUnits;
   bool transparent;
   // Whether to have depth test enabled when rendering this material. Default is true.
   bool depthTest;
+
   /// Whether rendering this material has any effect on the depth buffer. Default is true.
   ///
   /// When drawing 2D overlays it can be useful to disable the depth writing in
   /// order to layer several things together without creating z-index artifacts.
   bool depthWrite;
+
   /// Boolean for fixing antialiasing gaps in CanvasRenderer
   bool overdraw;
+
   /// Defines whether this material is visible. Default is true.
   bool visible;
 
@@ -89,10 +102,25 @@ class Material {
   // Used by ShadowMapPlugin
   bool shadowPass = false;
 
-  Material({this.name: '', this.side: FrontSide, this.opacity: 1, this.transparent: false, this.blending:
-      NormalBlending, this.blendSrc: SrcAlphaFactor, this.blendDst: OneMinusSrcAlphaFactor, this.blendEquation: AddEquation,
-      this.depthTest: true, this.depthWrite: true, this.polygonOffset: false, this.polygonOffsetFactor: 0,
-      this.polygonOffsetUnits: 0, this.alphaTest: 0, num color, this.overdraw: false, this.visible: true, this.fog: false,
+  Material(
+      {this.name: '',
+      this.side: FrontSide,
+      this.opacity: 1,
+      this.transparent: false,
+      this.blending: NormalBlending,
+      this.blendSrc: SrcAlphaFactor,
+      this.blendDst: OneMinusSrcAlphaFactor,
+      this.blendEquation: AddEquation,
+      this.depthTest: true,
+      this.depthWrite: true,
+      this.polygonOffset: false,
+      this.polygonOffsetFactor: 0,
+      this.polygonOffsetUnits: 0,
+      this.alphaTest: 0,
+      num color,
+      this.overdraw: false,
+      this.visible: true,
+      this.fog: false,
       this.vertexColors: NoColors})
       : id = MaterialCount++,
         this.color = new Color(color);
@@ -124,7 +152,6 @@ abstract class TextureMapping {
 abstract class EnvironmentMapping {
   Texture envMap;
 
-
   /// Since this material does not have a specular component, the specular value affects only
   /// how much of the environment map affects the surface.
   Texture specularMap;
@@ -147,6 +174,7 @@ abstract class BumpMapping {
 abstract class Lighting {
   /// Ambient color of the material, multiplied by the color of the AmbientLight
   Color ambient;
+
   /// Emissive (light) color of the material, essentially a solid color unaffected by other lighting
   Color emissive;
   Color specular;
@@ -157,10 +185,8 @@ abstract class Lighting {
 
 /** [Material] that uses skinning **/
 abstract class Morphing {
-  bool morphTargets = false,
-      morphNormals = false;
-  num numSupportedMorphTargets = 0,
-      numSupportedMorphNormals = 0;
+  bool morphTargets = false, morphNormals = false;
+  num numSupportedMorphTargets = 0, numSupportedMorphNormals = 0;
 }
 
 abstract class Skinning {

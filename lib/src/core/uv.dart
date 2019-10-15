@@ -26,14 +26,11 @@ class UV {
   }
 
   lerpSelf(UV uv, num alpha) {
-
     u += (uv.u - u) * alpha;
     v += (uv.v - v) * alpha;
 
     return this;
-
   }
 
   UV clone() => new UV(u, v);
-
 }

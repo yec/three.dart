@@ -6,15 +6,19 @@ part of three;
  */
 
 class TorusKnotGeometry extends Geometry {
-
   double radius, tube, p, q, heightScale;
   num segmentsR, segmentsT;
   List grid;
 
-  TorusKnotGeometry([this.radius = 200.0, this.tube = 40.0, this.segmentsR = 64, this.segmentsT = 8, this.p = 2.0,
-      this.q = 3.0, this.heightScale = 1.0])
+  TorusKnotGeometry(
+      [this.radius = 200.0,
+      this.tube = 40.0,
+      this.segmentsR = 64,
+      this.segmentsT = 8,
+      this.p = 2.0,
+      this.q = 3.0,
+      this.heightScale = 1.0])
       : super() {
-
     grid = new List(segmentsR);
 
     var tang = new Vector3.zero();
@@ -22,15 +26,14 @@ class TorusKnotGeometry extends Geometry {
     var bitan = new Vector3.zero();
 
     for (var i = 0; i < segmentsR; ++i) {
-
       this.grid[i] = new List(this.segmentsT);
 
       for (var j = 0; j < this.segmentsT; ++j) {
-
         var u = i / this.segmentsR * 2 * this.p * Math.pi;
         var v = j / this.segmentsT * 2 * Math.pi;
         var p1 = getPos(u, v, this.q, this.p, this.radius, this.heightScale);
-        var p2 = getPos(u + 0.01, v, this.q, this.p, this.radius, this.heightScale);
+        var p2 =
+            getPos(u + 0.01, v, this.q, this.p, this.radius, this.heightScale);
         var cx, cy;
 
         tang = p2 - p1;
@@ -41,7 +44,8 @@ class TorusKnotGeometry extends Geometry {
         bitan.normalize();
         n.normalize();
 
-        cx = -this.tube * Math.cos(v); // TODO: Hack: Negating it so it faces outside.
+        cx = -this.tube *
+            Math.cos(v); // TODO: Hack: Negating it so it faces outside.
         cy = this.tube * Math.sin(v);
 
         p1.x += cx * n.x + cy * bitan.x;
@@ -49,15 +53,11 @@ class TorusKnotGeometry extends Geometry {
         p1.z += cx * n.z + cy * bitan.z;
 
         this.grid[i][j] = _vert(p1.x, p1.y, p1.z);
-
       }
-
     }
 
     for (var i = 0; i < this.segmentsR; ++i) {
-
       for (var j = 0; j < this.segmentsT; ++j) {
-
         var ip = (i + 1) % this.segmentsR;
         var jp = (j + 1) % this.segmentsT;
 
@@ -73,14 +73,12 @@ class TorusKnotGeometry extends Geometry {
 
         this.faces.add(new Face4(a, b, c, d));
         this.faceVertexUvs[0].add([uva, uvb, uvc, uvd]);
-
       }
     }
 
     this.computeCentroids();
     this.computeFaceNormals();
     this.computeVertexNormals();
-
   }
 
   num _vert(double x, double y, double z) {
@@ -88,8 +86,8 @@ class TorusKnotGeometry extends Geometry {
     return vertices.length - 1;
   }
 
-  Vector3 getPos(double u, double v, double in_q, double in_p, double radius, double heightScale) {
-
+  Vector3 getPos(double u, double v, double in_q, double in_p, double radius,
+      double heightScale) {
     var cu = Math.cos(u);
     var cv = Math.cos(v);
     var su = Math.sin(u);
@@ -101,6 +99,5 @@ class TorusKnotGeometry extends Geometry {
     var tz = heightScale * radius * Math.sin(quOverP) * 0.5;
 
     return new Vector3(tx, ty, tz);
-
   }
 }

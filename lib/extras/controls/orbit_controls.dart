@@ -50,7 +50,6 @@ class KEYS {
 }
 
 class OrbitControls extends EventEmitter {
-
   int _state;
   Object3D object;
   dynamic domElement;
@@ -96,9 +95,7 @@ class OrbitControls extends EventEmitter {
   EventEmitterEvent startEvent;
   EventEmitterEvent endEvent;
 
-
   OrbitControls(this.object, [Element domElement]) {
-
     this.domElement = (domElement != null) ? domElement : document;
 
     // API
@@ -140,7 +137,6 @@ class OrbitControls extends EventEmitter {
     // Enables/disables the ability to use the keyboard to interact with this
     // control.
     noKeys = false;
-
 
     // Internals
 
@@ -185,12 +181,12 @@ class OrbitControls extends EventEmitter {
     endEvent = new EventEmitterEvent(type: 'end');
 
     this.domElement
-        ..onContextMenu.listen((event) => event.preventDefault())
-        ..onMouseDown.listen(mousedown)
-        ..onMouseWheel.listen(mousewheel)
-        ..onTouchStart.listen(touchstart)
-        ..onTouchEnd.listen(touchend)
-        ..onTouchMove.listen(touchmove);
+      ..onContextMenu.listen((event) => event.preventDefault())
+      ..onMouseDown.listen(mousedown)
+      ..onMouseWheel.listen(mousewheel)
+      ..onTouchStart.listen(touchstart)
+      ..onTouchEnd.listen(touchend)
+      ..onTouchMove.listen(touchmove);
 
     keydownStream = window.onKeyDown.listen(keydown);
 
@@ -198,31 +194,22 @@ class OrbitControls extends EventEmitter {
   }
 
   rotateLeft(angle) {
-
     if (angle == null) {
-
       angle = getAutoRotationAngle();
-
     }
 
     _thetaDelta -= angle;
-
   }
 
   rotateUp(angle) {
-
     if (angle == null) {
-
       angle = getAutoRotationAngle();
-
     }
 
     _phiDelta -= angle;
-
   }
 
   panLeft(double distance) {
-
     var te = object.matrix;
 
     // Get the X column of the object transform matrix.
@@ -230,11 +217,9 @@ class OrbitControls extends EventEmitter {
     _panOffset = _panOffset * -distance;
 
     _pan.add(_panOffset);
-
   }
 
   panUp(double distance) {
-
     var te = object.matrix;
 
     // Get the Y column of the object transform matrix.
@@ -244,66 +229,56 @@ class OrbitControls extends EventEmitter {
     _pan.add(_panOffset);
   }
 
-
   pan(double deltaX, double deltaY) {
-
     var element = (domElement == document) ? document.body : domElement;
 
     if (object is PerspectiveCamera) {
-
       // For [PerspectiveCamera]
       var position = object.position;
       var offset = position.clone().sub(target);
       var targetDistance = offset.length;
 
       // Half of the FOV is the distance from the center to the top of the screen.
-      targetDistance *= Math.tan(((object as PerspectiveCamera).fov / 2) * Math.pi / 180.0);
+      targetDistance *=
+          Math.tan(((object as PerspectiveCamera).fov / 2) * Math.pi / 180.0);
 
       // screenWidth is not used since [PerspectiveCamera] is fixed to screen height.
       panLeft(2.0 * deltaX * targetDistance / element.clientHeight);
       panUp(2.0 * deltaY * targetDistance / element.clientHeight);
-
     } else if (object is OrthographicCamera) {
-
       // For [OrthographicCamera]
-      panLeft(
-          deltaX * ((object as OrthographicCamera).right - (object as OrthographicCamera).left) / element.clientWidth);
-      panUp(
-          deltaY * ((object as OrthographicCamera).top - (object as OrthographicCamera).bottom) / element.clientHeight);
-
+      panLeft(deltaX *
+          ((object as OrthographicCamera).right -
+              (object as OrthographicCamera).left) /
+          element.clientWidth);
+      panUp(deltaY *
+          ((object as OrthographicCamera).top -
+              (object as OrthographicCamera).bottom) /
+          element.clientHeight);
     } else {
-
       // Object is neither [PerspectiveCamera] or [OrthographicCamera]
-      throw new ArgumentError('camera must be PerspectiveCamera or OrthographicCamera');
+      throw new ArgumentError(
+          'camera must be PerspectiveCamera or OrthographicCamera');
     }
   }
 
   dollyIn({dollyScale}) {
-
     if (dollyScale == null) {
-
       dollyScale = getZoomScale();
-
     }
 
     _scale /= dollyScale;
-
   }
 
   dollyOut({dollyScale}) {
-
     if (dollyScale == null) {
-
       dollyScale = getZoomScale();
-
     }
 
     _scale *= dollyScale;
-
   }
 
   update() {
-
     var position = object.position;
 
     _offset.setFrom(position).sub(target);
@@ -315,12 +290,11 @@ class OrbitControls extends EventEmitter {
     var theta = Math.atan2(_offset.x, _offset.z);
 
     // Angle from Y-axis
-    var phi = Math.atan2(Math.sqrt(_offset.x * _offset.x + _offset.z * _offset.z), _offset.y);
+    var phi = Math.atan2(
+        Math.sqrt(_offset.x * _offset.x + _offset.z * _offset.z), _offset.y);
 
     if (autoRotate) {
-
       rotateLeft(getAutoRotationAngle());
-
     }
 
     theta += _thetaDelta;
@@ -361,80 +335,66 @@ class OrbitControls extends EventEmitter {
     // * min( camera displacement, camera rotation in radians )^2 > EPS
     // * using small-angle approximation cos(x/2) = 1 - x^2 / 8
     if (lastPosition.distanceToSquared(object.position) > EPS ||
-        8 * (1 - dotProductQuaternion(lastQuaternion, object.quaternion)) > EPS) {
-
+        8 * (1 - dotProductQuaternion(lastQuaternion, object.quaternion)) >
+            EPS) {
       dispatchEvent(changeEvent);
 
       lastPosition.setFrom(object.position);
       lastQuaternion = object.quaternion;
-
     }
-
   }
 
   reset() {
-
     _state = STATE.NONE;
 
     target = target0;
     object.position = position0;
 
     update();
-
   }
 
   getAutoRotationAngle() {
-
     return 2 * Math.pi / 60 / 60 * autoRotateSpeed;
-
   }
 
   getZoomScale() {
-
     return Math.pow(0.95, zoomSpeed);
-
   }
 
   mousedown(event) {
-
     if (enabled == false) return;
 
     event.preventDefault();
 
     if (event.button == 0) {
-
       if (noRotate == true) return;
 
       _state = STATE.ROTATE;
 
-      _rotateStart = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
-
+      _rotateStart =
+          new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
     } else if (event.button == 1) {
-
       if (noZoom == true) return;
 
       _state = STATE.DOLLY;
 
-      _dollyStart = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
-
+      _dollyStart =
+          new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
     } else if (event.button == 2) {
-
       if (noPan == true) return;
 
       _state = STATE.PAN;
 
-      _panStart = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
-
+      _panStart =
+          new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
     }
 
     mouseMoveStream = document.onMouseMove.listen(mousemove);
     mouseUpStream = document.onMouseUp.listen(mouseup);
     dispatchEvent(startEvent);
-
   }
 
   mousemove(event) {
-
     if (enabled == false) return;
 
     event.preventDefault();
@@ -442,42 +402,37 @@ class OrbitControls extends EventEmitter {
     var element = (domElement == document) ? document.body : domElement;
 
     if (_state == STATE.ROTATE) {
-
       if (noRotate == true) return;
 
-      _rotateEnd = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
+      _rotateEnd =
+          new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
       _rotateDelta = _rotateEnd - _rotateStart;
 
       // Rotating across the whole screen is 360 degrees around.
-      rotateLeft(2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
+      rotateLeft(
+          2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
 
       // Rotating up and down along the whole screen attempts to go to 360,
       // but it is limited to 180 degrees.
-      rotateUp(2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
+      rotateUp(
+          2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
 
       _rotateStart.setFrom(_rotateEnd);
-
     } else if (_state == STATE.DOLLY) {
-
       if (noZoom == true) return;
 
-      _dollyEnd = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
+      _dollyEnd =
+          new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
       _dollyDelta = _dollyEnd - _dollyStart;
 
       if (_dollyDelta.y > 0) {
-
         dollyIn();
-
       } else {
-
         dollyOut();
-
       }
 
       _dollyStart.setFrom(_dollyEnd);
-
     } else if (_state == STATE.PAN) {
-
       if (noPan == true) return;
 
       _panEnd = new Vector2(event.clientX.toDouble(), event.clientY.toDouble());
@@ -486,15 +441,12 @@ class OrbitControls extends EventEmitter {
       pan(_panDelta.x.toDouble(), _panDelta.y.toDouble());
 
       _panStart.setFrom(_panEnd);
-
     }
 
     update();
-
   }
 
   mouseup(event) {
-
     if (enabled == false) return;
 
     mouseMoveStream.cancel();
@@ -503,11 +455,9 @@ class OrbitControls extends EventEmitter {
     dispatchEvent(endEvent);
 
     _state = STATE.NONE;
-
   }
 
   mousewheel(event) {
-
     if (enabled == false || noZoom == true) return;
 
     event.preventDefault();
@@ -516,39 +466,28 @@ class OrbitControls extends EventEmitter {
     var delta = 0;
 
     if (event.wheelDeltaY != 0) {
-
       // WebKit / Opera / Internet Explorer 9
       delta = event.wheelDeltaY;
-
     } else if (event.detail != 0) {
-
       // Firefox
       delta = -event.detail;
-
     }
 
     if (delta > 0) {
-
       dollyOut();
-
     } else {
-
       dollyIn();
-
     }
 
     update();
     dispatchEvent(startEvent);
     dispatchEvent(endEvent);
-
   }
 
   keydown(event) {
-
     if (enabled == false || noKeys == true || noPan == true) return;
 
     switch (event.keyCode) {
-
       case KEYS.UP:
         pan(0.0, keyPanSpeed);
         update();
@@ -569,22 +508,20 @@ class OrbitControls extends EventEmitter {
         update();
         break;
     }
-
   }
 
   touchstart(event) {
-
     if (enabled == false) return;
 
     switch (event.touches.length) {
-
       case 1:
         // Single finger touch - rotate
         if (noRotate == true) return;
 
         _state = STATE.TOUCH_ROTATE;
 
-        _rotateStart = new Vector2(event.touches[0].pageX.toDouble(), event.touches[0].pageY.toDouble());
+        _rotateStart = new Vector2(event.touches[0].pageX.toDouble(),
+            event.touches[0].pageY.toDouble());
         break;
 
       case 2:
@@ -593,9 +530,11 @@ class OrbitControls extends EventEmitter {
 
         _state = STATE.TOUCH_DOLLY;
 
-        var dx = event.touches[0].pageX.toDouble() - event.touches[1].pageX.toDouble();
+        var dx = event.touches[0].pageX.toDouble() -
+            event.touches[1].pageX.toDouble();
 
-        var dy = event.touches[0].pageY.toDouble() - event.touches[1].pageY.toDouble();
+        var dy = event.touches[0].pageY.toDouble() -
+            event.touches[1].pageY.toDouble();
 
         var distance = Math.sqrt(dx * dx + dy * dy);
 
@@ -616,11 +555,9 @@ class OrbitControls extends EventEmitter {
     }
 
     dispatchEvent(startEvent);
-
   }
 
   touchmove(event) {
-
     if (enabled == true) return;
 
     event.preventDefault();
@@ -629,22 +566,24 @@ class OrbitControls extends EventEmitter {
     var element = (domElement == document) ? document.body : domElement;
 
     switch (event.touches.length) {
-
       case 1:
         // Single finger touch - rotate
         if (noRotate == true) return;
         if (_state != STATE.TOUCH_ROTATE) return;
 
-        _rotateEnd = new Vector2(event.touches[0].pageX.toDouble(), event.touches[0].pageY.toDouble());
+        _rotateEnd = new Vector2(event.touches[0].pageX.toDouble(),
+            event.touches[0].pageY.toDouble());
 
         _rotateDelta = _rotateEnd - _rotateStart;
 
         // Rotating across the whole screen is 360 degrees around.
-        rotateLeft(2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
+        rotateLeft(
+            2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
 
         // Rotating up and down along the whole screen attempts to go to 360,
         // but it is limited to 180 degrees.
-        rotateUp(2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
+        rotateUp(
+            2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
 
         _rotateStart = _rotateEnd;
 
@@ -656,9 +595,11 @@ class OrbitControls extends EventEmitter {
         if (noZoom == true) return;
         if (_state != STATE.TOUCH_DOLLY) return;
 
-        var dx = event.touches[0].pageX.toDouble() - event.touches[1].pageX.toDouble();
+        var dx = event.touches[0].pageX.toDouble() -
+            event.touches[1].pageX.toDouble();
 
-        var dy = event.touches[0].pageY.toDouble() - event.touches[1].pageY.toDouble();
+        var dy = event.touches[0].pageY.toDouble() -
+            event.touches[1].pageY.toDouble();
 
         var distance = Math.sqrt(dx * dx + dy * dy);
 
@@ -666,13 +607,9 @@ class OrbitControls extends EventEmitter {
         _dollyDelta = _dollyEnd - _dollyStart;
 
         if (_dollyDelta.y > 0) {
-
           dollyOut();
-
         } else {
-
           dollyIn();
-
         }
 
         _dollyStart = _dollyEnd;
@@ -685,7 +622,8 @@ class OrbitControls extends EventEmitter {
         if (noPan == true) return;
         if (_state == STATE.TOUCH_PAN) return;
 
-        _panEnd = new Vector2(event.touches[0].pageX.toDouble(), event.touches[0].pageY.toDouble());
+        _panEnd = new Vector2(event.touches[0].pageX.toDouble(),
+            event.touches[0].pageY.toDouble());
 
         _panDelta = _panEnd - _panStart;
 
@@ -699,22 +637,18 @@ class OrbitControls extends EventEmitter {
       default:
         _state = STATE.NONE;
     }
-
   }
 
   touchend(event) {
-
     if (enabled == false) return;
 
     dispatchEvent(endEvent);
 
     _state = STATE.NONE;
-
   }
 
   // TODO(adamjcook): Move into vector_math library? Perhaps a method of quaternion.dart?
   Quaternion setFromUnitVectors(Vector3 from, Vector3 to) {
-
     // Reference: http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
     // Assumes that direction vectors `from` and `to` are normalized.
 
@@ -725,32 +659,22 @@ class OrbitControls extends EventEmitter {
     r = from.dot(to) + 1;
 
     if (r < EPS) {
-
       r = 0;
 
       if ((from.x).abs() > (from.z).abs()) {
-
         v1 = new Vector3(-from.y, from.x, 0.0);
-
       } else {
-
         v1 = new Vector3(0.0, -from.z, from.y);
       }
-
     } else {
-
       v1 = from.cross(to);
     }
 
     return new Quaternion(v1.x, v1.y, v1.z, r).normalize();
-
   }
 
   // TODO(adamjcook): Move into vector_math library? Perhaps a method of quaternion.dart?
   double dotProductQuaternion(Quaternion q1, Quaternion q2) {
-
     return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
-
   }
-
 }

@@ -8,45 +8,42 @@ import "package:three/three.dart";
 
 var crossOrigin = 'anonymous';
 
-Texture loadTexture(String url, {mapping, Function onLoad(Texture texture), Function onError(String message)}) {
-
+Texture loadTexture(String url,
+    {mapping,
+    Function onLoad(Texture texture),
+    Function onError(String message)}) {
   var image = new ImageElement();
   var texture = new Texture(image, mapping);
 
   var loader = new ImageLoader();
 
   loader.addEventListener('load', (event) {
-
     texture.image = event.content;
     texture.needsUpdate = true;
 
     if (onLoad != null) onLoad(texture);
-
   });
 
   loader.addEventListener('error', (event) {
-
     if (onError != null) onError(event.message);
-
   });
 
   loader.crossOrigin = crossOrigin;
   loader.load(url, image);
 
   return texture;
-
 }
 
-Texture loadCompressedTexture(String url, {mapping, Function onLoad(Texture texture), Function
-    onError(ProgressEvent e)}) {
-
+Texture loadCompressedTexture(String url,
+    {mapping,
+    Function onLoad(Texture texture),
+    Function onError(ProgressEvent e)}) {
   var texture = new CompressedTexture();
   texture.mapping = mapping;
 
   var request = new HttpRequest();
 
   request.onLoad.listen((Event e) {
-
     var buffer = request.response;
     var dds = parseDDS(buffer, true);
 
@@ -65,7 +62,6 @@ Texture loadCompressedTexture(String url, {mapping, Function onLoad(Texture text
     texture.needsUpdate = true;
 
     if (onLoad != null) onLoad(texture);
-
   });
 
   request.onError.listen(onError);
@@ -75,12 +71,9 @@ Texture loadCompressedTexture(String url, {mapping, Function onLoad(Texture text
   request.send(null);
 
   return texture;
-
 }
 
-
 Texture loadTextureCube(List<String> array, [mapping, Function onLoad()]) {
-
   var i, l;
   l = array.length;
   ImageList images = new ImageList(l);
@@ -92,32 +85,24 @@ Texture loadTextureCube(List<String> array, [mapping, Function onLoad()]) {
   images.loadCount = 0;
 
   for (i = 0; i < l; ++i) {
-
     images[i] = new ImageElement();
     images[i].onLoad.listen((_) {
-
       images.loadCount += 1;
 
       if (images.loadCount == 6) {
-
         texture.needsUpdate = true;
         if (onLoad != null) onLoad();
-
       }
-
     });
 
     images[i].crossOrigin = crossOrigin;
     images[i].src = array[i];
-
   }
 
   return texture;
-
 }
 
 Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
-
   List ddsMidmaps = [];
 
   var dds = {
@@ -166,14 +151,19 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
       DDPF_LUMINANCE = 0x20000;
 
   fourCCToInt32(value) {
-
-    return value.charCodeAt(0) + (value.charCodeAt(1) << 8) + (value.charCodeAt(2) << 16) + (value.charCodeAt(3) << 24);
-
+    return value.charCodeAt(0) +
+        (value.charCodeAt(1) << 8) +
+        (value.charCodeAt(2) << 16) +
+        (value.charCodeAt(3) << 24);
   }
 
   int32ToFourCC(value) {
-
-    return new String.fromCharCodes([value & 0xff, (value >> 8) & 0xff, (value >> 16) & 0xff, (value >> 24) & 0xff]);
+    return new String.fromCharCodes([
+      value & 0xff,
+      (value >> 8) & 0xff,
+      (value >> 16) & 0xff,
+      (value >> 24) & 0xff
+    ]);
   }
 
   var FOURCC_DXT1 = fourCCToInt32("DXT1");
@@ -206,7 +196,8 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
   }
 
   if ((header[off_pfFlags] & DDPF_FOURCC) == 0) {
-    print("ImageUtils.parseDDS(): Unsupported format, must contain a FourCC code");
+    print(
+        "ImageUtils.parseDDS(): Unsupported format, must contain a FourCC code");
     return dds;
   }
 
@@ -224,7 +215,8 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
     blockBytes = 16;
     dds["format"] = RGBA_S3TC_DXT5_Format;
   } else {
-    print("ImageUtils.parseDDS(): Unsupported FourCC code: ${int32ToFourCC( fourCC )}");
+    print(
+        "ImageUtils.parseDDS(): Unsupported FourCC code: ${int32ToFourCC(fourCC)}");
   }
 
   dds["mipmapCount"] = 1;
@@ -244,50 +236,41 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
   num height = dds["height"];
 
   for (var i = 0; i < dds["mipmapCount"]; i++) {
-
-    int dataLength = Math.max(4, width) ~/ 4 * Math.max(4, height) ~/ 4 * blockBytes;
+    int dataLength =
+        Math.max(4, width) ~/ 4 * Math.max(4, height) ~/ 4 * blockBytes;
     var byteArray = new Uint8List.view(buffer, dataOffset, dataLength);
 
-    ddsMidmaps.add({
-      "data": byteArray,
-      "width": width,
-      "height": height
-    });
+    ddsMidmaps.add({"data": byteArray, "width": width, "height": height});
 
     dataOffset += dataLength;
 
     width = Math.max(width * 0.5, 1);
     height = Math.max(height * 0.5, 1);
-
   }
 
   dds["midmaps"] = ddsMidmaps;
 
   return dds;
-
 }
 
 CanvasElement getNormalMap(image, int depth) {
-
   // Adapted from http://www.paulbrunt.co.uk/lab/heightnormal/
 
   var cross = (a, b) {
-
-    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-
+    return [
+      a[1] * b[2] - a[2] * b[1],
+      a[2] * b[0] - a[0] * b[2],
+      a[0] * b[1] - a[1] * b[0]
+    ];
   };
 
   var subtract = (a, b) {
-
     return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-
   };
 
   var normalize = (a) {
-
     var l = Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
     return [a[0] / l, a[1] / l, a[2] / l];
-
   };
 
   depth = depth | 1;
@@ -307,9 +290,7 @@ CanvasElement getNormalMap(image, int depth) {
   var output = imageData.data;
 
   for (var x = 0; x < width; x++) {
-
     for (var y = 0; y < height; y++) {
-
       num ly = y - 1 < 0 ? 0 : y - 1;
       num uy = y + 1 > height - 1 ? height - 1 : y + 1;
       num lx = x - 1 < 0 ? 0 : x - 1;
@@ -330,23 +311,19 @@ CanvasElement getNormalMap(image, int depth) {
       var num_points = points.length;
 
       for (var i = 0; i < num_points; i++) {
-
         var v1 = points[i];
         var v2 = points[(i + 1) % num_points];
         v1 = subtract(v1, origin);
         v2 = subtract(v2, origin);
         normals.add(normalize(cross(v1, v2)));
-
       }
 
       List<num> normal = [0, 0, 0];
 
       for (var i = 0; i < normals.length; i++) {
-
         normal[0] += normals[i][0];
         normal[1] += normals[i][1];
         normal[2] += normals[i][2];
-
       }
 
       normal[0] /= normals.length;
@@ -359,19 +336,15 @@ CanvasElement getNormalMap(image, int depth) {
       output[idx + 1] = ((normal[1] + 1.0) / 2.0 * 255).toInt() | 0;
       output[idx + 2] = (normal[2] * 255).toInt() | 0;
       output[idx + 3] = 255;
-
     }
-
   }
 
   context.putImageData(imageData, 0, 0);
 
   return canvas;
-
 }
 
 DataTexture generateDataTexture(num width, num height, Color color) {
-
   var size = width * height;
   var data = new Uint8List(3 * size);
 
@@ -380,16 +353,13 @@ DataTexture generateDataTexture(num width, num height, Color color) {
   var b = (color.b * 255).floor();
 
   for (var i = 0; i < size; i++) {
-
     data[i * 3] = r;
     data[i * 3 + 1] = g;
     data[i * 3 + 2] = b;
-
   }
 
   var texture = new DataTexture(data, width, height, RGBFormat);
   texture.needsUpdate = true;
 
   return texture;
-
 }

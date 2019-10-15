@@ -4,7 +4,6 @@ part of three;
  *  Spline 3D curve
  **************************************************************/
 class SplineCurve3 extends Curve3D {
-
   List<Vector3> points;
 
   SplineCurve3([this.points]) : super() {
@@ -12,7 +11,6 @@ class SplineCurve3 extends Curve3D {
   }
 
   Vector3 getPoint(t) {
-
     var v = new Vector3.zero();
     var c = new List<int>(4);
     var point = (points.length - 1) * t,
@@ -34,7 +32,5 @@ class SplineCurve3 extends Curve3D {
     v.z = CurveUtils.interpolate(pt0.z, pt1.z, pt2.z, pt3.z, weight);
 
     return v;
-
   }
-
 }

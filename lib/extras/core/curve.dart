@@ -4,7 +4,6 @@ part of three;
  *  Abstract Curve base class
  **************************************************************/
 abstract class Curve<V extends Vector> {
-
   int _arcLengthDivisions = null;
   List cacheArcLengths = null;
   bool needsUpdate = false;
@@ -23,11 +22,9 @@ abstract class Curve<V extends Vector> {
   // Get sequence of points using getPoint( t )
   // TODO(nelsonsilva) - closedPath is only used in Path
   List<V> getPoints([num divisions = null, closedPath = false]) {
-
     if (divisions == null) divisions = 5;
 
-    var d,
-        pts = [];
+    var d, pts = [];
 
     for (d = 0; d <= divisions; d++) {
       pts.add(this.getPoint(d / divisions));
@@ -39,10 +36,7 @@ abstract class Curve<V extends Vector> {
   // Get sequence of points using getPointAt( u )
   // TODO(nelsonsilva) - closedPath is only used in Path
   List<V> getSpacedPoints([num divisions = 5, bool closedPath = false]) {
-
-
-    var d,
-        pts = [];
+    var d, pts = [];
 
     for (d = 0; d <= divisions; d++) {
       pts.add(this.getPointAt(d / divisions));
@@ -63,17 +57,17 @@ abstract class Curve<V extends Vector> {
     return pts;
   }
 
-
   // Get total curve arc length
   num get length => getLengths().last;
 
   // Get list of cumulative segment lengths
   List getLengths({num divisions: null}) {
+    if (divisions == null)
+      divisions = (_arcLengthDivisions != null) ? (_arcLengthDivisions) : 200;
 
-    if (divisions == null) divisions = (_arcLengthDivisions != null) ? (_arcLengthDivisions) : 200;
-
-    if (cacheArcLengths != null && (cacheArcLengths.length == divisions + 1) && !needsUpdate) {
-
+    if (cacheArcLengths != null &&
+        (cacheArcLengths.length == divisions + 1) &&
+        !needsUpdate) {
       //console.log( "cached", this.cacheArcLengths );
       return cacheArcLengths;
     }
@@ -88,7 +82,6 @@ abstract class Curve<V extends Vector> {
     cache.add(0);
 
     for (var p = 1; p <= divisions; p++) {
-
       current = getPoint(p / divisions);
 
       var distance;
@@ -103,14 +96,12 @@ abstract class Curve<V extends Vector> {
       sum += distance;
       cache.add(sum);
       last = current;
-
     }
 
     cacheArcLengths = cache;
 
     return cache; // { sums: cache, sum:sum }; Sum is in the last element.
   }
-
 
   updateArcLengths() {
     needsUpdate = true;
@@ -119,11 +110,9 @@ abstract class Curve<V extends Vector> {
 
   /// Given u ( 0 .. 1 ), get a t to find p. This gives you points which are equi distance
   getUtoTmapping(u, {distance: null}) {
-
     var arcLengths = getLengths();
 
-    int i = 0,
-        il = arcLengths.length;
+    int i = 0, il = arcLengths.length;
 
     var targetArcLength; // The targeted u distance value to get
 
@@ -137,12 +126,9 @@ abstract class Curve<V extends Vector> {
 
     // binary search for the index with largest value smaller than target u distance.
 
-    var low = 0,
-        high = il - 1,
-        comparison;
+    var low = 0, high = il - 1, comparison;
 
     while (low <= high) {
-
       i = (low + (high - low) / 2).floor().toInt();
 
       // less likely to overflow, though probably not issue here
@@ -150,24 +136,18 @@ abstract class Curve<V extends Vector> {
       comparison = arcLengths[i] - targetArcLength;
 
       if (comparison < 0) {
-
         low = i + 1;
         continue;
-
       } else if (comparison > 0) {
-
         high = i - 1;
         continue;
-
       } else {
-
         high = i;
         break;
 
         // DONE
 
       }
-
     }
 
     i = high;
@@ -175,10 +155,8 @@ abstract class Curve<V extends Vector> {
     //console.log('b' , i, low, high, Date.now()- time);
 
     if (arcLengths[i] == targetArcLength) {
-
       var t = i / (il - 1);
       return t;
-
     }
 
     // we could get finer grain at lengths, or use simple interpolatation between two points
@@ -198,7 +176,6 @@ abstract class Curve<V extends Vector> {
 
     return t;
   }
-
 
   // Returns a unit vector tangent at t
   // In case any sub curve does not implement its tangent / normal finding,
@@ -224,7 +201,7 @@ abstract class Curve<V extends Vector> {
       var pt2 = getPoint(t2) as Vector3;
       vec = pt2 - pt1;
     }
-    
+
     return vec..normalize();
   }
 
@@ -232,7 +209,6 @@ abstract class Curve<V extends Vector> {
     var t = getUtoTmapping(u);
     return getTangent(t);
   }
-
 }
 
 abstract class Curve2D extends Curve<Vector2> {
@@ -245,5 +221,4 @@ abstract class Curve2D extends Curve<Vector2> {
   }
 }
 
-abstract class Curve3D extends Curve<Vector3> {
-}
+abstract class Curve3D extends Curve<Vector3> {}

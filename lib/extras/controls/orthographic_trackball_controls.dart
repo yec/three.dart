@@ -25,7 +25,6 @@ class STATE {
 }
 
 class OrthographicTrackballControls extends EventEmitter {
-
   int _state, _prevState;
   Object3D object;
   dynamic domElement;
@@ -60,7 +59,6 @@ class OrthographicTrackballControls extends EventEmitter {
   EventEmitterEvent changeEvent;
 
   OrthographicTrackballControls(this.object, [Element domElement]) {
-
     assert(this.object is OrthographicCamera);
 
     this.domElement = (domElement != null) ? domElement : document;
@@ -69,12 +67,7 @@ class OrthographicTrackballControls extends EventEmitter {
 
     enabled = true;
 
-    screen = {
-      'width': 0,
-      'height': 0,
-      'offsetLeft': 0,
-      'offsetTop': 0
-    };
+    screen = {'width': 0, 'height': 0, 'offsetLeft': 0, 'offsetTop': 0};
     radius = (screen['width'] + screen['height']) / 4;
 
     rotateSpeed = 1.0;
@@ -88,7 +81,7 @@ class OrthographicTrackballControls extends EventEmitter {
     staticMoving = false;
     dynamicDampingFactor = 0.2;
 
-    keys = [65 /*A*/, 83 /*S*/, 68 /*D*/ ];
+    keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
 
     // Internals
 
@@ -129,22 +122,20 @@ class OrthographicTrackballControls extends EventEmitter {
     changeEvent = new EventEmitterEvent(type: 'change');
 
     this.domElement
-        ..onContextMenu.listen((event) => event.preventDefault())
-        ..onMouseDown.listen(mousedown)
-        ..onMouseWheel.listen(mousewheel)
-        ..onTouchStart.listen(touchstart)
-        ..onTouchEnd.listen(touchend)
-        ..onTouchMove.listen(touchmove);
+      ..onContextMenu.listen((event) => event.preventDefault())
+      ..onMouseDown.listen(mousedown)
+      ..onMouseWheel.listen(mousewheel)
+      ..onTouchStart.listen(touchstart)
+      ..onTouchEnd.listen(touchend)
+      ..onTouchMove.listen(touchmove);
 
     //this.domElement.addEventListener( 'DOMMouseScroll', mousewheel, false ); // firefox
 
     keydownStream = window.onKeyDown.listen(keydown);
     window.onKeyUp.listen(keyup);
 
-
     handleResize();
   }
-
 
   // methods
 
@@ -158,16 +149,15 @@ class OrthographicTrackballControls extends EventEmitter {
     radius = (screen['width'] + screen['height'] / 4);
   }
 
-
   handleEvent(event) {
     dispatchEvent(event);
   }
 
-  getMouseOnScreen(clientX, clientY) =>
-      new Vector2((clientX - screen['offsetLeft']) / radius, (clientY - screen['offsetTop']) / radius);
+  getMouseOnScreen(clientX, clientY) => new Vector2(
+      (clientX - screen['offsetLeft']) / radius,
+      (clientY - screen['offsetTop']) / radius);
 
   getMouseProjectionOnBall(clientX, clientY) {
-
     var mouseOnBall = new Vector3(
         (clientX - screen['width'] * 0.5 - screen['offsetLeft']) / radius,
         (screen['height'] * 0.5 + screen['offsetTop'] - clientY) / radius,
@@ -176,13 +166,9 @@ class OrthographicTrackballControls extends EventEmitter {
     var length = mouseOnBall.length;
 
     if (length > 1.0) {
-
       mouseOnBall.normalize();
-
     } else {
-
       mouseOnBall.z = Math.sqrt(1.0 - length * length);
-
     }
 
     _eye.setFrom(object.position).sub(target);
@@ -192,15 +178,13 @@ class OrthographicTrackballControls extends EventEmitter {
     projection.add(_eye.normalize().scale(mouseOnBall.z));
 
     return projection;
-
   }
 
   rotateCamera() {
-
-    var angle = Math.acos(_rotateStart.dot(_rotateEnd) / _rotateStart.length / _rotateEnd.length);
+    var angle = Math.acos(
+        _rotateStart.dot(_rotateEnd) / _rotateStart.length / _rotateEnd.length);
 
     if (!angle.isNaN && angle != 0) {
-
       Vector3 axis = _rotateStart.cross(_rotateEnd).normalize();
       Quaternion quaternion = new Quaternion.identity();
 
@@ -214,68 +198,57 @@ class OrthographicTrackballControls extends EventEmitter {
       quaternion.rotate(_rotateEnd);
 
       if (staticMoving) {
-
         _rotateStart.setFrom(_rotateEnd);
-
       } else {
-
         quaternion.setAxisAngle(axis, -angle * (dynamicDampingFactor - 1.0));
         quaternion.rotate(_rotateStart);
-
       }
-
     }
-
   }
 
   zoomCamera() {
-
     if (_state == STATE.TOUCH_ZOOM) {
-
       double factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
       _touchZoomDistanceStart = _touchZoomDistanceEnd;
       _zoomFactor *= factor;
 
-      (object as OrthographicCamera).left = _zoomFactor * left0 + (1 - _zoomFactor) * center0.x;
-      (object as OrthographicCamera).right = _zoomFactor * right0 + (1 - _zoomFactor) * center0.x;
-      (object as OrthographicCamera).top = _zoomFactor * top0 + (1 - _zoomFactor) * center0.y;
-      (object as OrthographicCamera).bottom = _zoomFactor * bottom0 + (1 - _zoomFactor) * center0.y;
-
+      (object as OrthographicCamera).left =
+          _zoomFactor * left0 + (1 - _zoomFactor) * center0.x;
+      (object as OrthographicCamera).right =
+          _zoomFactor * right0 + (1 - _zoomFactor) * center0.x;
+      (object as OrthographicCamera).top =
+          _zoomFactor * top0 + (1 - _zoomFactor) * center0.y;
+      (object as OrthographicCamera).bottom =
+          _zoomFactor * bottom0 + (1 - _zoomFactor) * center0.y;
     } else {
-
       var factor = 1.0 + (_zoomEnd.y - _zoomStart.y) * zoomSpeed;
 
       if (factor != 1.0 && factor > 0.0) {
-
         _zoomFactor *= factor;
 
-        (object as OrthographicCamera).left = _zoomFactor * left0 + (1 - _zoomFactor) * center0.x;
-        (object as OrthographicCamera).right = _zoomFactor * right0 + (1 - _zoomFactor) * center0.x;
-        (object as OrthographicCamera).top = _zoomFactor * top0 + (1 - _zoomFactor) * center0.y;
-        (object as OrthographicCamera).bottom = _zoomFactor * bottom0 + (1 - _zoomFactor) * center0.y;
+        (object as OrthographicCamera).left =
+            _zoomFactor * left0 + (1 - _zoomFactor) * center0.x;
+        (object as OrthographicCamera).right =
+            _zoomFactor * right0 + (1 - _zoomFactor) * center0.x;
+        (object as OrthographicCamera).top =
+            _zoomFactor * top0 + (1 - _zoomFactor) * center0.y;
+        (object as OrthographicCamera).bottom =
+            _zoomFactor * bottom0 + (1 - _zoomFactor) * center0.y;
 
         if (staticMoving) {
-
           _zoomStart.setFrom(_zoomEnd);
-
         } else {
-
-          _zoomStart.y += (_zoomEnd.y - _zoomStart.y) * this.dynamicDampingFactor;
-
+          _zoomStart.y +=
+              (_zoomEnd.y - _zoomStart.y) * this.dynamicDampingFactor;
         }
-
       }
-
     }
-
   }
 
   panCamera() {
-
     Vector2 mouseChange = _panEnd - _panStart;
 
     if (mouseChange.length != 0.0) {
-
       mouseChange.scale(_eye.length * panSpeed);
 
       Vector3 pan = _eye.cross(object.up).normalize().scale(mouseChange.x);
@@ -285,21 +258,14 @@ class OrthographicTrackballControls extends EventEmitter {
       target.add(pan);
 
       if (staticMoving) {
-
         _panStart = _panEnd;
-
       } else {
-
         _panStart += (_panEnd - _panStart).scale(dynamicDampingFactor);
-
       }
-
     }
-
   }
 
   update() {
-
     _eye.setFrom(object.position).sub(target);
 
     if (!noRotate) {
@@ -321,17 +287,13 @@ class OrthographicTrackballControls extends EventEmitter {
 
     // distanceToSquared
     if ((lastPosition - object.position).length2 > 0.0) {
-
       dispatchEvent(changeEvent);
 
       lastPosition.setFrom(object.position);
-
     }
-
   }
 
   reset() {
-
     _state = STATE.NONE;
     _prevState = STATE.NONE;
 
@@ -349,13 +311,11 @@ class OrthographicTrackballControls extends EventEmitter {
     object.lookAt(target);
 
     dispatchEvent(changeEvent);
-
   }
 
   // Listeners
 
   keydown(KeyboardEvent event) {
-
     if (!enabled) return;
 
     keydownStream.cancel();
@@ -363,27 +323,17 @@ class OrthographicTrackballControls extends EventEmitter {
     _prevState = _state;
 
     if (_state != STATE.NONE) {
-
       return;
-
     } else if (event.keyCode == keys[STATE.ROTATE] && !noRotate) {
-
       _state = STATE.ROTATE;
-
     } else if (event.keyCode == keys[STATE.ZOOM] && !noZoom) {
-
       _state = STATE.ZOOM;
-
     } else if (event.keyCode == keys[STATE.PAN] && !noPan) {
-
       _state = STATE.PAN;
-
     }
-
   }
 
   keyup(KeyboardEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -391,11 +341,9 @@ class OrthographicTrackballControls extends EventEmitter {
     _state = _prevState;
 
     keydownStream = window.onKeyDown.listen(keydown);
-
   }
 
   mousedown(MouseEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -404,56 +352,39 @@ class OrthographicTrackballControls extends EventEmitter {
     event.stopPropagation();
 
     if (_state == STATE.NONE) {
-
       _state = event.button;
     }
 
     if (_state == STATE.ROTATE && !noRotate) {
-
       _rotateStart = getMouseProjectionOnBall(event.client.x, event.client.y);
       _rotateEnd = _rotateStart;
-
     } else if (_state == STATE.ZOOM && !noZoom) {
-
       _zoomStart = getMouseOnScreen(event.client.x, event.client.y);
       _zoomEnd = _zoomStart;
-
     } else if (_state == STATE.PAN && !noPan) {
-
       _panStart = getMouseOnScreen(event.client.x, event.client.y);
       _panEnd = _panStart;
-
     }
 
     mouseMoveStream = document.onMouseMove.listen(mousemove);
     mouseUpStream = document.onMouseUp.listen(mouseup);
-
   }
 
   mousemove(MouseEvent event) {
-
     if (!enabled) {
       return;
     }
 
     if (_state == STATE.ROTATE && !noRotate) {
-
       _rotateEnd = getMouseProjectionOnBall(event.client.x, event.client.y);
-
     } else if (_state == STATE.ZOOM && !noZoom) {
-
       _zoomEnd = getMouseOnScreen(event.client.x, event.client.y);
-
     } else if (_state == STATE.PAN && !noPan) {
-
       _panEnd = getMouseOnScreen(event.client.x, event.client.y);
-
     }
-
   }
 
   mouseup(MouseEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -465,11 +396,9 @@ class OrthographicTrackballControls extends EventEmitter {
 
     mouseMoveStream.cancel();
     mouseUpStream.cancel();
-
   }
 
   mousewheel(WheelEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -480,22 +409,20 @@ class OrthographicTrackballControls extends EventEmitter {
     var delta = 0.0;
 
     // TODO(nelsonsilva) - check this!
-    if (event.deltaY != 0) { // WebKit / Opera / Explorer 9
+    if (event.deltaY != 0) {
+      // WebKit / Opera / Explorer 9
 
       delta = event.deltaY / 40;
-
-    } else if (event.detail != 0) { // Firefox
+    } else if (event.detail != 0) {
+      // Firefox
 
       delta = -event.detail / 3;
-
     }
 
     _zoomStart.y += (1 / delta) * 0.05;
-
   }
 
   touchstart(TouchEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -503,28 +430,27 @@ class OrthographicTrackballControls extends EventEmitter {
     event.preventDefault();
 
     switch (event.touches.length) {
-
       case 1:
         _state = STATE.TOUCH_ROTATE;
-        _rotateStart = _rotateEnd = getMouseProjectionOnBall(event.touches[0].page.x, event.touches[0].page.y);
+        _rotateStart = _rotateEnd = getMouseProjectionOnBall(
+            event.touches[0].page.x, event.touches[0].page.y);
         break;
       case 2:
         _state = STATE.TOUCH_ZOOM;
-        _zoomStart = _zoomEnd = getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
+        _zoomStart = _zoomEnd =
+            getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
         break;
       case 3:
         _state = STATE.TOUCH_PAN;
-        _panStart = _panEnd = getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
+        _panStart = _panEnd =
+            getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
         break;
       default:
         _state = STATE.NONE;
-
     }
-
   }
 
   touchmove(TouchEvent event) {
-
     if (!enabled) {
       return;
     }
@@ -532,43 +458,41 @@ class OrthographicTrackballControls extends EventEmitter {
     event.preventDefault();
 
     switch (event.touches.length) {
-
       case 1:
-        _rotateEnd = getMouseProjectionOnBall(event.touches[0].page.x, event.touches[0].page.y);
+        _rotateEnd = getMouseProjectionOnBall(
+            event.touches[0].page.x, event.touches[0].page.y);
         break;
       case 2:
-        _zoomEnd = getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
+        _zoomEnd =
+            getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
         break;
       case 3:
-        _panEnd = getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
+        _panEnd =
+            getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
         break;
       default:
         _state = STATE.NONE;
-
     }
-
   }
 
   touchend(TouchEvent event) {
-
     if (!enabled) {
       return;
     }
 
     switch (event.touches.length) {
-
       case 1:
-        _rotateStart = _rotateEnd = getMouseProjectionOnBall(event.touches[0].page.x, event.touches[0].page.y);
+        _rotateStart = _rotateEnd = getMouseProjectionOnBall(
+            event.touches[0].page.x, event.touches[0].page.y);
         break;
       case 2:
         _touchZoomDistanceStart = _touchZoomDistanceEnd = 0;
         break;
       case 3:
-        _panStart = _panEnd = getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
-
+        _panStart = _panEnd =
+            getMouseOnScreen(event.touches[0].page.x, event.touches[0].page.y);
     }
 
     _state = STATE.NONE;
-
   }
 }

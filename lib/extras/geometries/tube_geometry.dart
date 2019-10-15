@@ -14,7 +14,6 @@ part of three;
  */
 
 class TubeGeometry extends Geometry {
-
   var path, segments;
   num nSegments, radius, segmentsRadius;
   bool closed;
@@ -24,18 +23,20 @@ class TubeGeometry extends Geometry {
 
   Object3D debug;
 
-  TubeGeometry(path, [int segments = 64, this.radius = 1.0, this.segmentsRadius = 8, bool closed = false, bool debug])
+  TubeGeometry(path,
+      [int segments = 64,
+      this.radius = 1.0,
+      this.segmentsRadius = 8,
+      bool closed = false,
+      bool debug])
       : grid = [],
         super() {
-
     if (debug) this.debug = new Object3D();
 
     var tangent,
         normal,
         binormal,
-
         numpoints = segments + 1,
-
         x,
         y,
         z,
@@ -44,7 +45,6 @@ class TubeGeometry extends Geometry {
         tz,
         u,
         v,
-
         cx,
         cy,
         pos,
@@ -68,7 +68,6 @@ class TubeGeometry extends Geometry {
     grid.length = numpoints;
 
     for (i = 0; i < numpoints; i++) {
-
       grid[i] = new List(this.segmentsRadius);
 
       u = i / (numpoints - 1);
@@ -80,18 +79,16 @@ class TubeGeometry extends Geometry {
       binormal = binormals[i];
 
       if (debug) {
-
         this.debug.add(new ArrowHelper(tangent, pos, radius, 0x0000ff));
         this.debug.add(new ArrowHelper(normal, pos, radius, 0xff0000));
         this.debug.add(new ArrowHelper(binormal, pos, radius, 0x00ff00));
-
       }
 
       for (j = 0; j < this.segmentsRadius; j++) {
-
         v = j / this.segmentsRadius * 2 * Math.pi;
 
-        cx = -this.radius * Math.cos(v); // TODO: Hack: Negating it so it faces outside.
+        cx = -this.radius *
+            Math.cos(v); // TODO: Hack: Negating it so it faces outside.
         cy = this.radius * Math.sin(v);
 
         pos2.setFrom(pos);
@@ -100,17 +97,13 @@ class TubeGeometry extends Geometry {
         pos2.z += cx * normal.z + cy * binormal.z;
 
         this.grid[i][j] = _vert(pos2.x, pos2.y, pos2.z);
-
       }
     }
-
 
     // construct the mesh
 
     for (i = 0; i < this.nSegments; i++) {
-
       for (j = 0; j < this.segmentsRadius; j++) {
-
         ip = (closed) ? (i + 1) % this.nSegments : i + 1;
         jp = (j + 1) % this.segmentsRadius;
 
@@ -126,25 +119,20 @@ class TubeGeometry extends Geometry {
 
         this.faces.add(new Face4(a, b, c, d));
         this.faceVertexUvs[0].add([uva, uvb, uvc, uvd]);
-
       }
     }
 
     computeCentroids();
     computeFaceNormals();
     computeVertexNormals();
-
   }
-
 
   int _vert(double x, double y, double z) {
     vertices.add(new Vector3(x, y, z));
     return vertices.length - 1;
   }
 
-
   // FrenetFrames
-
 
   TubeGeometry.FrenetFrames(path, segments, closed) {
     _frenetFrames(path, segments, closed);
@@ -152,7 +140,6 @@ class TubeGeometry extends Geometry {
 
 // For computing of Frenet frames, exposing the tangents, normals and binormals the spline
   _frenetFrames(ppath, psegments, bool pclosed) {
-
     this.path = ppath;
     this.segments = psegments;
 
@@ -161,12 +148,10 @@ class TubeGeometry extends Geometry {
     var tangent = new Vector3.zero(),
         normal = new Vector3.zero(),
         binormal = new Vector3.zero(),
-
         mat = new Matrix4.identity(),
         theta,
         epsilon = 0.0001,
         smallest,
-
         tx,
         ty,
         tz,
@@ -192,7 +177,8 @@ class TubeGeometry extends Geometry {
     // compute the tangent vectors for each segment on the path
 
     for (i = 0; i < numpoints; i++) {
-      tangents[i] = (i == 0) ? path.getTangentAt(0) : path.getTangentAt(segments[i - 1]);
+      tangents[i] =
+          (i == 0) ? path.getTangentAt(0) : path.getTangentAt(segments[i - 1]);
       tangents[i].normalize();
     }
 
@@ -210,9 +196,9 @@ class TubeGeometry extends Geometry {
       normals[0] = (t2 - tangents[0])..normalize();
       binormals[0] = tangents[0].cross(normals[0]);
 
-      normals[0] = binormals[0].cross(tangents[0])..normalize(); // last binormal x tangent
+      normals[0] = binormals[0].cross(tangents[0])
+        ..normalize(); // last binormal x tangent
       binormals[0] = tangents[0].cross(normals[0])..normalize();
-
     }
 
     _initialNormal3() {
@@ -246,11 +232,9 @@ class TubeGeometry extends Geometry {
 
     _initialNormal3();
 
-
     // compute the slowly-varying normal and binormal vectors for each segment on the path
 
     for (i = 1; i < numpoints; i++) {
-
       normals[i] = normals[i - 1].clone();
 
       binormals[i] = binormals[i - 1].clone();
@@ -258,7 +242,6 @@ class TubeGeometry extends Geometry {
       Vector3 vec = tangents[i - 1].cross(tangents[i]);
 
       if (vec.length > epsilon) {
-
         vec.normalize();
 
         theta = Math.acos(tangents[i - 1].dot(tangents[i]));
@@ -267,31 +250,24 @@ class TubeGeometry extends Geometry {
       }
 
       binormals[i] = tangents[i].cross(normals[i]);
-
     }
-
 
     // if the curve is closed, postprocess the vectors so the first and last normal vectors are the same
 
     if (closed) {
-
       theta = Math.acos(normals[0].dot(normals[numpoints - 1]));
       theta /= (numpoints - 1);
 
       if (tangents[0].dot(normals[0].cross(normals[numpoints - 1])) > 0) {
-
         theta = -theta;
-
       }
 
       for (i = 1; i < numpoints; i++) {
-
         // twist a little...
-        normals[i].applyProjection(makeRotationAxis(mat, tangents[i], theta * i));
+        normals[i]
+            .applyProjection(makeRotationAxis(mat, tangents[i], theta * i));
         binormals[i] = tangents[i].cross(normals[i]);
-
       }
-
     }
   }
 }

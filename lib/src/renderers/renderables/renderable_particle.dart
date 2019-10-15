@@ -17,7 +17,5 @@ class RenderableParticle implements IRenderable {
 
   Material material = null;
 
-  RenderableParticle()
-      : scale = new Vector2.zero();
-
+  RenderableParticle() : scale = new Vector2.zero();
 }

@@ -30,15 +30,24 @@ part of three;
   **/
 
 class ExtrudeGeometry extends Geometry {
-
   List shapes;
 
   var shapebb;
 
-  ExtrudeGeometry(this.shapes, {amount: 100, bevelThickness: 6.0, bevelSize: null, bevelSegments: 3, bevelEnabled: true,
-      curveSegments: 12, steps: 1, //can assume a number of steps or a List with all U's of steps
-  bendPath, extrudePath, frames, material, extrudeMaterial}) : super() {
-
+  ExtrudeGeometry(this.shapes,
+      {amount: 100,
+      bevelThickness: 6.0,
+      bevelSize: null,
+      bevelSegments: 3,
+      bevelEnabled: true,
+      curveSegments: 12,
+      steps: 1, //can assume a number of steps or a List with all U's of steps
+      bendPath,
+      extrudePath,
+      frames,
+      material,
+      extrudeMaterial})
+      : super() {
     if (bevelSize == null) bevelSize = bevelThickness - 2.0;
 
     if (shapes == null) {
@@ -73,13 +82,22 @@ class ExtrudeGeometry extends Geometry {
     //this.computeVertexNormals();
 
     //console.log( "took", ( Date.now() - startTime ) );
-
   }
 
-
-
-  addShapeList(List shapes, num amount, num bevelThickness, double bevelSize, int bevelSegments, bool bevelEnabled,
-      curveSegments, steps, bendPath, Curve extrudePath, TubeGeometry frames, int material, int extrudeMaterial) {
+  addShapeList(
+      List shapes,
+      num amount,
+      num bevelThickness,
+      double bevelSize,
+      int bevelSegments,
+      bool bevelEnabled,
+      curveSegments,
+      steps,
+      bendPath,
+      Curve extrudePath,
+      TubeGeometry frames,
+      int material,
+      int extrudeMaterial) {
     var sl = shapes.length;
 
     for (var s = 0; s < sl; s++) {
@@ -104,11 +122,12 @@ class ExtrudeGeometry extends Geometry {
   // addShape Helpers
   _scalePt2(Vector2 pt, Vector2 vec, num size) {
     if (vec == null) print("die");
-    return vec.clone()..scale(size)..add(pt);
+    return vec.clone()
+      ..scale(size)
+      ..add(pt);
   }
 
   _getBevelVec2(Vector2 pt_i, Vector2 pt_j, Vector2 pt_k) {
-
     var a = ExtrudeGeometry.__v1,
         b = ExtrudeGeometry.__v2,
         v_hat = ExtrudeGeometry.__v3,
@@ -146,11 +165,11 @@ class ExtrudeGeometry extends Geometry {
     p.setFrom(pt_i).add(v_hat);
     q.setFrom(pt_i).add(w_hat);
 
-    if (p.x == q.x && p.y == q.y) { // TODO add vector_math ".equals(p, q)"
+    if (p.x == q.x && p.y == q.y) {
+      // TODO add vector_math ".equals(p, q)"
 
       //console.log("Warning: lines are straight");
       return w_hat.clone();
-
     }
 
     // Points from j, k. helps prevents points cross overover most of the time
@@ -164,53 +183,41 @@ class ExtrudeGeometry extends Geometry {
     // We should not reach these conditions
 
     if (v_dot_w_hat == 0) {
-
       print("Either infinite or no solutions!");
 
       if (q_sub_p_dot_w_hat == 0) {
-
         print("Its finite solutions.");
-
       } else {
-
         print("Too bad, no solutions.");
-
       }
-
     }
 
     s = q_sub_p_dot_w_hat / v_dot_w_hat;
 
     if (s < 0) {
-
       // in case of emergecy, revert to algorithm 1.
 
       return _getBevelVec1(pt_i, pt_j, pt_k);
-
     }
 
     intersection = v.scale(s).add(p);
 
-    return intersection.sub(pt_i).clone(); // Don't normalize!, otherwise sharp corners become ugly
-
+    return intersection
+        .sub(pt_i)
+        .clone(); // Don't normalize!, otherwise sharp corners become ugly
   }
 
-
   static var RAD_TO_DEGREES = 180 / Math.pi;
-
 
 // Algorithm 2
   _getBevelVec(pt_i, pt_j, pt_k) => _getBevelVec2(pt_i, pt_j, pt_k);
 
   _getBevelVec1(pt_i, pt_j, pt_k) {
-
     var anglea = Math.atan2(pt_j.y - pt_i.y, pt_j.x - pt_i.x);
     var angleb = Math.atan2(pt_k.y - pt_i.y, pt_k.x - pt_i.x);
 
     if (anglea > angleb) {
-
       angleb += Math.pi * 2;
-
     }
 
     var anglec = (anglea + angleb) / 2;
@@ -220,13 +227,11 @@ class ExtrudeGeometry extends Geometry {
     var vec = new Vector2(x, y); //.normalize();
 
     return vec;
-
   }
 
   _v(x, y, z) {
     vertices.add(new Vector3(x, y, z));
   }
-
 
   // TODO - This is a helper function to reverse a list added by nelsonsilva
   List _reverse(List list) {
@@ -238,18 +243,29 @@ class ExtrudeGeometry extends Geometry {
     return reversed;
   }
 
-  addShape(Shape shape, num amount, num bevelThickness, double bevelSize, int bevelSegments, bool bevelEnabled,
-      curveSegments, steps, bendPath, Curve extrudePath, TubeGeometry frames, int material, int extrudeMaterial,
+  addShape(
+      Shape shape,
+      num amount,
+      num bevelThickness,
+      double bevelSize,
+      int bevelSegments,
+      bool bevelEnabled,
+      curveSegments,
+      steps,
+      bendPath,
+      Curve extrudePath,
+      TubeGeometry frames,
+      int material,
+      int extrudeMaterial,
       {ExtrudeGeometryWorldUVGenerator UVGenerator}) {
-
-
-    var extrudePts,
-        extrudeByPath = false;
+    var extrudePts, extrudeByPath = false;
 
     //shapebb = shape.getBoundingBox();
 
     // set UV generator
-    var uvgen = (UVGenerator != null) ? UVGenerator : new ExtrudeGeometryWorldUVGenerator();
+    var uvgen = (UVGenerator != null)
+        ? UVGenerator
+        : new ExtrudeGeometryWorldUVGenerator();
 
     TubeGeometry splineTube;
     Vector3 binormal, normal, position2;
@@ -257,7 +273,6 @@ class ExtrudeGeometry extends Geometry {
     var nSteps = (steps is List) ? steps.length : steps;
 
     if (extrudePath != null) {
-
       if (steps is List) {
         List divisions = [0];
         divisions.addAll(steps);
@@ -273,21 +288,20 @@ class ExtrudeGeometry extends Geometry {
 
       // Reuse TNB from TubeGeomtry for now.
       // TODO1 - have a .isClosed in spline?
-      splineTube = (frames != null) ? frames : new TubeGeometry.FrenetFrames(extrudePath, steps, false);
+      splineTube = (frames != null)
+          ? frames
+          : new TubeGeometry.FrenetFrames(extrudePath, steps, false);
       binormal = new Vector3.zero();
       normal = new Vector3.zero();
       position2 = new Vector3.zero();
-
     }
 
     // Safeguards if bevels are not enabled
 
     if (!bevelEnabled) {
-
       bevelSegments = 0;
       bevelThickness = 0.0;
       bevelSize = 0.0;
-
     }
 
     // Variables initalization
@@ -300,9 +314,7 @@ class ExtrudeGeometry extends Geometry {
     var shapesOffset = this.vertices.length;
 
     if (bendPath != null) {
-
       shape.addWrapPath(bendPath);
-
     }
 
     var shapePoints = shape.extractPoints();
@@ -313,28 +325,22 @@ class ExtrudeGeometry extends Geometry {
     var reverse = !ShapeUtils.isClockWise(vertices);
 
     if (reverse) {
-
       vertices = _reverse(vertices);
 
       // Maybe we should also check if holes are in the opposite direction, just to be safe ...
 
       for (h = 0; h < holes.length; h++) {
-
         ahole = holes[h];
 
         if (ShapeUtils.isClockWise(ahole)) {
-
           holes[h] = _reverse(ahole);
-
         }
-
       }
 
-      reverse = false; // If vertices are in order now, we shouldn't need to worry about them again (hopefully)!
+      reverse =
+          false; // If vertices are in order now, we shouldn't need to worry about them again (hopefully)!
 
     }
-
-
 
     var faces = ShapeUtils.triangulateShape(vertices, holes);
     //var faces = THREE.Shape.Utils.triangulate2( vertices, holes );
@@ -350,17 +356,15 @@ class ExtrudeGeometry extends Geometry {
     ///   Handle Vertices
     ////
 
-    var contour = vertices; // vertices has all points but contour has only points of circumference
+    var contour =
+        vertices; // vertices has all points but contour has only points of circumference
 
     for (h = 0; h < holes.length; h++) {
-
       ahole = holes[h];
 
       vertices = new List.from(vertices);
       vertices.addAll(ahole);
-
     }
-
 
     var b,
         bs,
@@ -373,21 +377,14 @@ class ExtrudeGeometry extends Geometry {
         cont,
         clen = contour.length;
 
-
     //------
     // Find directions for point movement
     //
 
-
-
     var contourMovements = new List(contour.length);
 
-    num i = 0,
-        il = contour.length,
-        j = il - 1,
-        k = i + 1;
+    num i = 0, il = contour.length, j = il - 1, k = i + 1;
     for (i = 0; i < il; i++) {
-
       if (j == il) j = 0;
       if (k == il) k = 0;
 
@@ -408,7 +405,6 @@ class ExtrudeGeometry extends Geometry {
         verticesMovements = new List.from(contourMovements);
 
     for (h = 0; h < holes.length; h++) {
-
       ahole = holes[h];
 
       oneHoleMovements = new List(ahole.length);
@@ -419,7 +415,6 @@ class ExtrudeGeometry extends Geometry {
       k = i + 1;
 
       for (i = 0; i < il; i++) {
-
         if (j == il) j = 0;
         if (k == il) k = 0;
 
@@ -431,9 +426,7 @@ class ExtrudeGeometry extends Geometry {
 
       holesMovements.add(oneHoleMovements);
       verticesMovements.addAll(oneHoleMovements);
-
     }
-
 
     // Loop bevelSegments, 1 for the front, 1 for the back
 
@@ -450,59 +443,54 @@ class ExtrudeGeometry extends Geometry {
       // contract shape
 
       for (i = 0; i < contour.length; i++) {
-
         vert = _scalePt2(contour[i], contourMovements[i], bs);
         //vert = scalePt( contour[ i ], contourCentroid, bs, false );
         _v(vert.x, vert.y, -z);
-
       }
 
       // expand holes
 
       for (h = 0; h < holes.length; h++) {
-
         ahole = holes[h];
         oneHoleMovements = holesMovements[h];
 
         for (i = 0; i < ahole.length; i++) {
-
           vert = _scalePt2(ahole[i], oneHoleMovements[i], bs);
           //vert = scalePt( ahole[ i ], holesCentroids[ h ], bs, true );
 
           _v(vert.x, vert.y, -z);
-
         }
-
       }
-
     }
-
 
     bs = bevelSize;
 
     // Back facing vertices
 
     for (i = 0; i < vlen; i++) {
-
-      vert = bevelEnabled ? _scalePt2(vertices[i], verticesMovements[i], bs) : vertices[i];
+      vert = bevelEnabled
+          ? _scalePt2(vertices[i], verticesMovements[i], bs)
+          : vertices[i];
 
       if (!extrudeByPath) {
-
         _v(vert.x, vert.y, 0.0);
-
       } else {
-
         // v( vert.x, vert.y + extrudePts[ 0 ].y, extrudePts[ 0 ].x );
 
-        normal..setFrom(splineTube.normals[0])..scale(vert.x);
-        binormal..setFrom(splineTube.binormals[0])..scale(vert.y);
+        normal
+          ..setFrom(splineTube.normals[0])
+          ..scale(vert.x);
+        binormal
+          ..setFrom(splineTube.binormals[0])
+          ..scale(vert.y);
 
-        position2..setFrom(extrudePts[0])..add(normal)..add(binormal);
+        position2
+          ..setFrom(extrudePts[0])
+          ..add(normal)
+          ..add(binormal);
 
         _v(position2.x, position2.y, position2.z);
-
       }
-
     }
 
     // Add stepped vertices...
@@ -511,38 +499,37 @@ class ExtrudeGeometry extends Geometry {
     var s;
 
     for (s = 1; s <= nSteps; s++) {
-
       for (i = 0; i < vlen; i++) {
-
-        vert = bevelEnabled ? _scalePt2(vertices[i], verticesMovements[i], bs) : vertices[i];
+        vert = bevelEnabled
+            ? _scalePt2(vertices[i], verticesMovements[i], bs)
+            : vertices[i];
 
         if (!extrudeByPath) {
-
           _v(vert.x, vert.y, amount / nSteps * s);
-
         } else {
-
           // v( vert.x, vert.y + extrudePts[ s - 1 ].y, extrudePts[ s - 1 ].x );
 
-          normal..setFrom(splineTube.normals[s])..scale(vert.x);
-          binormal..setFrom(splineTube.binormals[s])..scale(vert.y);
+          normal
+            ..setFrom(splineTube.normals[s])
+            ..scale(vert.x);
+          binormal
+            ..setFrom(splineTube.binormals[s])
+            ..scale(vert.y);
 
-          position2..setFrom(extrudePts[s])..add(normal)..add(binormal);
+          position2
+            ..setFrom(extrudePts[s])
+            ..add(normal)
+            ..add(binormal);
 
           _v(position2.x, position2.y, position2.z);
-
         }
-
       }
-
     }
-
 
     // Add bevel segments planes
 
     //for ( b = 1; b <= bevelSegments; b ++ ) {
     for (b = bevelSegments - 1; b >= 0; b--) {
-
       t = b / bevelSegments;
       z = bevelThickness * (1 - t);
       //bs = bevelSize * ( 1-Math.sin ( ( 1 - t ) * Math.PI/2 ) );
@@ -551,39 +538,28 @@ class ExtrudeGeometry extends Geometry {
       // contract shape
 
       for (i = 0; i < contour.length; i++) {
-
         vert = _scalePt2(contour[i], contourMovements[i], bs);
         _v(vert.x, vert.y, amount + z);
-
       }
 
       // expand holes
 
       for (h = 0; h < holes.length; h++) {
-
         ahole = holes[h];
         oneHoleMovements = holesMovements[h];
 
         for (i = 0; i < ahole.length; i++) {
-
           vert = _scalePt2(ahole[i], oneHoleMovements[i], bs);
 
           if (!extrudeByPath) {
-
             _v(vert.x, vert.y, amount + z);
-
           } else {
-
-            _v(vert.x, vert.y + extrudePts[nSteps - 1].y, extrudePts[nSteps - 1].x + z);
-
+            _v(vert.x, vert.y + extrudePts[nSteps - 1].y,
+                extrudePts[nSteps - 1].x + z);
           }
-
         }
-
       }
-
     }
-
 
     ////
     ///   Handle Faces
@@ -599,8 +575,9 @@ class ExtrudeGeometry extends Geometry {
       // normal, color, material
       this.faces.add(new Face3(a, b, c, null, null, material));
 
-      var uvs =
-          isBottom ? uvgen.generateBottomUV(this, shape, null, a, b, c) : uvgen.generateTopUV(this, shape, null, a, b, c);
+      var uvs = isBottom
+          ? uvgen.generateBottomUV(this, shape, null, a, b, c)
+          : uvgen.generateTopUV(this, shape, null, a, b, c);
 
       this.faceVertexUvs[0].add(uvs);
     }
@@ -613,24 +590,22 @@ class ExtrudeGeometry extends Geometry {
 
       this.faces.add(new Face4(a, b, c, d, null, null, extrudeMaterial));
 
-      var uvs = uvgen.generateSideWallUV(this, shape, wallContour, null, a, b, c, d, stepIndex, stepsLength);
+      var uvs = uvgen.generateSideWallUV(
+          this, shape, wallContour, null, a, b, c, d, stepIndex, stepsLength);
       this.faceVertexUvs[0].add(uvs);
     }
 
     // Top and bottom faces
     //buildLidFaces() {
     if (bevelEnabled) {
-
       var layer = 0; // steps + 1
       var offset = vlen * layer;
 
       // Bottom faces
 
       for (i = 0; i < flen; i++) {
-
         face = faces[i];
         f3(face[2] + offset, face[1] + offset, face[0] + offset, true);
-
       }
 
       layer = nSteps + bevelSegments * 2;
@@ -643,7 +618,6 @@ class ExtrudeGeometry extends Geometry {
         f3(face[0] + offset, face[1] + offset, face[2] + offset, false);
       }
     } else {
-
       // Bottom faces
 
       for (i = 0; i < flen; i++) {
@@ -655,7 +629,8 @@ class ExtrudeGeometry extends Geometry {
 
       for (i = 0; i < flen; i++) {
         face = faces[i];
-        f3(face[0] + vlen * nSteps, face[1] + vlen * nSteps, face[2] + vlen * nSteps, false);
+        f3(face[0] + vlen * nSteps, face[1] + vlen * nSteps,
+            face[2] + vlen * nSteps, false);
       }
     }
 
@@ -670,8 +645,7 @@ class ExtrudeGeometry extends Geometry {
 
         //console.log('b', i,j, i-1, k,vertices.length);
 
-        var s = 0,
-            sl = nSteps + bevelSegments * 2;
+        var s = 0, sl = nSteps + bevelSegments * 2;
 
         for (s = 0; s < sl; s++) {
           var slen1 = vlen * s;
@@ -702,7 +676,6 @@ class ExtrudeGeometry extends Geometry {
     }
   }
 
-
   static Vector2 ___v1 = null;
   static get __v1 => (___v1 == null) ? ___v1 = new Vector2.zero() : ___v1;
   static Vector2 ___v2 = null;
@@ -718,37 +691,44 @@ class ExtrudeGeometry extends Geometry {
 }
 
 class ExtrudeGeometryWorldUVGenerator {
-  List<UV> generateTopUV(Geometry geometry, extrudedShape, extrudeOptions, int indexA, int indexB, int indexC) {
+  List<UV> generateTopUV(Geometry geometry, extrudedShape, extrudeOptions,
+      int indexA, int indexB, int indexC) {
     var ax = geometry.vertices[indexA].x,
         ay = geometry.vertices[indexA].y,
-
         bx = geometry.vertices[indexB].x,
         by = geometry.vertices[indexB].y,
-
         cx = geometry.vertices[indexC].x,
         cy = geometry.vertices[indexC].y;
 
     return [new UV(ax, 1 - ay), new UV(bx, 1 - by), new UV(cx, 1 - cy)];
   }
 
-  List<UV> generateBottomUV(Geometry geometry, extrudedShape, extrudeOptions, int indexA, int indexB, int indexC) {
-    return generateTopUV(geometry, extrudedShape, extrudeOptions, indexA, indexB, indexC);
+  List<UV> generateBottomUV(Geometry geometry, extrudedShape, extrudeOptions,
+      int indexA, int indexB, int indexC) {
+    return generateTopUV(
+        geometry, extrudedShape, extrudeOptions, indexA, indexB, indexC);
   }
 
-  List<UV> generateSideWallUV(Geometry geometry, extrudedShape, wallContour, extrudeOptions, int indexA, int indexB,
-      int indexC, int indexD, stepIndex, stepsLength) {
+  List<UV> generateSideWallUV(
+      Geometry geometry,
+      extrudedShape,
+      wallContour,
+      extrudeOptions,
+      int indexA,
+      int indexB,
+      int indexC,
+      int indexD,
+      stepIndex,
+      stepsLength) {
     var ax = geometry.vertices[indexA].x,
         ay = geometry.vertices[indexA].y,
         az = geometry.vertices[indexA].z,
-
         bx = geometry.vertices[indexB].x,
         by = geometry.vertices[indexB].y,
         bz = geometry.vertices[indexB].z,
-
         cx = geometry.vertices[indexC].x,
         cy = geometry.vertices[indexC].y,
         cz = geometry.vertices[indexC].z,
-
         dx = geometry.vertices[indexD].x,
         dy = geometry.vertices[indexD].y,
         dz = geometry.vertices[indexD].z;
@@ -760,5 +740,3 @@ class ExtrudeGeometryWorldUVGenerator {
     }
   }
 }
-
-

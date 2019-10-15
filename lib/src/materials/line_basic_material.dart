@@ -31,6 +31,7 @@ class LineBasicMaterial extends Material {
   /// Due to limitations in the ANGLE layer, on Windows platforms linewidth
   /// will always be 1 regardless of the set value.
   num linewidth;
+
   /// Define appearance of line ends.
   ///
   /// Possible values are "butt", "round" and "square". Default is 'round'.
@@ -39,6 +40,7 @@ class LineBasicMaterial extends Material {
   /// For example, it is ignored with the WebGL renderer, but does work with
   /// the Canvas renderer.
   String linecap;
+
   /// Define appearance of line joints.
   ///
   /// Possible values are "round", "bevel" and "miter". Default is 'round'.
@@ -48,32 +50,49 @@ class LineBasicMaterial extends Material {
   /// the Canvas renderer.
   String linejoin;
 
+  LineBasicMaterial(
+      { // LineBasicMaterial
 
-  LineBasicMaterial({ // LineBasicMaterial
-
-  num color: 0xffffff, this.linewidth: 1, this.linecap: 'round', this.linejoin: 'round', int vertexColors: NoColors,
+      num color: 0xffffff,
+      this.linewidth: 1,
+      this.linecap: 'round',
+      this.linejoin: 'round',
+      int vertexColors: NoColors,
       bool fog: true, // Material
-  name: '', side: FrontSide, opacity: 1, transparent: false, blending: NormalBlending, blendSrc: SrcAlphaFactor,
-      blendDst: OneMinusSrcAlphaFactor, blendEquation: AddEquation, depthTest: true, depthWrite: true, polygonOffset: false,
-      polygonOffsetFactor: 0, polygonOffsetUnits: 0, alphaTest: 0, overdraw: false, visible: true})
+      name: '',
+      side: FrontSide,
+      opacity: 1,
+      transparent: false,
+      blending: NormalBlending,
+      blendSrc: SrcAlphaFactor,
+      blendDst: OneMinusSrcAlphaFactor,
+      blendEquation: AddEquation,
+      depthTest: true,
+      depthWrite: true,
+      polygonOffset: false,
+      polygonOffsetFactor: 0,
+      polygonOffsetUnits: 0,
+      alphaTest: 0,
+      overdraw: false,
+      visible: true})
       : super(
-          name: name,
-          side: side,
-          opacity: opacity,
-          transparent: transparent,
-          blending: blending,
-          blendSrc: blendSrc,
-          blendDst: blendDst,
-          blendEquation: blendEquation,
-          depthTest: depthTest,
-          depthWrite: depthWrite,
-          polygonOffset: polygonOffset,
-          polygonOffsetFactor: polygonOffsetFactor,
-          polygonOffsetUnits: polygonOffsetUnits,
-          alphaTest: alphaTest,
-          overdraw: overdraw,
-          visible: visible,
-          color: color,
-          fog: fog,
-          vertexColors: vertexColors);
+            name: name,
+            side: side,
+            opacity: opacity,
+            transparent: transparent,
+            blending: blending,
+            blendSrc: blendSrc,
+            blendDst: blendDst,
+            blendEquation: blendEquation,
+            depthTest: depthTest,
+            depthWrite: depthWrite,
+            polygonOffset: polygonOffset,
+            polygonOffsetFactor: polygonOffsetFactor,
+            polygonOffsetUnits: polygonOffsetUnits,
+            alphaTest: alphaTest,
+            overdraw: overdraw,
+            visible: visible,
+            color: color,
+            fog: fog,
+            vertexColors: vertexColors);
 }

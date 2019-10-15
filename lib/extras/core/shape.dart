@@ -12,7 +12,6 @@ part of three;
 // STEP 3b - Triangulate each shape, add faces.
 
 class Shape extends Path {
-
   List holes;
 
   Shape([List points])
@@ -20,13 +19,21 @@ class Shape extends Path {
         super(points);
 
   // Convenience method to return ExtrudeGeometry
-  extrude({amount: 100, bevelThickness: 6.0, bevelSize: null, bevelSegments: 3, bevelEnabled: true, curveSegments: 12,
-      steps: 1, bendPath, extrudePath, material, extrudeMaterial}) {
-
+  extrude(
+      {amount: 100,
+      bevelThickness: 6.0,
+      bevelSize: null,
+      bevelSegments: 3,
+      bevelEnabled: true,
+      curveSegments: 12,
+      steps: 1,
+      bendPath,
+      extrudePath,
+      material,
+      extrudeMaterial}) {
     if (bevelSize == null) bevelSize = bevelThickness - 2.0;
 
-    return new ExtrudeGeometry(
-        [this],
+    return new ExtrudeGeometry([this],
         amount: amount,
         bevelThickness: bevelThickness,
         bevelSize: bevelSize,
@@ -40,62 +47,44 @@ class Shape extends Path {
         extrudeMaterial: extrudeMaterial);
   }
 
-
   // Get points of holes
   getPointsHoles(divisions) {
-
-    var i,
-        il = holes.length;
+    var i, il = holes.length;
     var holesPts = new List(il);
 
     for (i = 0; i < il; i++) {
-
       holesPts[i] = holes[i].getTransformedPoints(divisions, bends: _bends);
-
     }
 
     return holesPts;
-
   }
 
   // Get points of holes (spaced by regular distance)
   getSpacedPointsHoles(divisions) {
-
-    var i,
-        il = holes.length;
+    var i, il = holes.length;
     var holesPts = new List(il);
 
     for (i = 0; i < il; i++) {
-
       holesPts[i] = holes[i].getTransformedSpacedPoints(divisions, _bends);
-
     }
 
     return holesPts;
-
   }
-
 
   // Get points of shape and holes (keypoints based on segments parameter)
   extractAllPoints(divisions) {
-
     return {
-
       "shape": getTransformedPoints(divisions),
       "holes": getPointsHoles(divisions)
-
     };
-
   }
 
   extractPoints([num divisions]) {
-
     if (useSpacedPoints) {
       return extractAllSpacedPoints(divisions);
     }
 
     return extractAllPoints(divisions);
-
   }
 
   //
@@ -115,8 +104,6 @@ class Shape extends Path {
     return {
       "shape": getTransformedSpacedPoints(divisions),
       "holes": getSpacedPointsHoles(divisions)
-
     };
   }
-
 }

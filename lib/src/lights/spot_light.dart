@@ -18,7 +18,7 @@ class SpotLight extends ShadowCaster {
   /// Rapidity of the falloff of light from its target direction.
   num exponent;
 
-  SpotLight(num hex, [this.intensity = 1.0, this.distance = 0.0, this.angle = Math.PI /
+  SpotLight(num hex, [this.intensity = 1.0, this.distance = 0.0, this.angle = Math.pi /
       2, this.exponent = 10]) : super(hex) {
     //THREE.Light.call( this, hex );
 

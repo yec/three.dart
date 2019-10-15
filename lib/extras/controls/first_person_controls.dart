@@ -38,7 +38,7 @@ class FirstPersonControls {
 
   bool constrainVertical = false;
   num verticalMin = 0;
-  num verticalMax = Math.PI;
+  num verticalMax = Math.pi;
 
   num autoSpeedFactor = 0.0;
 
@@ -262,8 +262,8 @@ class FirstPersonControls {
       if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed; // * this.invertVertical?-1:1;
 
       this.lat = Math.max(-85, Math.min(85, this.lat));
-      this.phi = (90 - this.lat) * Math.PI / 180;
-      this.theta = this.lon * Math.PI / 180;
+      this.phi = (90 - this.lat) * Math.pi / 180;
+      this.theta = this.lon * Math.pi / 180;
 
       var targetPosition = this.target,
           position = this.object.position;
@@ -276,19 +276,19 @@ class FirstPersonControls {
     var verticalLookRatio = 1;
 
     if (this.constrainVertical) {
-      verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
+      verticalLookRatio = Math.pi / (this.verticalMax - this.verticalMin);
     }
 
     this.lon += this.mouseX * actualLookSpeed;
     if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
 
     this.lat = Math.max(-85, Math.min(85, this.lat));
-    this.phi = (90 - this.lat) * Math.PI / 180;
+    this.phi = (90 - this.lat) * Math.pi / 180;
 
-    this.theta = this.lon * Math.PI / 180;
+    this.theta = this.lon * Math.pi / 180;
 
     if (this.constrainVertical) {
-      this.phi = THREEMath.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
+      this.phi = THREEMath.mapLinear(this.phi, 0, Math.pi, this.verticalMin, this.verticalMax);
     }
 
     var targetPosition = this.target,

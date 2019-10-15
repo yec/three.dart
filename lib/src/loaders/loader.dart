@@ -103,12 +103,12 @@ class Loader {
   }
 
   _is_pow2(n) {
-    var l = Math.log(n) / Math.LN2;
+    var l = Math.log(n) / Math.ln2;
     return l.floor() == l;
   }
 
   _nearest_pow2(n) {
-    var l = Math.log(n) / Math.LN2;
+    var l = Math.log(n) / Math.ln2;
     return Math.pow(2, l.round());
   }
 

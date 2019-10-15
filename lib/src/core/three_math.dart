@@ -9,8 +9,8 @@ library ThreeMath;
 
 import "dart:math" as Math;
 
-const __d2r = Math.PI / 180;
-const __r2d = 180 / Math.PI;
+const __d2r = Math.pi / 180;
+const __r2d = 180 / Math.pi;
 
 // Clamp value to range <a, b>
 num clamp(num x, num a, num b) => (x < a) ? a : ((x > b) ? b : x);

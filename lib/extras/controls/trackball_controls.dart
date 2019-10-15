@@ -78,7 +78,7 @@ class TrackballControls extends EventEmitter {
     dynamicDampingFactor = 0.2;
 
     minDistance = 0;
-    maxDistance = double.INFINITY;
+    maxDistance = double.infinity;
 
     keys = [65 /*A*/, 83 /*S*/, 68 /*D*/ ];
 
@@ -150,7 +150,7 @@ class TrackballControls extends EventEmitter {
 
     if (noRoll) {
 
-      if (length < Math.SQRT1_2) {
+      if (length < Math.sqrt1_2) {
 
         mouseOnBall.z = Math.sqrt(1.0 - length * length);
 

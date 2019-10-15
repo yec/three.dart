@@ -136,8 +136,8 @@ class CurvePath extends Curve {
     var maxX, maxY, maxZ;
     var minX, minY, minZ;
 
-    maxX = maxY = double.NEGATIVE_INFINITY;
-    minX = minY = double.INFINITY;
+    maxX = maxY = double.negativeInfinity;
+    minX = minY = double.infinity;
 
     var p, i, sum;
 

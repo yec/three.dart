@@ -78,7 +78,7 @@ class CSS3DRenderer implements Renderer {
 
   render(Scene scene, camera) {
 
-    var fov = 0.5 / Math.tan(camera.fov * Math.PI / 360) * _height;
+    var fov = 0.5 / Math.tan(camera.fov * Math.pi / 360) * _height;
 
     domElement.style.perspective = "${fov}px";
 

@@ -27,8 +27,8 @@ class TorusKnotGeometry extends Geometry {
 
       for (var j = 0; j < this.segmentsT; ++j) {
 
-        var u = i / this.segmentsR * 2 * this.p * Math.PI;
-        var v = j / this.segmentsT * 2 * Math.PI;
+        var u = i / this.segmentsR * 2 * this.p * Math.pi;
+        var v = j / this.segmentsT * 2 * Math.pi;
         var p1 = getPos(u, v, this.q, this.p, this.radius, this.heightScale);
         var p2 = getPos(u + 0.01, v, this.q, this.p, this.radius, this.heightScale);
         var cx, cy;

@@ -111,8 +111,8 @@ class BufferGeometry implements Geometry {
     if (boundingBox == null) {
 
       boundingBox = new BoundingBox(
-          min: new Vector3(double.INFINITY, double.INFINITY, double.INFINITY),
-          max: new Vector3(-double.INFINITY, -double.INFINITY, -double.INFINITY));
+          min: new Vector3(double.infinity, double.infinity, double.infinity),
+          max: new Vector3(-double.infinity, -double.infinity, -double.infinity));
 
     }
 

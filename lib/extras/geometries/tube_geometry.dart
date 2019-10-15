@@ -89,7 +89,7 @@ class TubeGeometry extends Geometry {
 
       for (j = 0; j < this.segmentsRadius; j++) {
 
-        v = j / this.segmentsRadius * 2 * Math.PI;
+        v = j / this.segmentsRadius * 2 * Math.pi;
 
         cx = -this.radius * Math.cos(v); // TODO: Hack: Negating it so it faces outside.
         cy = this.radius * Math.sin(v);
@@ -219,7 +219,7 @@ class TubeGeometry extends Geometry {
       // select an initial normal vector perpenicular to the first tangent vector,
       // and in the direction of the smallest tangent xyz component
 
-      smallest = double.INFINITY;
+      smallest = double.infinity;
       tx = (tangents[0].x).abs();
       ty = (tangents[0].y).abs();
       tz = (tangents[0].z).abs();

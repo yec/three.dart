@@ -4,8 +4,8 @@ class SphereGeometry extends Geometry {
   double radius;
 
   SphereGeometry([this.radius = 50.0, int segmentsWidth = 8, int segmentsHeight = 6, double phiStart = 0.0,
-      double phiLength = Math.PI *
-      2.0, double thetaStart = 0.0, double thetaLength = Math.PI]) : super() {
+      double phiLength = Math.pi *
+      2.0, double thetaStart = 0.0, double thetaLength = Math.pi]) : super() {
 
     int segmentsX = Math.max(3, segmentsWidth);
     int segmentsY = Math.max(2, segmentsHeight);

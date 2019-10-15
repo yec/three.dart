@@ -6,7 +6,7 @@ import 'dart:html' hide Path;
 import 'dart:typed_data';
 import 'dart:web_gl' as gl;
 import 'dart:math' as Math;
-import 'dart:convert' show JSON;
+import 'dart:convert' show jsonDecode;
 
 import 'src/core/three_math.dart' as ThreeMath;
 export 'src/core/three_math.dart';

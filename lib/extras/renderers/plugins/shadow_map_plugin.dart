@@ -485,8 +485,8 @@ class ShadowMapPlugin {
         pointsFrustum = light.pointsFrustum,
         pointsWorld = light.pointsWorld;
 
-    _min.setValues(double.INFINITY, double.INFINITY, double.INFINITY);
-    _max.setValues(double.NEGATIVE_INFINITY, double.NEGATIVE_INFINITY, double.NEGATIVE_INFINITY);
+    _min.setValues(double.infinity, double.infinity, double.infinity);
+    _max.setValues(double.negativeInfinity, double.negativeInfinity, double.negativeInfinity);
 
     for (var i = 0; i < 8; i++) {
 

@@ -118,7 +118,7 @@ class OrbitControls extends EventEmitter {
 
     // Limits the dollying in and out range.
     minDistance = 0;
-    maxDistance = double.INFINITY;
+    maxDistance = double.infinity;
 
     // Enables/disables rotation.
     noRotate = false;
@@ -135,7 +135,7 @@ class OrbitControls extends EventEmitter {
     // Determines the vertical orbit limit - upper and lower limits.
     // The default range is 0.0 to Math.PI radians.
     minPolarAngle = 0; // in radians
-    maxPolarAngle = Math.PI; // in radians
+    maxPolarAngle = Math.pi; // in radians
 
     // Enables/disables the ability to use the keyboard to interact with this
     // control.
@@ -257,7 +257,7 @@ class OrbitControls extends EventEmitter {
       var targetDistance = offset.length;
 
       // Half of the FOV is the distance from the center to the top of the screen.
-      targetDistance *= Math.tan(((object as PerspectiveCamera).fov / 2) * Math.PI / 180.0);
+      targetDistance *= Math.tan(((object as PerspectiveCamera).fov / 2) * Math.pi / 180.0);
 
       // screenWidth is not used since [PerspectiveCamera] is fixed to screen height.
       panLeft(2.0 * deltaX * targetDistance / element.clientHeight);
@@ -331,7 +331,7 @@ class OrbitControls extends EventEmitter {
     phi = Math.max(minPolarAngle, Math.min(maxPolarAngle, phi));
 
     // Restrict phi to be between EPS and PI-EPS
-    phi = Math.max(EPS, Math.min(Math.PI - EPS, phi));
+    phi = Math.max(EPS, Math.min(Math.pi - EPS, phi));
 
     var radius = _offset.length * _scale;
 
@@ -385,7 +385,7 @@ class OrbitControls extends EventEmitter {
 
   getAutoRotationAngle() {
 
-    return 2 * Math.PI / 60 / 60 * autoRotateSpeed;
+    return 2 * Math.pi / 60 / 60 * autoRotateSpeed;
 
   }
 
@@ -449,11 +449,11 @@ class OrbitControls extends EventEmitter {
       _rotateDelta = _rotateEnd - _rotateStart;
 
       // Rotating across the whole screen is 360 degrees around.
-      rotateLeft(2 * Math.PI * _rotateDelta.x / element.clientWidth * rotateSpeed);
+      rotateLeft(2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
 
       // Rotating up and down along the whole screen attempts to go to 360,
       // but it is limited to 180 degrees.
-      rotateUp(2 * Math.PI * _rotateDelta.y / element.clientHeight * rotateSpeed);
+      rotateUp(2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
 
       _rotateStart.setFrom(_rotateEnd);
 
@@ -640,11 +640,11 @@ class OrbitControls extends EventEmitter {
         _rotateDelta = _rotateEnd - _rotateStart;
 
         // Rotating across the whole screen is 360 degrees around.
-        rotateLeft(2 * Math.PI * _rotateDelta.x / element.clientWidth * rotateSpeed);
+        rotateLeft(2 * Math.pi * _rotateDelta.x / element.clientWidth * rotateSpeed);
 
         // Rotating up and down along the whole screen attempts to go to 360,
         // but it is limited to 180 degrees.
-        rotateUp(2 * Math.PI * _rotateDelta.y / element.clientHeight * rotateSpeed);
+        rotateUp(2 * Math.pi * _rotateDelta.y / element.clientHeight * rotateSpeed);
 
         _rotateStart = _rotateEnd;
 

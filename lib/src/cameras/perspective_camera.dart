@@ -38,7 +38,7 @@ class PerspectiveCamera extends Camera {
     frameSize = frameSize != null ? frameSize : 43.25; // 36x24mm
 
     fov = 2.0 * Math.atan(frameSize / (focalLength * 2.0));
-    fov = 180.0 / Math.PI * fov;
+    fov = 180.0 / Math.pi * fov;
 
     updateProjectionMatrix();
   }
@@ -95,7 +95,7 @@ class PerspectiveCamera extends Camera {
   void updateProjectionMatrix() {
     if (_fullWidth != null) {
       double aspect = _fullWidth / _fullHeight;
-      double top = Math.tan(fov * Math.PI / 360.0) * near;
+      double top = Math.tan(fov * Math.pi / 360.0) * near;
       double bottom = -top;
       double left = aspect * bottom;
       double right = aspect * top;
@@ -111,7 +111,7 @@ class PerspectiveCamera extends Camera {
           near,
           far);
     } else {
-      projectionMatrix = makePerspectiveMatrix(fov * (Math.PI / 180), aspect, near, far);
+      projectionMatrix = makePerspectiveMatrix(fov * (Math.pi / 180), aspect, near, far);
     }
   }
 }

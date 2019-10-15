@@ -31,9 +31,9 @@ class CylinderGeometry extends Geometry {
         double u = x / segmentsX;
 
         var vertex = new Vector3.zero();
-        vertex.x = radius * Math.sin(u * Math.PI * 2);
+        vertex.x = radius * Math.sin(u * Math.pi * 2);
         vertex.y = -v * height + heightHalf;
-        vertex.z = radius * Math.cos(u * Math.PI * 2);
+        vertex.z = radius * Math.cos(u * Math.pi * 2);
 
         this.vertices.add(vertex);
 

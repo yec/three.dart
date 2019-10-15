@@ -196,7 +196,7 @@ class ExtrudeGeometry extends Geometry {
   }
 
 
-  static var RAD_TO_DEGREES = 180 / Math.PI;
+  static var RAD_TO_DEGREES = 180 / Math.pi;
 
 
 // Algorithm 2
@@ -209,7 +209,7 @@ class ExtrudeGeometry extends Geometry {
 
     if (anglea > angleb) {
 
-      angleb += Math.PI * 2;
+      angleb += Math.pi * 2;
 
     }
 
@@ -444,7 +444,7 @@ class ExtrudeGeometry extends Geometry {
       z = bevelThickness * (1 - t);
 
       //z = bevelThickness * t;
-      bs = bevelSize * (Math.sin(t * Math.PI / 2)); // curved
+      bs = bevelSize * (Math.sin(t * Math.pi / 2)); // curved
       //bs = bevelSize * t ; // linear
 
       // contract shape
@@ -546,7 +546,7 @@ class ExtrudeGeometry extends Geometry {
       t = b / bevelSegments;
       z = bevelThickness * (1 - t);
       //bs = bevelSize * ( 1-Math.sin ( ( 1 - t ) * Math.PI/2 ) );
-      bs = bevelSize * Math.sin(t * Math.PI / 2);
+      bs = bevelSize * Math.sin(t * Math.pi / 2);
 
       // contract shape
 

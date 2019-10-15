@@ -3,7 +3,7 @@ part of three;
 class TorusGeometry extends Geometry {
   num radius, tube, segmentsR, segmentsT, arc;
 
-  TorusGeometry([this.radius = 100, this.tube = 40, this.segmentsR = 8, this.segmentsT = 6, this.arc = Math.PI *
+  TorusGeometry([this.radius = 100, this.tube = 40, this.segmentsR = 8, this.segmentsT = 6, this.arc = Math.pi *
       2]) : super() {
 
     var center = new Vector3.zero();
@@ -15,7 +15,7 @@ class TorusGeometry extends Geometry {
       for (var i = 0; i <= this.segmentsT; i++) {
 
         var u = i / this.segmentsT * this.arc;
-        var v = j / this.segmentsR * Math.PI * 2;
+        var v = j / this.segmentsR * Math.pi * 2;
 
         center.x = this.radius * Math.cos(u);
         center.y = this.radius * Math.sin(u);

@@ -39,7 +39,7 @@ class JSONLoader extends Loader {
 
           if (!xhr.responseText.isEmpty) {
 
-            var json = JSON.decode(xhr.responseText);
+            var json = jsonDecode(xhr.responseText);
             _createModel(json, callback, texturePath);
 
           } else {

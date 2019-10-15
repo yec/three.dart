@@ -19,7 +19,7 @@ class Ray {
 
   final num precision;
 
-  Ray([this.origin, this.direction, this.near = 0, this.far = double.INFINITY])
+  Ray([this.origin, this.direction, this.near = 0, this.far = double.infinity])
       : precision = 0.0001 {
 
     if (this.origin == null) this.origin = new Vector3.zero();

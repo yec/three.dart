@@ -61,7 +61,7 @@ class CanvasRenderer implements Renderer {
   bool _enableLighting;
   Color _ambientLight, _directionalLights, _pointLights;
 
-  final num _pi2 = Math.PI * 2;
+  final num _pi2 = Math.pi * 2;
   Vector3 _vector3; // Needed for PointLight
 
   var _pixelMapImage, _pixelMapData;

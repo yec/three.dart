@@ -49,7 +49,7 @@ removeHoles(List<Vector2> contour, List<List<Vector2>> holes) {
 
     allpoints.addAll(hole); //Array.prototype.push.apply( allpoints, hole );
 
-    shortest = double.INFINITY;
+    shortest = double.infinity;
 
 
     // Find the shortest pair of pts between shape and hole

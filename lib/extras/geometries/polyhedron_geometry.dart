@@ -42,8 +42,8 @@ class PolyhedronGeometry extends Geometry {
 
     // Texture coords are equivalent to map coords, calculate angle and convert to fraction of a circle.
 
-    var u = _azimuth(vertex) / 2 / Math.PI + 0.5;
-    var v = _inclination(vertex) / Math.PI + 0.5;
+    var u = _azimuth(vertex) / 2 / Math.pi + 0.5;
+    var v = _inclination(vertex) / Math.pi + 0.5;
     vertex.uv = new UV(u, 1 - v);
 
     return vertex;
@@ -135,7 +135,7 @@ class PolyhedronGeometry extends Geometry {
   /// Texture fixing helper. Spheres have some odd behaviours.
   UV _correctUV(UV uv, Vector3 vector, double azimuth) {
     if ((azimuth < 0) && (uv.u == 1)) uv = new UV(uv.u - 1, uv.v);
-    if ((vector.x == 0) && (vector.z == 0)) uv = new UV(azimuth / 2 / Math.PI + 0.5, uv.v);
+    if ((vector.x == 0) && (vector.z == 0)) uv = new UV(azimuth / 2 / Math.pi + 0.5, uv.v);
     return uv;
 
   }

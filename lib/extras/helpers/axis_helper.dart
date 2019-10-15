@@ -13,12 +13,12 @@ class AxisHelper extends Object3D {
     // x
 
     line = new Line(lineGeometry, new LineBasicMaterial(color: 0xff0000));
-    line.rotation.z = -Math.PI / 2.0;
+    line.rotation.z = -Math.pi / 2.0;
     this.add(line);
 
     cone = new Mesh(coneGeometry, new MeshBasicMaterial(color: 0xff0000));
     cone.position.x = 100.0;
-    cone.rotation.z = -Math.PI / 2.0;
+    cone.rotation.z = -Math.pi / 2.0;
     this.add(cone);
 
     // y
@@ -33,12 +33,12 @@ class AxisHelper extends Object3D {
     // z
 
     line = new Line(lineGeometry, new LineBasicMaterial(color: 0x0000ff));
-    line.rotation.x = Math.PI / 2.0;
+    line.rotation.x = Math.pi / 2.0;
     this.add(line);
 
     cone = new Mesh(coneGeometry, new MeshBasicMaterial(color: 0x0000ff));
     cone.position.z = 100.0;
-    cone.rotation.x = Math.PI / 2.0;
+    cone.rotation.x = Math.pi / 2.0;
     this.add(cone);
   }
 }

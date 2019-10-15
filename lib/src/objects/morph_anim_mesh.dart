@@ -67,8 +67,8 @@ class MorphAnimMesh extends Mesh {
         var num = parts[2];
 
         if (!animations[label]) animations[label] = {
-          "start": double.INFINITY,
-          "end": double.NEGATIVE_INFINITY
+          "start": double.infinity,
+          "end": double.negativeInfinity
         };
 
         var animation = animations[label];

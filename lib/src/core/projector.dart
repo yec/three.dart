@@ -66,7 +66,7 @@ class Projector {
 
     _viewProjectionMatrix = camera.projectionMatrix * camera.matrixWorldInverse;
 
-    return vector.applyProjection(_viewProjectionMatrix);
+    return vector..applyProjection(_viewProjectionMatrix);
   }
 
   Vector3 unprojectVector(Vector3 vector, Camera camera) {
@@ -74,7 +74,7 @@ class Projector {
 
     _viewProjectionMatrix = camera.matrixWorld * camera.projectionMatrixInverse;
 
-    return vector.applyProjection(_viewProjectionMatrix);
+    return vector..applyProjection(_viewProjectionMatrix);
   }
 
   /**
@@ -94,7 +94,8 @@ class Projector {
     unprojectVector(end, camera);
 
     // find direction from vector to end
-    end.sub(vector).normalize();
+    end.sub(vector);
+    end.normalize();
 
     return new Ray(vector, end);
   }
@@ -318,8 +319,8 @@ class Projector {
             if (side == DoubleSide || visible == (side == FrontSide)) {
 
               _face = (face.size == 3) ? getNextFace3InPool() : getNextFace4InPool();
-
-              _face.vertices = vtx.map((v) => v.clone()).toList(growable: false);
+              List<RenderableVertex> verts = vtx.map((v) => v.clone()).toList(growable: false);
+              _face.vertices = verts;
 
             } else {
               continue;

@@ -25,6 +25,10 @@ abstract class Face {
 
   int get size => indices.length;
 
+  int get a;
+  int get b;
+  int get c;
+
   /// Copies all the values from `other` into this Face.
   Face setFrom(Face other) {
     normal.setFrom(other.normal);
@@ -33,9 +37,9 @@ abstract class Face {
 
     materialIndex = other.materialIndex;
 
-    vertexNormals = other.vertexNormals.map((Vector3 v) => v.clone()).toList();
-    vertexColors = other.vertexColors.map((Vector3 v) => v.clone()).toList();
-    vertexTangents = other.vertexTangents.map((Vector3 v) => v.clone()).toList();
+    vertexNormals = other.vertexNormals.map((v) => v.clone()).toList();
+    vertexColors = other.vertexColors.map((v) => v.clone()).toList();
+    vertexTangents = other.vertexTangents.map((v) => v.clone()).toList();
 
     return this;
   }

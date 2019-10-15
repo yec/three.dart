@@ -44,8 +44,8 @@ class MeshBasicMaterial extends Material implements TextureMapping, EnvironmentM
   Texture specularMap;
   var envMap; // TextureCube?
   var combine; // Multiply?
-  num reflectivity;
-  num refractionRatio;
+  double reflectivity;
+  double refractionRatio;
 
   int shading;
   /// Render geometry as wireframe. Default is false (i.e. render as flat polygons).

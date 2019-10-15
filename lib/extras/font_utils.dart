@@ -62,7 +62,8 @@ Map drawText(String text) {
   var i,
       p,
       face = getFace(),
-      scale = _size / face["resolution"],
+      // scale = _size / face["resolution"],
+      scale = _size / 150.00,
       offset = 0,
       chars = text.split(''),
       length = chars.length;

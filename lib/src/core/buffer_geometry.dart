@@ -10,10 +10,10 @@ class GeometryAttribute<T> {
   static final String TANGENT = "tangent";
   static final String COLOR = "color";
   int numItems, itemSize;
-  T array;
+  var array;
 
   // Used in WebGL Renderer
-  Buffer buffer;
+  // Buffer buffer;
 
   GeometryAttribute._internal(this.numItems, this.itemSize, this.array);
 
@@ -62,7 +62,7 @@ class BufferGeometry implements Geometry {
   bool hasTangents;
 
   // for compatibility
-  List morphTargets = [];
+  List<MorphTarget> morphTargets = [];
   List morphNormals = [];
 
   // WebGL
@@ -118,7 +118,7 @@ class BufferGeometry implements Geometry {
 
     var positions = aPosition.array;
 
-    if (positions) {
+    if (positions != null) {
 
       var bb = boundingBox;
       var x, y, z;
@@ -467,7 +467,7 @@ class BufferGeometry implements Geometry {
       // Gram-Schmidt orthogonalize
 
       tmp.setFrom(t);
-      tmp.sub(n.scale(n.dot(t))).normalize();
+      tmp..sub(n..scale(n.dot(t)))..normalize();
 
       // Calculate handedness
 

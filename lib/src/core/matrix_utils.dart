@@ -15,18 +15,18 @@ part of three;
  */
 
 Matrix4 makeLookAt(Matrix4 m, Vector3 eye, Vector3 center, Vector3 up) {
-  Vector3 z = (eye - center).normalize();
+  Vector3 z = (eye - center)..normalize();
   if (z.length == 0.0) {
     z.z = 1.0;
   }
 
-  Vector3 x = up.cross(z).normalize();
+  Vector3 x = up.cross(z)..normalize();
   if (x.length == 0.0) {
     z.x = z.x + 0.0001;
-    x = up.cross(z).normalize();
+    x = up.cross(z)..normalize();
   }
 
-  Vector3 y = z.cross(x).normalize();
+  Vector3 y = z.cross(x)..normalize();
 
   m.setValues(x.x, x.y, x.z, 0.0, y.x, y.y, y.z, 0.0, z.x, z.y, z.z, 0.0, 0.0, 0.0, 0.0, 1.0);
   return m;
@@ -257,9 +257,9 @@ Matrix4 extractRotation(Matrix4 te, Matrix4 m) {
 
   Vector3 vector = new Vector3.zero();
 
-  var scaleX = 1.0 / vector.setValues(m[0], m[1], m[2]).length;
-  var scaleY = 1.0 / vector.setValues(m[4], m[5], m[6]).length;
-  var scaleZ = 1.0 / vector.setValues(m[8], m[9], m[10]).length;
+  var scaleX = 1.0 / (vector..setValues(m[0], m[1], m[2])).length;
+  var scaleY = 1.0 / (vector..setValues(m[4], m[5], m[6])).length;
+  var scaleZ = 1.0 / (vector..setValues(m[8], m[9], m[10])).length;
 
   te[0] = m[0] * scaleX;
   te[1] = m[1] * scaleX;

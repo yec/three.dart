@@ -118,8 +118,10 @@ Texture loadTextureCube(List<String> array, [mapping, Function onLoad()]) {
 
 Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
 
+  List ddsMidmaps = [];
+
   var dds = {
-    "mipmaps": [],
+    "mipmaps": List(),
     "width": 0,
     "height": 0,
     "format": null,
@@ -238,20 +240,19 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
 
   // Extract mipmaps buffers
 
-  var width = dds["width"];
-  var height = dds["height"];
+  num width = dds["width"];
+  num height = dds["height"];
 
   for (var i = 0; i < dds["mipmapCount"]; i++) {
 
     int dataLength = Math.max(4, width) ~/ 4 * Math.max(4, height) ~/ 4 * blockBytes;
     var byteArray = new Uint8List.view(buffer, dataOffset, dataLength);
 
-    var mipmap = {
+    ddsMidmaps.add({
       "data": byteArray,
       "width": width,
       "height": height
-    };
-    dds["mipmaps"].add(mipmap);
+    });
 
     dataOffset += dataLength;
 
@@ -259,6 +260,8 @@ Map parseDDS(ByteBuffer buffer, bool loadMipmaps) {
     height = Math.max(height * 0.5, 1);
 
   }
+
+  dds["midmaps"] = ddsMidmaps;
 
   return dds;
 

@@ -104,7 +104,7 @@ class ExtrudeGeometry extends Geometry {
   // addShape Helpers
   _scalePt2(Vector2 pt, Vector2 vec, num size) {
     if (vec == null) print("die");
-    return vec.clone().scale(size).add(pt);
+    return vec.clone()..scale(size)..add(pt);
   }
 
   _getBevelVec2(Vector2 pt_i, Vector2 pt_j, Vector2 pt_k) {
@@ -494,10 +494,10 @@ class ExtrudeGeometry extends Geometry {
 
         // v( vert.x, vert.y + extrudePts[ 0 ].y, extrudePts[ 0 ].x );
 
-        normal.setFrom(splineTube.normals[0]).scale(vert.x);
-        binormal.setFrom(splineTube.binormals[0]).scale(vert.y);
+        normal..setFrom(splineTube.normals[0])..scale(vert.x);
+        binormal..setFrom(splineTube.binormals[0])..scale(vert.y);
 
-        position2.setFrom(extrudePts[0]).add(normal).add(binormal);
+        position2..setFrom(extrudePts[0])..add(normal)..add(binormal);
 
         _v(position2.x, position2.y, position2.z);
 
@@ -524,10 +524,10 @@ class ExtrudeGeometry extends Geometry {
 
           // v( vert.x, vert.y + extrudePts[ s - 1 ].y, extrudePts[ s - 1 ].x );
 
-          normal.setFrom(splineTube.normals[s]).scale(vert.x);
-          binormal.setFrom(splineTube.binormals[s]).scale(vert.y);
+          normal..setFrom(splineTube.normals[s])..scale(vert.x);
+          binormal..setFrom(splineTube.binormals[s])..scale(vert.y);
 
-          position2.setFrom(extrudePts[s]).add(normal).add(binormal);
+          position2..setFrom(extrudePts[s])..add(normal)..add(binormal);
 
           _v(position2.x, position2.y, position2.z);
 

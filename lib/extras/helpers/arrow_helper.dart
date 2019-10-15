@@ -30,13 +30,13 @@ class ArrowHelper extends Object3D {
 
     var axis = new Vector3(0.0, 1.0, 0.0).cross(dir);
 
-    var radians = Math.acos(new Vector3(0.0, 1.0, 0.0).dot(dir.clone().normalize()));
+    var radians = Math.acos(new Vector3(0.0, 1.0, 0.0).dot(dir.clone()..normalize()));
 
-    this.matrix = new Matrix4.identity().rotate(axis.normalize(), radians);
+    this.matrix = new Matrix4.identity()..rotate(axis..normalize(), radians);
 
     this.rotation = calcEulerFromRotationMatrix(this.matrix, this.eulerOrder);
   }
 
-  Vector3 setLength(double length) => scale.setValues(length, length, length);
+  Vector3 setLength(double length) => scale..setValues(length, length, length);
 
 }

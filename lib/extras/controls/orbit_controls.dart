@@ -683,7 +683,7 @@ class OrbitControls extends EventEmitter {
       case 3:
         // Three-finger touch - pan
         if (noPan == true) return;
-        if (_state = STATE.TOUCH_PAN) return;
+        if (_state == STATE.TOUCH_PAN) return;
 
         _panEnd = new Vector2(event.touches[0].pageX.toDouble(), event.touches[0].pageY.toDouble());
 

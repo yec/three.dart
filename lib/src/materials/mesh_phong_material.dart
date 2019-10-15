@@ -38,8 +38,8 @@ class MeshPhongMaterial extends Material implements Lighting, TextureMapping, En
 
   var envMap;
   int combine;
-  num reflectivity;
-  num refractionRatio;
+  double reflectivity;
+  double refractionRatio;
 
   /// How the triangles of a curved surface are rendered: as a smooth surface,
   /// as flat separate facets, or no shading at all.

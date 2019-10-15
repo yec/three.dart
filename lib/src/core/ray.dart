@@ -94,7 +94,7 @@ class Ray {
       Mesh mesh = object;
       // Checking boundingSphere
       num distance = _distanceFromIntersection(origin, direction, object.matrixWorld.getTranslation());
-      Vector3 scale = Frustum.__v1.setValues(
+      Vector3 scale = Frustum.__v1..setValues(
           object.matrixWorld.getColumn(0).length,
           object.matrixWorld.getColumn(1).length,
           object.matrixWorld.getColumn(2).length);
@@ -141,7 +141,8 @@ class Ray {
         // note: this works regardless of the direction of the face normal
 
         vector.setFrom(face.centroid);
-        vector.applyProjection(objMatrix).sub(originCopy);
+        vector.applyProjection(objMatrix); 
+        vector.sub(originCopy);
         normal.setFrom(face.normal);
         normal.applyProjection(object.matrixRotationWorld);
         dot = directionCopy.dot(normal);
@@ -159,7 +160,7 @@ class Ray {
 
         if (side == DoubleSide || (side == FrontSide ? dot < 0 : dot > 0)) {
 
-          intersectPoint = originCopy + directionCopy.scale(scalar);
+          intersectPoint = originCopy + (directionCopy..scale(scalar));
 
           abcd = face.indices.map((idx) => vertices[idx].clone().applyProjection(objMatrix)).toList();
 

@@ -171,7 +171,7 @@ class Path extends CurvePath {
 
   }
 
-  getSpacedPoints([int divisions = 5, bool closedPath = false]) {
+  getSpacedPoints([num divisions = 5, bool closedPath = false]) {
 
     if (divisions == null) divisions = 40;
 
@@ -196,7 +196,7 @@ class Path extends CurvePath {
   }
 
   /* Return an array of vectors based on contour of the path */
-  getPoints([int divisions = null, closedPath = false]) {
+  getPoints([num divisions = null, closedPath = false]) {
 
     if (useSpacedPoints) {
       return getSpacedPoints(divisions, closedPath);

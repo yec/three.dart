@@ -57,8 +57,8 @@ class MeshLambertMaterial extends Material implements Lighting, TextureMapping, 
   Texture specularMap;
   var envMap; //TODO: TextureCube?
   int combine;
-  num reflectivity;
-  num refractionRatio;
+  double reflectivity;
+  double refractionRatio;
 
   /// How the triangles of a curved surface are rendered: as a smooth surface,
   /// as flat separate facets, or no shading at all.

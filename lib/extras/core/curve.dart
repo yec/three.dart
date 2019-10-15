@@ -3,7 +3,7 @@ part of three;
 /**************************************************************
  *  Abstract Curve base class
  **************************************************************/
-abstract class Curve<V> {
+abstract class Curve<V extends Vector> {
 
   int _arcLengthDivisions = null;
   List cacheArcLengths = null;
@@ -11,7 +11,7 @@ abstract class Curve<V> {
 
   // Virtual base class method to overwrite and implement in subclasses
   //  - t [0 .. 1]
-  V getPoint(t);
+  V getPoint(double t);
 
   // Get point at relative position in curve according to arc length
   // - u [0 .. 1]
@@ -38,7 +38,7 @@ abstract class Curve<V> {
 
   // Get sequence of points using getPointAt( u )
   // TODO(nelsonsilva) - closedPath is only used in Path
-  List<V> getSpacedPoints([num divisions = 5, closedPath = false]) {
+  List<V> getSpacedPoints([num divisions = 5, bool closedPath = false]) {
 
 
     var d,
@@ -205,21 +205,27 @@ abstract class Curve<V> {
   // we get 2 points with a small delta and find a gradient of the 2 points
   // which seems to make a reasonable approximation
   V getTangent(t) {
-
     var delta = 0.0001;
     var t1 = t - delta;
     var t2 = t + delta;
-
+    var vec;
     // Capping in case of danger
 
     if (t1 < 0) t1 = 0;
     if (t2 > 1) t2 = 1;
 
-    var pt1 = getPoint(t1);
-    var pt2 = getPoint(t2);
-
-    var vec = pt2 - pt1;
-    return vec.normalize();
+    if (V is Vector2) {
+      var pt1 = getPoint(t1) as Vector2;
+      var pt2 = getPoint(t2) as Vector2;
+      vec = pt2 - pt1;
+    }
+    if (V is Vector3) {
+      var pt1 = getPoint(t1) as Vector3;
+      var pt2 = getPoint(t2) as Vector3;
+      vec = pt2 - pt1;
+    }
+    
+    return vec..normalize();
   }
 
   V getTangentAt(u) {

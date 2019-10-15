@@ -199,19 +199,19 @@ class TubeGeometry extends Geometry {
     _initialNormal1([lastBinormal = null]) {
       // fixed start binormal. Has dangers of 0 vectors
       if (lastBinormal == null) lastBinormal = new Vector3(0.0, 0.0, 1.0);
-      normals[0] = lastBinormal.cross(tangents[0]).normalize();
-      binormals[0] = tangents[0].cross(normals[0]).normalize();
+      normals[0] = lastBinormal.cross(tangents[0])..normalize();
+      binormals[0] = tangents[0].cross(normals[0])..normalize();
     }
 
     _initialNormal2() {
       // This uses the Frenet-Serret formula for deriving binormal
       var t2 = path.getTangentAt(epsilon);
 
-      normals[0] = (t2 - tangents[0]).normalize();
+      normals[0] = (t2 - tangents[0])..normalize();
       binormals[0] = tangents[0].cross(normals[0]);
 
-      normals[0] = binormals[0].cross(tangents[0]).normalize(); // last binormal x tangent
-      binormals[0] = tangents[0].cross(normals[0]).normalize();
+      normals[0] = binormals[0].cross(tangents[0])..normalize(); // last binormal x tangent
+      binormals[0] = tangents[0].cross(normals[0])..normalize();
 
     }
 
@@ -238,7 +238,7 @@ class TubeGeometry extends Geometry {
         normal.setValues(0.0, 0.0, 1.0);
       }
 
-      Vector3 vec = tangents[0].cross(normal).normalize();
+      Vector3 vec = tangents[0].cross(normal)..normalize();
 
       normals[0] = tangents[0].cross(vec);
       binormals[0] = tangents[0].cross(normals[0]);

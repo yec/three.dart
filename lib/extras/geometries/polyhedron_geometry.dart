@@ -58,8 +58,8 @@ class PolyhedronGeometry extends Geometry {
     if (detail < 1) {
 
       var face = new Face3(v1.index, v2.index, v3.index, [v1.clone(), v2.clone(), v3.clone()]);
-      face.centroid.add(v1).add(v2).add(v3).scale(1.0 / 3.0);
-      face.normal = face.centroid.clone().normalize();
+      face.centroid..add(v1)..add(v2)..add(v3)..scale(1.0 / 3.0);
+      face.normal = face.centroid.clone()..normalize();
       this.faces.add(face);
 
       var azi = _azimuth(face.centroid);
@@ -147,7 +147,10 @@ class PolyhedronGeometry extends Geometry {
 class PolyhedronGeometryVertex extends Vector3 {
   int index;
   UV uv;
-  PolyhedronGeometryVertex([num x = 0.0, num y = 0.0, num z = 0.0]) : super(x.toDouble(), y.toDouble(), z.toDouble());
 
-  PolyhedronGeometryVertex.fromVector3(Vector3 other) : super.copy(other);
+  PolyhedronGeometryVertex.zero() : super.zero();
+
+  factory PolyhedronGeometryVertex([double x = 0.0, double y = 0.0, double z = 0.0]) => PolyhedronGeometryVertex.zero()..setValues(x,y,z);
+  
+  factory PolyhedronGeometryVertex.fromVector3(Vector3 other) => PolyhedronGeometryVertex.zero()..setFrom(other);
 }

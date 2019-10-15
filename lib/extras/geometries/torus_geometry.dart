@@ -28,7 +28,7 @@ class TorusGeometry extends Geometry {
         this.vertices.add(vertex);
 
         uvs.add(new UV(i / this.segmentsT, j / this.segmentsR));
-        normals.add(vertex.clone().sub(center).normalize());
+        normals.add(vertex.clone()..sub(center)..normalize());
 
       }
     }

@@ -4,9 +4,11 @@ class CompressedTexture extends Texture {
   var mipmaps;
   var images;
   CompressedTexture({this.mipmaps, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter})
-      : super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type),
-        images = {
+      : images = {
         "width": width,
         "height": height
-      };
+      },
+      
+      super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type)
+        ;
 }

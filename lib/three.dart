@@ -1,5 +1,6 @@
 library three;
 
+import 'dart:core';
 import 'dart:async';
 import 'dart:collection';
 import 'dart:html' hide Path;
@@ -39,6 +40,7 @@ part 'src/core/geometry.dart';
 part 'src/core/projector.dart';
 part 'src/core/ray.dart';
 part 'src/core/uv.dart';
+part 'src/core/uniform.dart';
 part 'src/core/rectangle.dart';
 part 'src/core/buffer_geometry.dart';
 part 'src/core/event_emitter.dart';
@@ -95,8 +97,6 @@ part 'extras/helpers/arrow_helper.dart';
 part 'extras/helpers/axis_helper.dart';
 part 'extras/helpers/camera_helper.dart';
 
-part 'extras/renderers/plugins/shadow_map_plugin.dart';
-
 part 'src/lights/ambient_light.dart';
 part 'src/lights/directional_light.dart';
 part 'src/lights/point_light.dart';
@@ -137,10 +137,6 @@ part 'src/renderers/renderables/renderable_line.dart';
 part 'src/renderers/renderables/renderable_particle.dart';
 
 part 'src/renderers/renderer.dart';
-part 'src/renderers/web_gl_renderer.dart';
-part 'src/renderers/web_gl_render_target.dart';
-part 'src/renderers/web_gl_render_target_cube.dart';
-part 'src/renderers/web_gl_shaders.dart';
 
 part 'src/renderers/renderables/irenderable.dart';
 

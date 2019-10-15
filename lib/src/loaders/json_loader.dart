@@ -66,7 +66,7 @@ class JSONLoader extends Loader {
 
           if (length == 0) {
 
-            length = xhr.getResponseHeader("Content-Length");
+            length = xhr.getResponseHeader("Content-Length") as int;
 
           }
 
@@ -79,7 +79,7 @@ class JSONLoader extends Loader {
 
       } else if (xhr.readyState == HttpRequest.HEADERS_RECEIVED) {
 
-        length = xhr.getResponseHeader("Content-Length");
+        length = xhr.getResponseHeader("Content-Length") as int;
 
       }
 

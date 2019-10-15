@@ -14,14 +14,15 @@ part of three;
 /// Base class for geometries.
 /// A geometry holds all data necessary to describe a 3D model.
 // TODO - Create a IGeometry with only the necessary interface methods
-class Geometry extends Object with WebGLGeometry {
+class Geometry extends Object {
+  int id;
 
   String name;
 
   List<Vector3> vertices;
 
   List colors; // one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
-  List normals = []; // one-to-one vertex normals, used in Ribbon
+  List<Vector3> normals = []; // one-to-one vertex normals, used in Ribbon
 
   List materials;
   List<Face> faces;
@@ -301,7 +302,7 @@ class Geometry extends Object with WebGLGeometry {
         // Gram-Schmidt orthogonalize
 
         tmp.setFrom(t);
-        tmp.sub(n.scale(n.dot(t))).normalize();
+        tmp..sub(n..scale(n.dot(t)))..normalize();
 
         // Calculate handedness
 
@@ -481,7 +482,7 @@ class BoundingBox {
           var a = geometry.aPosition.array;
           var il = a.length;
           for (var i = 0; i < il; i += 3) {
-            position.setValues(a[i], a[i + 1], a[i + 2]).applyProjection(node.matrixWorld);
+            position..setValues(a[i], a[i + 1], a[i + 2])..applyProjection(node.matrixWorld);
             if (_aabb3 == null) {
               _aabb3 = new Aabb3.minMax(position, position);
             } else {
@@ -491,7 +492,7 @@ class BoundingBox {
         }
       } else if (geometry is Geometry) {
         geometry.vertices.forEach((vertice) {
-          var transfVertice = new Vector3.copy(vertice).applyProjection(node.matrixWorld);
+          var transfVertice = new Vector3.copy(vertice)..applyProjection(node.matrixWorld);
           if (_aabb3 == null) {
             _aabb3 = new Aabb3.minMax(transfVertice, transfVertice);
           } else {
@@ -505,20 +506,20 @@ class BoundingBox {
     }
   }
 
-  set copy(BoundingBox box) => _aabb3.copyMinMax(box.min, box.max);
+  // set copy(BoundingBox box) => _aabb3.copyMinMax(box.min, box.max);
 
   bool get isEmpty => (this.max.x < this.min.x) || (this.max.y < this.min.y) || (this.max.z < this.min.z);
 
   Vector3 get center => _aabb3.center;
 
-  Vector3 get size => new Vector3.copy(this.max).sub(this.min);
+  Vector3 get size => new Vector3.copy(this.max)..sub(this.min);
 
   expandByPoint(Vector3 point) => _aabb3.hullPoint(point);
 
-  expandByVector(Vector3 vector) => _aabb3.copyMinMax(_aabb3.min.sub(vector), _aabb3.max.add(vector));
+  // expandByVector(Vector3 vector) => _aabb3.copyMinMax(_aabb3.min.sub(vector), _aabb3.max.add(vector));
 
-  expandByScalar(num scalar) =>
-      _aabb3.copyMinMax(_aabb3.min - new Vector3.all(scalar), _aabb3.max + new Vector3.all(scalar));
+  // expandByScalar(num scalar) =>
+  //     _aabb3.copyMinMax(_aabb3.min - new Vector3.all(scalar), _aabb3.max + new Vector3.all(scalar));
 
   bool containsPoint(Vector3 point) => _aabb3.containsVector3(point);
 

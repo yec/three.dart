@@ -394,48 +394,63 @@ class Loader {
 
     if (m.containsKey("mapNormal")) {
 
-      var shader = ShaderUtils.lib["normal"];
-      var uniforms = UniformsUtils.clone(shader.uniforms);
+      // var shader = ShaderUtils.lib["normal"];
+      // var uniforms = UniformsUtils.clone(shader.uniforms);
 
-      uniforms["tNormal"].value = normalMap;
+      // uniforms["tNormal"].value = normalMap;
 
-      if (m.containsKey("mapNormalFactor")) {
-        uniforms["uNormalScale"].value.setValues(m["mapNormalFactor"], m["mapNormalFactor"]);
-      }
+      // if (m.containsKey("mapNormalFactor")) {
+      //   uniforms["uNormalScale"].value.setValues(m["mapNormalFactor"], m["mapNormalFactor"]);
+      // }
 
-      if (map != null) {
-        uniforms["tDiffuse"].value = map;
-        uniforms["enableDiffuse"].value = true;
-      }
+      // if (map != null) {
+      //   uniforms["tDiffuse"].value = map;
+      //   uniforms["enableDiffuse"].value = true;
+      // }
 
-      if (specularMap != null) {
-        uniforms["tSpecular"].value = specularMap;
-        uniforms["enableSpecular"].value = true;
-      }
+      // if (specularMap != null) {
+      //   uniforms["tSpecular"].value = specularMap;
+      //   uniforms["enableSpecular"].value = true;
+      // }
 
-      if (lightMap != null) {
-        uniforms["tAO"].value = lightMap;
-        uniforms["enableAO"].value = true;
-      }
+      // if (lightMap != null) {
+      //   uniforms["tAO"].value = lightMap;
+      //   uniforms["enableAO"].value = true;
+      // }
 
-      // for the moment don't handle displacement texture
+      // // for the moment don't handle displacement texture
 
-      uniforms["uDiffuseColor"].value.setHex(color);
-      uniforms["uSpecularColor"].value.setHex(specular);
-      uniforms["uAmbientColor"].value.setHex(ambient);
+      // uniforms["uDiffuseColor"].value.setHex(color);
+      // uniforms["uSpecularColor"].value.setHex(specular);
+      // uniforms["uAmbientColor"].value.setHex(ambient);
 
-      uniforms["uShininess"].value = shininess;
+      // uniforms["uShininess"].value = shininess;
 
-      if (opacity != null) {
-        uniforms["uOpacity"].value = opacity;
-      }
+      // if (opacity != null) {
+      //   uniforms["uOpacity"].value = opacity;
+      // }
 
-      material = new ShaderMaterial(
-          fragmentShader: shader.fragmentShader,
-          vertexShader: shader.vertexShader,
-          uniforms: uniforms//lights: true,
+      // material = new ShaderMaterial(
+      //     fragmentShader: shader.fragmentShader,
+      //     vertexShader: shader.vertexShader,
+      //     // uniforms: uniforms//lights: true,
       //fog: true
-      );
+      // );
+
+          material = new MeshBasicMaterial(
+              map: map,
+              color: color,
+              lightMap: lightMap,
+              specularMap: specularMap,
+              vertexColors: vertexColors,
+              wireframe: wireframe,
+              side: FrontSide,
+              opacity: opacity,
+              transparent: transparent,
+              blending: blending,
+              depthTest: depthTest,
+              depthWrite: depthWrite,
+              visible: visible);
 
     } else {
 

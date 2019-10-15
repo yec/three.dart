@@ -463,7 +463,7 @@ class TrackballControls extends EventEmitter {
     event.preventDefault();
     event.stopPropagation();
 
-    var delta = 0;
+    var delta = 0.0;
 
     // TODO(nelsonsilva) - check this!
     if (event.deltaY != 0) { // WebKit / Opera / Explorer 9

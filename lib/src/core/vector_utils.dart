@@ -21,7 +21,7 @@ Vector3 calcEulerFromRotationMatrix(Matrix4 m, [String order = 'XYZ']) {
 
   // clamp, to handle numerical problems
 
-  var clamp = (x) => Math.min(Math.max(x, -1), 1);
+  var clamp = (num x) => Math.min(Math.max(x, -1.0), 1.0);
 
   var m11 = m[0],
       m12 = m[4],
@@ -140,7 +140,8 @@ Vector3 calcEulerFromQuaternion(Vector4 q, [String order = 'XYZ']) {
 
   // clamp, to handle numerical problems
 
-  var clamp = (x) => Math.min(Math.max(x, -1), 1);
+  var clamp = (num x) => Math.min(Math.max(x, -1), 1);
+
 
   var sqx = q.x * q.x;
   var sqy = q.y * q.y;
@@ -189,5 +190,5 @@ Vector3 calcEulerFromQuaternion(Vector4 q, [String order = 'XYZ']) {
 }
 
 Vector4 lerp4(Vector4 start, Vector4 end, double percent) {
-  return (start + (end - start).scale(percent));
+  return (start + (end - start).scaled(percent));
 }

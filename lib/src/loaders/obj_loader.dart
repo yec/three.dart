@@ -211,7 +211,7 @@ class OBJLoader extends Loader {
           }
         } else if (line.contains(new RegExp(r"^mtllib "))) {
           if (_useMtl) {
-            var loaderMTL = new MTLLoader(baseUrl, {}, crossOrigin);
+            var loaderMTL = new MTLLoader(baseUrl, HashMap(), crossOrigin);
             if (controllerMtl != null) {
               controllerMtl.close();
             }

@@ -23,7 +23,7 @@ class CubicBezierCurve extends Curve2D {
     tx = CurveUtils.tangentCubicBezier(t, v0.x, v1.x, v2.x, v3.x);
     ty = CurveUtils.tangentCubicBezier(t, v0.y, v1.y, v2.y, v3.y);
 
-    return new Vector2(tx, ty).normalize();
+    return new Vector2(tx, ty)..normalize();
 
   }
 }

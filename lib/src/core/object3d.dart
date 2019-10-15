@@ -165,17 +165,17 @@ class Object3D {
   void translate(double distance, Vector3 axis) {
     matrix.rotate3(axis);
     axis.normalize();
-    position.add(axis.scale(distance));
+    position.add(axis..scale(distance));
   }
 
   /// Translates object along x axis by distance.
-  void translateX(double distance) => translate(distance, _vector.setValues(1.0, 0.0, 0.0));
+  void translateX(double distance) => translate(distance, _vector..setValues(1.0, 0.0, 0.0));
 
   /// Translates object along y axis by distance.
-  void translateY(double distance) => translate(distance, _vector.setValues(0.0, 1.0, 0.0));
+  void translateY(double distance) => translate(distance, _vector..setValues(0.0, 1.0, 0.0));
 
   /// Translates object along z axis by distance.
-  void translateZ(double distance) => translate(distance, _vector.setValues(0.0, 0.0, 1.0));
+  void translateZ(double distance) => translate(distance, _vector..setValues(0.0, 0.0, 1.0));
 
   /// Rotates object to face point in space.
   void lookAt(Vector3 vector) {

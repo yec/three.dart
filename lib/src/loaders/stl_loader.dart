@@ -55,7 +55,7 @@ class STLLoader extends Loader {
     var data = new ByteData.view(bytes.buffer);
 
     var face_size = (32 / 8 * 3) + ((32 / 8 * 3) * 3) + (16 / 8);
-    var n_faces = data.getUint32(80, Endianness.LITTLE_ENDIAN);
+    var n_faces = data.getUint32(80, Endian.little);
     var expect = 80 + (32 / 8) + (n_faces * face_size);
     var flag = (expect == data.lengthInBytes);
     return flag;
@@ -74,7 +74,7 @@ class STLLoader extends Loader {
   Geometry parseBinary(ByteBuffer bytes) {
 
     var data = new ByteData.view(bytes),
-        n_faces = data.getUint32(80, Endianness.LITTLE_ENDIAN),
+        n_faces = data.getUint32(80, Endian.little),
         geometry = new Geometry(),
         dataOffset = 84,
         faceLength = 12 * 4 + 2;
@@ -83,17 +83,17 @@ class STLLoader extends Loader {
       var start = dataOffset + (face * faceLength);
 
       var normal = new Vector3(
-          data.getFloat32(start, Endianness.LITTLE_ENDIAN),
-          data.getFloat32(start + 4, Endianness.LITTLE_ENDIAN),
-          data.getFloat32(start + 8, Endianness.LITTLE_ENDIAN));
+          data.getFloat32(start, Endian.little),
+          data.getFloat32(start + 4, Endian.little),
+          data.getFloat32(start + 8, Endian.little));
 
       for (var i = 1; i <= 3; i++) {
         var vertexstart = start + i * 12;
         geometry.vertices.add(
             new Vector3(
-                data.getFloat32(vertexstart, Endianness.LITTLE_ENDIAN),
-                data.getFloat32(vertexstart + 4, Endianness.LITTLE_ENDIAN),
-                data.getFloat32(vertexstart + 8, Endianness.LITTLE_ENDIAN)));
+                data.getFloat32(vertexstart, Endian.little),
+                data.getFloat32(vertexstart + 4, Endian.little),
+                data.getFloat32(vertexstart + 8, Endian.little)));
       }
 
       var length = geometry.vertices.length;

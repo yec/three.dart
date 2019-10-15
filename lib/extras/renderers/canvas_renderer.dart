@@ -459,7 +459,7 @@ class CanvasRenderer implements Renderer {
 
         lightPosition = light.matrixWorld.getTranslation();
 
-        _vector3 = (lightPosition - position).normalize();
+        _vector3 = (lightPosition - position)..normalize();
         amount = normal.dot(_vector3);
 
         if (amount <= 0) continue;

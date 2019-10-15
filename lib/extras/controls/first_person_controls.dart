@@ -273,7 +273,7 @@ class FirstPersonControls {
       targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
     }
 
-    var verticalLookRatio = 1;
+    var verticalLookRatio = 1.0;
 
     if (this.constrainVertical) {
       verticalLookRatio = Math.pi / (this.verticalMax - this.verticalMin);

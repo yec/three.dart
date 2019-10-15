@@ -25,6 +25,6 @@ class QuadraticBezierCurve extends Curve2D {
     ty = CurveUtils.tangentQuadraticBezier(t, v0.y, v1.y, v2.y);
 
     // returns unit vector
-    return new Vector2(tx, ty).normalize();
+    return new Vector2(tx, ty)..normalize();
   }
 }

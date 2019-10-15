@@ -10,7 +10,7 @@ part of three;
 class MTLLoader {
 
   String _baseUrl = '';
-  HashMap _options = {};
+  HashMap _options = HashMap();
   String _crossOrigin = '';
 
   /// Creates a new MTLLoader
@@ -29,9 +29,9 @@ class MTLLoader {
   /// Parses [text] loaded MTL file
   MaterialCreator parse(String text) {
     List<String> lines = text.split("\n");
-    HashMap info = {};
+    HashMap info = HashMap();
     var delimiter_pattern = new RegExp(r"\s+");
-    var materialsInfo = {};
+    var materialsInfo = HashMap();
 
     lines.forEach((String line) {
       line = line.trim();
@@ -108,21 +108,21 @@ class MaterialCreator {
   /// Inits [MaterialCreator]
   void set materials(HashMap materialsInfo) {
     this._materialsInfo = _convert(materialsInfo);
-    this._materials = {};
+    this._materials = HashMap();
     this._materialsArray = [];
-    this._nameLookup = {};
+    this._nameLookup = HashMap();
   }
 
   HashMap _convert(HashMap materialsInfo) {
     if (this._options == null) {
       return materialsInfo;
     }
-    HashMap converted = {};
+    HashMap converted = HashMap();
 
     for (var mn in materialsInfo.keys) {
       // Convert materials info into normalized form based on options
       HashMap mat = materialsInfo[mn];
-      HashMap covmat = {};
+      HashMap covmat = HashMap();
 
       converted[mn] = covmat;
       for (String prop in mat.keys) {
@@ -169,7 +169,7 @@ class MaterialCreator {
 
   /// Creates in cache all creation for this material.
   Future preload() {
-    var futures = new List();
+    List<Future> futures = new List();
     for (var mn in this._materialsInfo.keys) {
       futures.add(create(mn));
     }
@@ -182,7 +182,7 @@ class MaterialCreator {
 
   List _getAsArray() {
     var index = 0;
-    for (var mn in this._materialsInfo) {
+    for (var mn in this._materialsInfo.values) {
       this._materialsArray[index] = create(mn);
       this._nameLookup[mn] = index;
       index++;
@@ -266,9 +266,9 @@ class MaterialCreator {
     var completer = new Completer();
     if (mapLoaded != null) {
       mapLoaded.then((e) {
+        e.wrapS = this._wrap;
+        e.wrapT = this._wrap;
         params['map'] = e;
-        params['map'].wrapS = this._wrap;
-        params['map'].wrapT = this._wrap;
         var material = _createMeshPhongMaterial(params);
         _materials[materialName] = material;
         completer.complete(material);
@@ -311,13 +311,13 @@ class MaterialCreator {
 
   ImageElement _ensurePowerOfTwo(ImageElement image) {
     if (!_isPowerOfTwo(image.width) || !_isPowerOfTwo(image.height)) {
-      var canvas = document.createElement("canvas");
+      var canvas = document.createElement("canvas") as CanvasElement;
       canvas.width = _nextHighestPowerOfTwo(image.width);
       canvas.height = _nextHighestPowerOfTwo(image.height);
 
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-      return canvas;
+      CanvasRenderingContext2D ctx = canvas.getContext("2d");
+      ctx.drawImageScaledFromSource(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+      return canvas as ImageElement;
     }
     return image;
   }

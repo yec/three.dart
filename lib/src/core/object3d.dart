@@ -103,10 +103,10 @@ class Object3D {
   int count;
   bool hasPositions, hasNormals, hasUvs, hasColors;
   var positionArray, normalArray, uvArray, colorArray;
-  gl.Buffer __webglVertexBuffer,
-      __webglNormalBuffer,
-      __webglUVBuffer,
-      __webglColorBuffer;
+  // gl.Buffer __webglVertexBuffer,
+  //     __webglNormalBuffer,
+  //     __webglUVBuffer,
+  //     __webglColorBuffer;
 
   var __webglMorphTargetInfluences;
 

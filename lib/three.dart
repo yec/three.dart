@@ -3,9 +3,10 @@ library three;
 import 'dart:core';
 import 'dart:async';
 import 'dart:collection';
-import 'dart:html' hide Path;
+// import 'dart:html' hide Path;
+import 'package:three/htmlshim.dart' hide Path;
 import 'dart:typed_data';
-import 'dart:web_gl' as gl;
+// import 'dart:web_gl' as gl;
 import 'dart:math' as Math;
 import 'dart:convert' show jsonDecode;
 

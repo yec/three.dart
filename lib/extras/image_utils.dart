@@ -1,6 +1,7 @@
 library ImageUtils;
 
-import "dart:html";
+// import "dart:html";
+import 'package:three/htmlshim.dart';
 import "dart:math" as Math;
 import "dart:typed_data";
 

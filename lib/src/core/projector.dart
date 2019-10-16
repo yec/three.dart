@@ -304,9 +304,9 @@ class Projector {
               _face = (face.size == 3)
                   ? getNextFace3InPool()
                   : getNextFace4InPool();
-              List<RenderableVertex> verts =
-                  vtx.map((v) => v.clone()).toList(growable: false);
-              _face.vertices = verts;
+              _face.vertices = vtx
+                  .map<RenderableVertex>((v) => v.clone())
+                  .toList(growable: false);
             } else {
               continue;
             }
@@ -343,7 +343,7 @@ class Projector {
           for (c = 0; c < cl; c++) {
             if (faceVertexUvs[c].length == 0) continue;
 
-            List<UV> uvs = faceVertexUvs[c][f];
+            var uvs = faceVertexUvs[c][f];
 
             if (uvs == null) continue;
 

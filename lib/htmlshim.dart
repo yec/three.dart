@@ -6,7 +6,14 @@ class Element {
 
   Element();
 
-  factory Element.tag(String name) => Element();
+  factory Element.tag(String name) {
+    if (name == "canvas") {
+      return CanvasElement();
+    }
+    else {
+      return Element();
+    }
+  }
 
   var style;
 

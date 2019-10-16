@@ -316,16 +316,16 @@ class MaterialCreator {
   }
 
   ImageElement _ensurePowerOfTwo(ImageElement image) {
-    if (!_isPowerOfTwo(image.width) || !_isPowerOfTwo(image.height)) {
-      var canvas = document.createElement("canvas") as CanvasElement;
-      canvas.width = _nextHighestPowerOfTwo(image.width);
-      canvas.height = _nextHighestPowerOfTwo(image.height);
+    // if (!_isPowerOfTwo(image.width) || !_isPowerOfTwo(image.height)) {
+    //   var canvas = document.createElement("canvas") as CanvasElement;
+    //   canvas.width = _nextHighestPowerOfTwo(image.width);
+    //   canvas.height = _nextHighestPowerOfTwo(image.height);
 
-      CanvasRenderingContext2D ctx = canvas.getContext("2d");
-      ctx.drawImageScaledFromSource(image, 0, 0, image.width, image.height, 0,
-          0, canvas.width, canvas.height);
-      return canvas as ImageElement;
-    }
+    //   CanvasRenderingContext2D ctx = canvas.getContext("2d");
+    //   ctx.drawImageScaledFromSource(image, 0, 0, image.width, image.height, 0,
+    //       0, canvas.width, canvas.height);
+    //   return canvas as ImageElement;
+    // }
     return image;
   }
 

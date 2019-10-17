@@ -100,7 +100,7 @@ class DartCanvasRenderer implements Renderer {
     // _context = _canvas.getContext('2d');
     // debug = parameters['debug'] != null ? parameters['debug'] : false;
 
-    debug = true;
+    debug = false;
 
     _canvas = CanvasElement.dartCanvas(canvas);
     _context = _canvas.getContext('2d');
@@ -144,29 +144,29 @@ class DartCanvasRenderer implements Renderer {
 
     _vector3 = new Vector3.zero(); // Needed for PointLight
 
-    // _gradientMapQuality = 16;
+    _gradientMapQuality = 16;
 
-    //_pixelMap = document.createElement( 'canvas' );
-    // _pixelMap = new Element.tag('canvas');
-    // _pixelMap.width = _pixelMap.height = 2;
+    _pixelMap = document.createElement('canvas');
+    _pixelMap = new Element.tag('canvas');
+    _pixelMap.width = _pixelMap.height = 2;
 
-    // _pixelMapContext = Canvas(PictureRecorder());
-    // _pixelMapContext.fillStyle = 'rgba(0,0,0,1)';
-    // _pixelMapContext.fillRect(0, 0, 2, 2);
+    _pixelMapContext = _pixelMap.getContext('2d');
+    _pixelMapContext.fillStyle = 'rgba(0,0,0,1)';
+    _pixelMapContext.fillRect(0, 0, 2, 2);
 
-    // _pixelMapImage = _pixelMapContext.getImageData(0, 0, 2, 2);
-    // _pixelMapData = _pixelMapImage.data;
+    _pixelMapImage = _pixelMapContext.getImageData(0, 0, 2, 2);
+    _pixelMapData = _pixelMapImage.data;
 
-    //_gradientMap = document.createElement( 'canvas' );
-    // _gradientMap = new Element.tag('canvas');
-    // _gradientMap.width = _gradientMap.height = _gradientMapQuality;
+    _gradientMap = document.createElement('canvas');
+    _gradientMap = new Element.tag('canvas');
+    _gradientMap.width = _gradientMap.height = _gradientMapQuality;
 
-    // _gradientMapContext = _gradientMap.getContext('2d');
-    // _gradientMapContext.translate(
-    //     -_gradientMapQuality / 2, -_gradientMapQuality / 2);
-    // _gradientMapContext.scale(_gradientMapQuality, _gradientMapQuality);
+    _gradientMapContext = _gradientMap.getContext('2d');
+    _gradientMapContext.translate(
+        -_gradientMapQuality / 2, -_gradientMapQuality / 2);
+    _gradientMapContext.scale(_gradientMapQuality, _gradientMapQuality);
 
-    // _gradientMapQuality--; // Fix UVs
+    _gradientMapQuality--; // Fix UVs
 
     // domElement = _canvas;
 
@@ -225,7 +225,7 @@ class DartCanvasRenderer implements Renderer {
   }
 
   void clear() {
-    // _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
+    _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
 
     if (!_clearRect.isEmpty) {
       _clearRect.minSelf(_clipRect);
@@ -267,7 +267,7 @@ class DartCanvasRenderer implements Renderer {
     if (_autoClear) {
       clear();
     } else {
-      // _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
+      _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
     }
     //TODO: these are ints not lists?
     //_info['render']['vertices'] = 0;
@@ -412,7 +412,7 @@ class DartCanvasRenderer implements Renderer {
       //     _clearRect.getWidth(), _clearRect.getHeight());
     }
 
-    // _context.setTransform(1, 0, 0, 1, 0, 0);
+    _context.setTransform(1, 0, 0, 1, 0, 0);
 
     //
   }
@@ -1041,7 +1041,7 @@ class DartCanvasRenderer implements Renderer {
 
   void fillPath(Color color) {
     setFillStyle(color.getContextStyle());
-    // _context.fill();
+    _context.fill();
   }
 
   //TODO: MeshBasicMaterial/MeshLambertMaterial map/envMap WHAT IS ENV MAP?!
@@ -1147,10 +1147,10 @@ class DartCanvasRenderer implements Renderer {
     e = x0 - a * u0 - c * v0;
     f = y0 - b * u0 - d * v0;
 
-    // _context.save();
-    // _context.transform(a, b, c, d, e, f);
-    // _context.fill();
-    // _context.restore();
+    _context.save();
+    _context.transform(a, b, c, d, e, f);
+    _context.fill();
+    _context.restore();
   }
 
   void clipImage(num x0, num y0, num x1, num y1, num x2, num y2, num u0, num v0,
@@ -1197,11 +1197,11 @@ class DartCanvasRenderer implements Renderer {
     e = x0 - a * u0 - c * v0;
     f = y0 - b * u0 - d * v0;
 
-    // _context.save();
-    // _context.transform(a, b, c, d, e, f);
-    // _context.clip();
-    // _context.drawImage(image, 0, 0);
-    // _context.restore();
+    _context.save();
+    _context.transform(a, b, c, d, e, f);
+    _context.clip();
+    _context.drawImage(image, 0, 0);
+    _context.restore();
   }
 
   CanvasElement getGradientTexture(
@@ -1331,7 +1331,7 @@ class DartCanvasRenderer implements Renderer {
   void setFillStyle(dynamic style) {
     if (_contextFillStyle != style) {
       _contextFillStyle = style;
-      // _context.fillStyle = _contextFillStyle;
+      _context.fillStyle = _contextFillStyle;
     }
   }
 }

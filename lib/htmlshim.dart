@@ -1,5 +1,6 @@
-class Element {
+import 'dart:ui';
 
+class Element {
   List<Element> nodes;
 
   var name;
@@ -8,9 +9,8 @@ class Element {
 
   factory Element.tag(String name) {
     if (name == "canvas") {
-      return CanvasElement();
-    }
-    else {
+      return CanvasElement.fresh();
+    } else {
       return Element();
     }
   }
@@ -21,23 +21,41 @@ class Element {
 }
 
 class ImageElement extends Element {
-
-  num width;
-  num height;
+  num _width;
+  num _height;
 
   var src;
   var crossOrigin;
   var onLoad;
   var onError;
+
+  set width(num value) => _width = value;
+  set height(num value) => _height = value;
+
+  num get width => _width;
+  num get height => _height;
 }
 
 class CanvasElement extends ImageElement {
-  var getContext;
+  Canvas _canvas;
+
   var context2D;
+
+  get dartCanvas => _canvas;
+
+  CanvasElement();
+
+  factory CanvasElement.fresh() =>
+      CanvasElement.dartCanvas(Canvas(PictureRecorder()));
+
+  CanvasElement.dartCanvas(this._canvas);
+
+  CanvasRenderingContext2D getContext([String dimension]) {
+    return CanvasRenderingContext2D(this);
+  }
 }
 
 class HttpRequest {
-
   static var DONE = 'DONE';
   static var LOADING = 'LOADING';
   static var HEADERS_RECEIVED = 'HEADERS_RECEIVED';
@@ -72,22 +90,16 @@ class document extends Element {
   static var onMouseOut;
   static var onTouchStart;
   static var onTouchMove;
-
 }
 
 class CanvasRenderingContext2D {
-  var beginPath;
+  // not implemented
   var clearRect;
   var clip;
-  var closePath;
   var createPatternFromImage;
   var drawImage;
   var drawImageScaledFromSource;
   var fill;
-  var fillRect;
-  var getImageData;
-  var lineTo;
-  var moveTo;
   var putImageData;
   var restore;
   var rotate;
@@ -98,13 +110,54 @@ class CanvasRenderingContext2D {
   var strokeRect;
   var transform;
   var translate;
-  var fillStyle;
   var globalAlpha;
   var globalCompositeOperation;
   var lineCap;
   var lineJoin;
   var lineWidth;
-  var strokeStyle;
+  var _strokeStyle;
+
+  // start implementation
+
+  CanvasElement _canvas;
+  Path _path;
+  Paint _paint = Paint();
+
+  Paint _fillStyle;
+
+  CanvasRenderingContext2D(this._canvas);
+
+  set strokeStyle(dynamic style) {
+    _strokeStyle = Paint();
+  }
+
+  void set fillStyle(String cssColor) {
+    this._fillStyle = Paint();
+  }
+
+  getImageData(int sx, int sy, int sw, int sh) {
+    return {};
+  }
+
+  // The CanvasRenderingContext2D.fillRect() method of the Canvas 2D API draws a rectangle that is filled according to the current fillStyle
+  // This method draws directly to the canvas without modifying the current path, so any subsequent fill() or stroke() calls will have no effect on it.
+  void fillRect(num x, num y, num width, num height) =>
+      _canvas.dartCanvas.drawRect(
+          Rect.fromPoints(Offset(x, y), Offset(x + width, y + height)),
+          _fillStyle);
+
+  // path methods
+  beginPath() => _path = Path();
+  moveTo(double x, double y) => _path.moveTo(x, y);
+  lineTo(double x, double y) => _path.lineTo(x, y);
+  closePath() {
+    _paint.color = Color.fromRGBO(0, 0, 0, 1);
+    _paint.strokeWidth = 4;
+    _canvas.dartCanvas.drawPath(_path, _paint);
+  }
+
+  Canvas getDartCanvas() => _canvas.dartCanvas;
+  Paint getPaint() => _paint;
 }
 
 class window {
@@ -116,10 +169,6 @@ class window {
   }
 }
 
-class Event {
+class Event {}
 
-}
-
-class ProgressEvent extends Event {
-  
-}
+class ProgressEvent extends Event {}

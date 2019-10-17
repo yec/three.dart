@@ -27,7 +27,8 @@ class DartCanvasRenderer implements Renderer {
   Camera _camera;
 
   CanvasElement _canvas;
-  UI.Canvas _context;
+  CanvasRenderingContext2D _context;
+
   UI.Paint _contextPaint;
 
   num _contextGlobalAlpha, _contextGlobalCompositeOperation;
@@ -71,10 +72,10 @@ class DartCanvasRenderer implements Renderer {
   num _gradientMapQuality;
 
   CanvasElement _pixelMap;
-  UI.Canvas _pixelMapContext;
+  CanvasRenderingContext2D _pixelMapContext;
 
   CanvasElement _gradientMap;
-  UI.Canvas _gradientMapContext;
+  CanvasRenderingContext2D _gradientMapContext;
 
 //  get domElement() {  _domElement;  }
 
@@ -85,21 +86,24 @@ class DartCanvasRenderer implements Renderer {
   }
 
   // DartCanvasRenderer([Map parameters]) {
-  DartCanvasRenderer(UI.Canvas canvas, UI.Paint paint) {
+  DartCanvasRenderer(canvas, paint) {
     // parameters = parameters != null ? parameters : {};
-    // parameters = {};
+
+    // print(_canvas.dartCanvas);
+    // canvas.drawLine(UI.Offset(100.0, 100.0), UI.Offset(200.0, 200.0), paint);
 
     _projector = new Projector();
 
     // _canvas = parameters['canvas'] != null
     //     ? parameters['canvas']
     //     : new Element.tag('canvas');
-
-    _context = canvas;
-    _contextPaint = paint;
-
+    // _context = _canvas.getContext('2d');
     // debug = parameters['debug'] != null ? parameters['debug'] : false;
+
     debug = true;
+
+    _canvas = CanvasElement.dartCanvas(canvas);
+    _context = _canvas.getContext('2d');
 
     _clearColor = new Color(0x000000);
     _clearOpacity = 0;
@@ -112,10 +116,10 @@ class DartCanvasRenderer implements Renderer {
     _contextLineCap = null;
     _contextLineJoin = null;
 
-    // _contextPaint = UI.Paint();
-    // _contextPaint.strokeWidth = 4;
-    // _contextPaint.color = UI.Color.fromRGBO(0, 0, 0, 1.0);
-    // _contextPaint.style = UI.PaintingStyle.stroke;
+    _contextPaint = UI.Paint();
+    _contextPaint.strokeWidth = 4;
+    _contextPaint.color = UI.Color.fromRGBO(0, 0, 0, 1.0);
+    _contextPaint.style = UI.PaintingStyle.stroke;
 
     _v5 = new RenderableVertex();
     _v6 = new RenderableVertex();
@@ -187,8 +191,8 @@ class DartCanvasRenderer implements Renderer {
     _canvasWidthHalf = (_canvasWidth / 2).floor();
     _canvasHeightHalf = (_canvasHeight / 2).floor();
 
-    // _canvas.width = _canvasWidth;
-    // _canvas.height = _canvasHeight;
+    _canvas.width = _canvasWidth;
+    _canvas.height = _canvasHeight;
 
     _clipRect.setValues(-_canvasWidthHalf, -_canvasHeightHalf, _canvasWidthHalf,
         _canvasHeightHalf);
@@ -1005,33 +1009,23 @@ class DartCanvasRenderer implements Renderer {
   }
 
   void drawTriangle(num x0, num y0, num x1, num y1, num x2, num y2) {
-    var path = UI.Path();
-    path.moveTo(x0, y0);
-    path.lineTo(x1, y1);
-    path.lineTo(x2, y2);
-    path.lineTo(x0, y0);
-    _context.drawPath(path, _contextPaint);
-
-    // print('draw triangle');
-    // print("$x0 $y0 $x1 $y1 $x2 $y2");
-    // print(_context);
-    // print(_contextPaint);
-
-    // _context.drawPaint(_contextPaint);
-    // _context.drawLine(UI.Offset(x0, y0), UI.Offset(x1, y1), _contextPaint);
-    // _context.drawLine(UI.Offset(x1, y1), UI.Offset(x2, y2), _contextPaint);
-    // _context.drawLine(UI.Offset(x2, y2), UI.Offset(x0, y0), _contextPaint);
+    _context.beginPath();
+    _context.moveTo(x0, y0);
+    _context.lineTo(x1, y1);
+    _context.lineTo(x2, y2);
+    _context.lineTo(x0, y0);
+    _context.closePath();
   }
 
   void drawQuad(
       num x0, num y0, num x1, num y1, num x2, num y2, num x3, num y3) {
-    var p = UI.Path();
-    p.moveTo(x0, y0);
-    p.lineTo(x1, y1);
-    p.lineTo(x2, y2);
-    p.lineTo(x3, y3);
-    p.lineTo(x0, y0);
-    _context.drawPath(p, _contextPaint);
+    _context.beginPath();
+    _context.moveTo(x0, y0);
+    _context.lineTo(x1, y1);
+    _context.lineTo(x2, y2);
+    _context.lineTo(x3, y3);
+    _context.lineTo(x0, y0);
+    _context.closePath();
   }
 
   void strokePath(Color color, num linewidth, String linecap, String linejoin) {

@@ -111,16 +111,16 @@ class CanvasRenderingContext2D {
   var restore;
   var rotate;
   var save;
-  var stroke;
   var strokeRect;
   var globalAlpha;
   var globalCompositeOperation;
-  var lineCap;
-  var lineJoin;
-  var lineWidth;
-  var _strokeStyle;
 
   // start implementation
+
+  double _lineWidth;
+  StrokeCap _lineCap;
+  StrokeJoin _lineJoin;
+  Paint _strokeStyle = Paint();
 
   CanvasElement _canvas;
   Path _path;
@@ -130,11 +130,38 @@ class CanvasRenderingContext2D {
 
   CanvasRenderingContext2D(this._canvas);
 
-  set strokeStyle(dynamic style) {
-    _strokeStyle = Paint();
+  // "butt", "round", "square"
+  set lineCap(value) {
+    var lineCapMap = {
+      "butt": StrokeCap.butt,
+      "round": StrokeCap.round,
+      "square": StrokeCap.square,
+    };
+    _lineCap =
+        lineCapMap[value] != null ? lineCapMap[value] : lineCapMap["square"];
   }
 
-  set fillStyle(dynamic value) {
+  set lineJoin(value) {
+    // "round", "bevel", "miter"
+    var lineJoinMap = {
+      "round": StrokeJoin.round,
+      "bevel": StrokeJoin.bevel,
+      "miter": StrokeJoin.miter,
+    };
+    _lineJoin =
+        lineJoinMap[value] != null ? lineJoinMap[value] : lineJoinMap["round"];
+  }
+
+  set lineWidth(double value) {
+    _lineWidth = value;
+  }
+
+  set strokeStyle(dynamic value) {
+    _strokeStyle.style = PaintingStyle.stroke;
+    _strokeStyle.color = parseColor(value);
+  }
+
+  Color parseColor(String value) {
     var m = RegExp("[0-9]+").allMatches(value);
     num r, g, b, a = 1.0;
 
@@ -147,8 +174,13 @@ class CanvasRenderingContext2D {
         a = double.parse(m.elementAt(3).group(0));
       }
 
-      this._fillStyle.color = Color.fromRGBO(r, g, b, a);
+      return Color.fromRGBO(r, g, b, a);
     }
+    return Color.fromRGBO(0, 0, 0, 1.0);
+  }
+
+  set fillStyle(dynamic value) {
+    _fillStyle.color = parseColor(value);
   }
 
   ImageData getImageData(int sx, int sy, int sw, int sh) {
@@ -159,6 +191,15 @@ class CanvasRenderingContext2D {
   void fill([dynamic path_OR_winding, String winding]) {
     if (_path != null) {
       _canvas.dartCanvas.drawPath(_path, _fillStyle);
+    }
+  }
+
+  void stroke([dynamic path_OR_winding, String winding]) {
+    if (_path != null) {
+      _strokeStyle.strokeWidth = _lineWidth;
+      _strokeStyle.strokeJoin = _lineJoin;
+      _strokeStyle.strokeCap = _lineCap;
+      _canvas.dartCanvas.drawPath(_path, _strokeStyle);
     }
   }
 
@@ -198,6 +239,7 @@ class CanvasRenderingContext2D {
 
   void transform(num a, num b, num c, num d, num e, num f) {
     // new transform
+    _canvas.dartCanvas.translate(e.toDouble(), f.toDouble());
     _canvas.dartCanvas.transform(Float64List.fromList([
       //1
       a.toDouble(),
@@ -210,8 +252,8 @@ class CanvasRenderingContext2D {
       0.0,
       0.0,
       //3
-      e.toDouble(),
-      f.toDouble(),
+      0.0,
+      0.0,
       1.0,
       0.0,
       //4

@@ -112,7 +112,6 @@ class CanvasRenderingContext2D {
   var rotate;
   var save;
   var strokeRect;
-  var globalAlpha;
   var globalCompositeOperation;
 
   // start implementation
@@ -121,6 +120,7 @@ class CanvasRenderingContext2D {
   StrokeCap _lineCap;
   StrokeJoin _lineJoin;
   Paint _strokeStyle = Paint();
+  var _globalAlpha = 1.0;
 
   CanvasElement _canvas;
   Path _path;
@@ -129,6 +129,10 @@ class CanvasRenderingContext2D {
   Paint _fillStyle = Paint();
 
   CanvasRenderingContext2D(this._canvas);
+
+  set globalAlpha(value) {
+    _globalAlpha = value;
+  }
 
   // "butt", "round", "square"
   set lineCap(value) {
@@ -190,6 +194,8 @@ class CanvasRenderingContext2D {
   // The CanvasRenderingContext2D.fill() method of the Canvas 2D API fills the current or given path with the current fillStyle.
   void fill([dynamic path_OR_winding, String winding]) {
     if (_path != null) {
+      var c = _fillStyle.color.withOpacity(_globalAlpha);
+      _fillStyle.color = c;
       _canvas.dartCanvas.drawPath(_path, _fillStyle);
     }
   }

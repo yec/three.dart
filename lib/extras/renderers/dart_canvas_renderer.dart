@@ -1034,7 +1034,7 @@ class DartCanvasRenderer implements Renderer {
     setLineJoin(linejoin);
     setStrokeStyle(color.getContextStyle());
 
-    // _context.stroke();
+    _context.stroke();
 
     _bboxRect.inflate(linewidth * 2);
   }
@@ -1275,7 +1275,7 @@ class DartCanvasRenderer implements Renderer {
 
   void setOpacity(num value) {
     if (_contextGlobalAlpha != value) {
-      // _context.globalAlpha = _contextGlobalAlpha = value;
+      _context.globalAlpha = _contextGlobalAlpha = value.toDouble();
     }
   }
 
@@ -1304,27 +1304,27 @@ class DartCanvasRenderer implements Renderer {
 
   void setLineWidth(num value) {
     if (_contextLineWidth != value) {
-      // _context.lineWidth = _contextLineWidth = value;
+      _context.lineWidth = _contextLineWidth = value.toDouble();
     }
   }
 
   void setLineCap(String value) {
     // "butt", "round", "square"
     if (_contextLineCap != value) {
-      // _context.lineCap = _contextLineCap = value;
+      _context.lineCap = _contextLineCap = value;
     }
   }
 
   void setLineJoin(String value) {
     // "round", "bevel", "miter"
     if (_contextLineJoin != value) {
-      // _context.lineJoin = _contextLineJoin = value;
+      _context.lineJoin = _contextLineJoin = value;
     }
   }
 
   void setStrokeStyle(dynamic style) {
     if (_contextStrokeStyle != style) {
-      // _context.strokeStyle = _contextStrokeStyle = style;
+      _context.strokeStyle = _contextStrokeStyle = style;
     }
   }
 

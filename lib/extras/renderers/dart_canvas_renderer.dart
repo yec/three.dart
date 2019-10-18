@@ -589,10 +589,10 @@ class DartCanvasRenderer implements Renderer {
     setOpacity(material.opacity);
     setBlending(material.blending);
 
-    // _context.beginPath();
-    // _context.moveTo(v1.positionScreen.x, v1.positionScreen.y);
-    // _context.lineTo(v2.positionScreen.x, v2.positionScreen.y);
-    // _context.closePath();
+    _context.beginPath();
+    _context.moveTo(v1.positionScreen.x, v1.positionScreen.y);
+    _context.lineTo(v2.positionScreen.x, v2.positionScreen.y);
+    _context.closePath();
 
     if (material is LineBasicMaterial) {
       LineBasicMaterial lbMaterial = material;
@@ -602,7 +602,7 @@ class DartCanvasRenderer implements Renderer {
       setLineJoin(lbMaterial.linejoin);
       setStrokeStyle(lbMaterial.color.getContextStyle());
 
-      // _context.stroke();
+      _context.stroke();
       _bboxRect.inflate(lbMaterial.linewidth * 2);
     }
     if (debug) {

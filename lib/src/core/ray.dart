@@ -69,7 +69,7 @@ class Ray {
     Vector3 intersectPoint = new Vector3.zero();
 
     Intersect intersect;
-    List intersects = [];
+    List intersects = List<Intersect>();
     int l = object.children.length;
 
     if (recursive) {
@@ -121,7 +121,8 @@ class Ray {
       Matrix4 objMatrix;
       Material material;
 
-      List<Material> geometryMaterials = object.geometry.materials;
+      List<Material> geometryMaterials =
+          List<Material>.from(geometry.materials);
       bool isFaceMaterial = object.material is MeshFaceMaterial;
       int side = object.material.side;
 

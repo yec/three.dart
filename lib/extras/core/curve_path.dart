@@ -97,7 +97,7 @@ class CurvePath extends Curve {
     // Get length of subsurve
     // Push sums into cached array
 
-    var lengths = [], sums = 0;
+    var lengths = List<num>(), sums = 0.0;
     var i, il = this.curves.length;
 
     for (i = 0; i < il; i++) {

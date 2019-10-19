@@ -52,9 +52,9 @@ class Path extends CurvePath {
       actions.add(new PathAction(action, args));
 
   // startPath() endPath()?
-  moveTo(x, y) => addAction(PathAction.MOVE_TO, [x, y]);
+  moveTo(double x, double y) => addAction(PathAction.MOVE_TO, [x, y]);
 
-  lineTo(x, y) {
+  lineTo(double x, double y) {
     var args = [x, y];
 
     var lastargs = actions.last.args;
@@ -85,7 +85,8 @@ class Path extends CurvePath {
     addAction(PathAction.QUADRATIC_CURVE_TO, args);
   }
 
-  bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
+  bezierCurveTo(double aCP1x, double aCP1y, double aCP2x, double aCP2y,
+      double aX, double aY) {
     var args = [aCP1x, aCP1y, aCP2x, aCP2y, aX, aY];
 
     var lastargs = actions.last.args;

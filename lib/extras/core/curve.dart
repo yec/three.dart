@@ -30,7 +30,7 @@ abstract class Curve<V extends Vector> {
       pts.add(this.getPoint(d / divisions));
     }
 
-    return pts;
+    return List<V>.from(pts);
   }
 
   // Get sequence of points using getPointAt( u )
@@ -77,9 +77,9 @@ abstract class Curve<V extends Vector> {
     var cache = [];
     var current;
     var last = getPoint(0.0);
-    var sum = 0;
+    var sum = 0.0;
 
-    cache.add(0);
+    cache.add(0.0);
 
     for (var p = 1; p <= divisions; p++) {
       current = getPoint(p / divisions);

@@ -21,7 +21,7 @@ abstract class Curve<V extends Vector> {
 
   // Get sequence of points using getPoint( t )
   // TODO(nelsonsilva) - closedPath is only used in Path
-  List<V> getPoints([num divisions = null, closedPath = false]) {
+  getPoints([num divisions = null, closedPath = false]) {
     if (divisions == null) divisions = 5;
 
     var d, pts = [];
@@ -29,7 +29,6 @@ abstract class Curve<V extends Vector> {
     for (d = 0; d <= divisions; d++) {
       pts.add(this.getPoint(d / divisions));
     }
-
     return List<V>.from(pts);
   }
 
@@ -41,7 +40,6 @@ abstract class Curve<V extends Vector> {
     for (d = 0; d <= divisions; d++) {
       pts.add(this.getPointAt(d / divisions));
     }
-
     return pts;
   }
 

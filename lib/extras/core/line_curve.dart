@@ -16,7 +16,7 @@ class LineCurve extends Curve2D {
   // Line curve is linear, so we can overwrite default getPointAt
   Vector2 getPointAt(u) => getPoint(u);
 
-  Vector2 getTangent(t) => v2.clone()
+  Vector2 getTangent([t]) => v2.clone()
     ..sub(v1)
     ..normalize();
 }

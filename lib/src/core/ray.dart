@@ -164,28 +164,29 @@ class Ray {
 
         // if negative distance, then plane is behind ray
 
-        if (scalar < 0) continue;
+        // if (scalar < 0) continue;
 
         if (side == DoubleSide || (side == FrontSide ? dot < 0 : dot > 0)) {
           intersectPoint = originCopy + (directionCopy..scale(scalar));
 
           abcd = face.indices
-              .map((idx) => vertices[idx].clone().applyProjection(objMatrix))
+              .map<Vector3>(
+                  (idx) => vertices[idx].clone().applyProjection(objMatrix))
               .toList();
 
           var pointInFace;
 
           // TODO - Make this work a face of arbitrary size
-          if (face.size == 3) {
-            pointInFace =
-                _pointInFace3(intersectPoint, abcd[0], abcd[1], abcd[2]);
-          } else if (face.size == 4) {
-            pointInFace =
-                _pointInFace3(intersectPoint, abcd[0], abcd[1], abcd[3]) ||
-                    _pointInFace3(intersectPoint, abcd[1], abcd[2], abcd[3]);
-          }
+          // if (face.size == 3) {
+          //   pointInFace =
+          //       _pointInFace3(intersectPoint, abcd[0], abcd[1], abcd[2]);
+          // } else if (face.size == 4) {
+          //   pointInFace =
+          //       _pointInFace3(intersectPoint, abcd[0], abcd[1], abcd[3]) ||
+          //           _pointInFace3(intersectPoint, abcd[1], abcd[2], abcd[3]);
+          // }
 
-          if (pointInFace) {
+          if (intersectPoint != null) {
             intersect = new Intersect(
                 distance: originCopy.absoluteError(intersectPoint),
                 point: intersectPoint.clone(),

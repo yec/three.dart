@@ -86,7 +86,7 @@ class DartCanvasRenderer implements Renderer {
   }
 
   // DartCanvasRenderer([Map parameters]) {
-  DartCanvasRenderer(canvas, paint) {
+  DartCanvasRenderer(canvas) {
     // parameters = parameters != null ? parameters : {};
 
     // print(_canvas.dartCanvas);

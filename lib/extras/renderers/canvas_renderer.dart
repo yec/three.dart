@@ -1,7 +1,7 @@
 library canvas_renderer;
 
-// import 'dart:html' hide Rectangle;
-import 'package:three/htmlshim.dart';
+import 'dart:html' hide Rectangle;
+// import 'package:three/htmlshim.dart';
 import 'dart:math' as Math;
 
 import 'package:three/three.dart';

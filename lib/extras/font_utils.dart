@@ -291,7 +291,7 @@ class FontFace {
 var EPSILON = 0.0000000001;
 
 // takes in an contour array and returns
-List<List<Vector2>> process(List<Vector2> contour, bool indices) {
+dynamic process(List<Vector2> contour, bool indices) {
   var n = contour.length;
 
   if (n < 3) return null;
@@ -342,7 +342,7 @@ List<List<Vector2>> process(List<Vector2> contour, bool indices) {
     if (nv <= w) w = 0;
     /* next     */
 
-    if (snip(contour, u, v, w, nv, verts)) {
+    if (snip(contour, u, v, w, nv, List<num>.from(verts))) {
       var a, b, c, s, t;
 
       /* true names of the vertices */

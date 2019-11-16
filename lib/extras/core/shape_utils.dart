@@ -10,8 +10,8 @@ import 'package:three/extras/font_utils.dart' as FontUtils;
   contour - array of vector2 for contour
   holes   - array of array of vector2
 */
-removeHoles(List<Vector2> contour, List<List<Vector2>> holes) {
-  var shape = new List.from(contour); // work on this shape
+removeHoles(contour, holes) {
+  var shape = new List<Vector2>.from(contour); // work on this shape
   var allpoints = new List.from(shape);
 
   /* For each isolated shape, find the closest points and break to the hole to allow triangulation */
@@ -152,7 +152,7 @@ removeHoles(List<Vector2> contour, List<List<Vector2>> holes) {
     verts.add(trianglea);
     verts.add(triangleb);
 
-    shape = [];
+    // shape = List < List<Vector2>();
     shape.addAll(tmpShape1);
     shape.addAll(tmpHole1);
     shape.addAll(tmpHole2);
@@ -171,12 +171,12 @@ removeHoles(List<Vector2> contour, List<List<Vector2>> holes) {
 triangulateShape(contour, holes) {
   var shapeWithoutHoles = removeHoles(contour, holes);
 
-  var shape = shapeWithoutHoles["shape"],
+  var shape = List<Vector2>.from(shapeWithoutHoles["shape"]),
       allpoints = shapeWithoutHoles["allpoints"],
-      isolatedPts = shapeWithoutHoles["isolatedPts"];
+      isolatedPts = List<List<Vector2>>.from(shapeWithoutHoles["isolatedPts"]);
 
-  var triangles = FontUtils.process(
-      shape, false); // True returns indices for points of spooled shape
+  List<List<Vector2>> triangles = List<List<Vector2>>.from(FontUtils.process(
+      shape, false)); // True returns indices for points of spooled shape
 
   // To maintain reference to old shape, one must match coordinates, or offset the indices from original arrays.
   // It's probably easier to do the first.
@@ -201,7 +201,7 @@ triangulateShape(contour, holes) {
   // check all face vertices against all points map
 
   for (i = 0; i < triangles.length; i++) {
-    face = triangles[i];
+    face = List.from(triangles[i]);
 
     for (f = 0; f < 3; f++) {
       key = "${face[f].x}:${face[f].y}";

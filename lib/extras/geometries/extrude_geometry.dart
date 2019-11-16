@@ -96,8 +96,8 @@ class ExtrudeGeometry extends Geometry {
       bendPath,
       Curve extrudePath,
       TubeGeometry frames,
-      int material,
-      int extrudeMaterial) {
+      var material,
+      var extrudeMaterial) {
     var sl = shapes.length;
 
     for (var s = 0; s < sl; s++) {
@@ -152,8 +152,8 @@ class ExtrudeGeometry extends Geometry {
 
     // get unit vectors
 
-    v = a.normalize();
-    w = b.normalize();
+    v = a..normalize();
+    w = b..normalize();
 
     // normals from pt i
 
@@ -162,8 +162,12 @@ class ExtrudeGeometry extends Geometry {
 
     // pts from i
 
-    p.setFrom(pt_i).add(v_hat);
-    q.setFrom(pt_i).add(w_hat);
+    p
+      ..setFrom(pt_i)
+      ..add(v_hat);
+    q
+      ..setFrom(pt_i)
+      ..add(w_hat);
 
     if (p.x == q.x && p.y == q.y) {
       // TODO add vector_math ".equals(p, q)"
@@ -174,11 +178,15 @@ class ExtrudeGeometry extends Geometry {
 
     // Points from j, k. helps prevents points cross overover most of the time
 
-    p.setFrom(pt_j).add(v_hat);
-    q.setFrom(pt_k).add(w_hat);
+    p
+      ..setFrom(pt_j)
+      ..add(v_hat);
+    q
+      ..setFrom(pt_k)
+      ..add(w_hat);
 
     v_dot_w_hat = v.dot(w_hat);
-    q_sub_p_dot_w_hat = q.sub(p).dot(w_hat);
+    q_sub_p_dot_w_hat = (q..sub(p)).dot(w_hat);
 
     // We should not reach these conditions
 
@@ -200,11 +208,13 @@ class ExtrudeGeometry extends Geometry {
       return _getBevelVec1(pt_i, pt_j, pt_k);
     }
 
-    intersection = v.scale(s).add(p);
+    intersection = v
+      ..scale(s)
+      ..add(p);
 
     return intersection
-        .sub(pt_i)
-        .clone(); // Don't normalize!, otherwise sharp corners become ugly
+      ..sub(pt_i)
+      ..clone(); // Don't normalize!, otherwise sharp corners become ugly
   }
 
   static var RAD_TO_DEGREES = 180 / Math.pi;
@@ -255,8 +265,8 @@ class ExtrudeGeometry extends Geometry {
       bendPath,
       Curve extrudePath,
       TubeGeometry frames,
-      int material,
-      int extrudeMaterial,
+      var material,
+      var extrudeMaterial,
       {ExtrudeGeometryWorldUVGenerator UVGenerator}) {
     var extrudePts, extrudeByPath = false;
 
@@ -320,7 +330,7 @@ class ExtrudeGeometry extends Geometry {
     var shapePoints = shape.extractPoints();
 
     List vertices = shapePoints["shape"];
-    List<List<Vector2>> holes = shapePoints["holes"];
+    List holes = shapePoints["holes"];
 
     var reverse = !ShapeUtils.isClockWise(vertices);
 
@@ -605,7 +615,7 @@ class ExtrudeGeometry extends Geometry {
 
       for (i = 0; i < flen; i++) {
         face = faces[i];
-        f3(face[2] + offset, face[1] + offset, face[0] + offset, true);
+        // f3(face[2] + offset, face[1] + offset, face[0] + offset, true);
       }
 
       layer = nSteps + bevelSegments * 2;
@@ -615,22 +625,22 @@ class ExtrudeGeometry extends Geometry {
 
       for (i = 0; i < flen; i++) {
         face = faces[i];
-        f3(face[0] + offset, face[1] + offset, face[2] + offset, false);
+        // f3(face[0] + offset, face[1] + offset, face[2] + offset, false);
       }
     } else {
       // Bottom faces
 
       for (i = 0; i < flen; i++) {
         face = faces[i];
-        f3(face[2], face[1], face[0], true);
+        // f3(face[2], face[1], face[0], true);
       }
 
       // Top faces
 
       for (i = 0; i < flen; i++) {
         face = faces[i];
-        f3(face[0] + vlen * nSteps, face[1] + vlen * nSteps,
-            face[2] + vlen * nSteps, false);
+        // f3(face[0] + vlen * nSteps, face[1] + vlen * nSteps,
+        //     face[2] + vlen * nSteps, false);
       }
     }
 

@@ -65,7 +65,7 @@ class Game {
 
   void particleRender(var context) {
     context.beginPath();
-    context.arc(0, 0, 1, 0, Math.PI * 2, true);
+    context.arc(0, 0, 1, 0, Math.pi * 2, true);
     context.fill();
   }
 

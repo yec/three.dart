@@ -63,9 +63,9 @@ void init() {
     object.scale.y = rnd.nextDouble() * 2 + 1.0;
     object.scale.z = rnd.nextDouble() * 2 + 1.0;
 
-    object.rotation.x = (rnd.nextDouble() * 360.0) * Math.PI / 180;
-    object.rotation.y = (rnd.nextDouble() * 360.0) * Math.PI / 180;
-    object.rotation.z = (rnd.nextDouble() * 360.0) * Math.PI / 180;
+    object.rotation.x = (rnd.nextDouble() * 360.0) * Math.pi / 180;
+    object.rotation.y = (rnd.nextDouble() * 360.0) * Math.pi / 180;
+    object.rotation.z = (rnd.nextDouble() * 360.0) * Math.pi / 180;
 
     scene.add(object);
 
@@ -75,7 +75,7 @@ void init() {
 
   particleMaterial = new ParticleCanvasMaterial(color: 0x000000, program: (CanvasRenderingContext2D context) {
     context.beginPath();
-    context.arc(0, 0, 1, 0, Math.PI * 2, false);
+    context.arc(0, 0, 1, 0, Math.pi * 2, false);
     context.closePath();
     context.fill();
   });
@@ -142,9 +142,9 @@ void animate(num time) {
 void render() {
   theta += 0.2;
 
-  camera.position.x = radius * Math.sin(theta * Math.PI / 360);
-  camera.position.y = radius * Math.sin(theta * Math.PI / 360);
-  camera.position.z = radius * Math.cos(theta * Math.PI / 360);
+  camera.position.x = radius * Math.sin(theta * Math.pi / 360);
+  camera.position.y = radius * Math.sin(theta * Math.pi / 360);
+  camera.position.z = radius * Math.cos(theta * Math.pi / 360);
   camera.lookAt(scene.position);
 
   renderer.render(scene, camera);

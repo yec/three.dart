@@ -89,7 +89,7 @@ init() {
     var object = objects[i];
 
     var phi = Math.acos(-1 + (2 * i) / l);
-    var theta = Math.sqrt(l * Math.PI) * phi;
+    var theta = Math.sqrt(l * Math.pi) * phi;
 
     object = new THREE.Object3D()
         ..position.x = 1000.0 * Math.cos(theta) * Math.sin(phi)
@@ -113,7 +113,7 @@ init() {
 
     var object = objects[i];
 
-    var phi = i * 0.175 + Math.PI;
+    var phi = i * 0.175 + Math.pi;
 
     object = new THREE.Object3D()
         ..position.x = 1100.0 * Math.sin(phi)

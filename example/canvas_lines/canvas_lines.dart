@@ -40,7 +40,7 @@ init() {
   // Not sure why yet... Need to know whether this messes things up on a Mac.
 
   // particles
-  final num Tau = Math.PI * 2;
+  final num Tau = Math.pi * 2;
   material = new ParticleCanvasMaterial(color: 0xffffff, program: (CanvasRenderingContext2D context) {
     context.beginPath();
     context.arc(0, 0, 1, 0, Tau, false);

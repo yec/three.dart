@@ -56,7 +56,7 @@ void init() {
 
     line = new Line(geometry, new LineBasicMaterial(color: 0x000000, opacity: 0.2));
     line.position.x = (i * 50.0) - 500.0;
-    line.rotation.y = 90.0 * Math.PI / 180.0;
+    line.rotation.y = 90.0 * Math.pi / 180.0;
     scene.add(line);
 
   }

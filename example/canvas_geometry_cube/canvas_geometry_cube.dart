@@ -1,4 +1,5 @@
 import 'dart:html';
+// import 'package:three/htmlshim.dart';
 import 'dart:math' as Math;
 
 import 'package:three/three.dart';
@@ -58,6 +59,15 @@ void init() {
       70.0, window.innerWidth / window.innerHeight, 1.0, 1000.0);
   camera.position.y = 150.0;
   camera.position.z = 500.0;
+
+  // camera.setViewOffset(
+  //     window.innerWidth as double,
+  //     window.innerHeight as double,
+  //     0.0,
+  //     0.0,
+  //     window.innerWidth as double,
+  //     window.innerHeight as double);
+
   scene.add(camera);
 
   // Cube

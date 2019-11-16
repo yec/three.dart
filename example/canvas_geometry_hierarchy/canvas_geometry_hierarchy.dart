@@ -59,8 +59,8 @@ void init() {
     mesh.position.x = rnd.nextInt(2000).toDouble() - 1000.0;
     mesh.position.y = rnd.nextInt(2000).toDouble() - 1000.0;
     mesh.position.z = rnd.nextInt(2000).toDouble() - 1000.0;
-    mesh.rotation.x = rnd.nextInt(360).toDouble() * (Math.PI / 180.0);
-    mesh.rotation.y = rnd.nextInt(360).toDouble() * (Math.PI / 180.0);
+    mesh.rotation.x = rnd.nextInt(360).toDouble() * (Math.pi / 180.0);
+    mesh.rotation.y = rnd.nextInt(360).toDouble() * (Math.pi / 180.0);
     mesh.matrixAutoUpdate = false;
     mesh.updateMatrix();
     group.add(mesh);

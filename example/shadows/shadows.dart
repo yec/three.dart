@@ -119,7 +119,7 @@ animate(time) {
 render() {
 
   var seconds = new DateTime.now().millisecondsSinceEpoch / 1000;
-  var piPerSeconds = seconds * Math.PI;
+  var piPerSeconds = seconds * Math.pi;
 
   spot1.position.x = Math.cos(piPerSeconds * 0.05) * 12;
   spot1.position.y = 10.0;

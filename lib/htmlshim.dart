@@ -50,7 +50,11 @@ class CanvasElement extends ImageElement {
   factory CanvasElement.fresh() =>
       CanvasElement.dartCanvas(Canvas(PictureRecorder()));
 
-  CanvasElement.dartCanvas(this._canvas);
+  factory CanvasElement.dartCanvas(canvas) {
+    var canvasElement = CanvasElement();
+    canvasElement._canvas = canvas;
+    return canvasElement;
+  }
 
   CanvasRenderingContext2D getContext([String dimension]) {
     return CanvasRenderingContext2D(this);
@@ -161,6 +165,7 @@ class CanvasRenderingContext2D {
   }
 
   set strokeStyle(dynamic value) {
+    _strokeStyle.isAntiAlias = true;
     _strokeStyle.style = PaintingStyle.stroke;
     _strokeStyle.color = parseColor(value);
   }
